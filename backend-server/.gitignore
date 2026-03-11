@@ -29,3 +29,7 @@ logs/
 # Alembic
 alembic/versions/*.py
 !alembic/versions/__init__.py
+
+# 测试
+.pytest_cache/
+test_result.md
