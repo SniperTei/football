@@ -18,6 +18,9 @@ export const playersApi = {
   // 获取球员详情
   getById: (id: number) => api.get<Player>(`/players/${id}`),
 
+  // 搜索球员（通过姓名）
+  search: (keyword: string) => api.get<ListData<Player>>(`/players/search/${keyword}`),
+
   // 获取指定球队的球员
   getByTeam: (teamId: number) => api.get<ListData<Player>>(`/players/team/${teamId}`),
 

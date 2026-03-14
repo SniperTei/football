@@ -5,10 +5,8 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from app.models.team import Team
 from app.models.user import User
-from app.models.team_member import PermissionLevel
 from app.schemas.team import TeamCreate, TeamUpdate
 from app.repository.team import TeamRepository
-from app.repository.team_member import TeamMemberRepository
 from app.service.exceptions import NotFoundException, DuplicateException, ValidationException
 
 
@@ -18,7 +16,6 @@ class TeamService:
     def __init__(self, db: Session):
         self.db = db
         self.team_repo = TeamRepository(db)
-        self.team_member_repo = TeamMemberRepository(db)
 
     def get_all_teams(self) -> List[Team]:
         """获取所有球队"""
@@ -33,19 +30,19 @@ class TeamService:
 
     def create_team(self, team_data: TeamCreate, current_user: User) -> Team:
         """创建球队"""
+        # 如果用户已有球队，需要先解除
+        if current_user.my_team_id:
+            raise ValidationException("您已经有一个球队了，每个用户只能创建一个球队")
+
         # 检查球队名是否已存在
         if self.team_repo.name_exists(team_data.name):
             raise DuplicateException("球队", "名称", team_data.name)
 
         team = self.team_repo.create(**team_data.model_dump())
 
-        # 将创建者添加为球队所有者
-        if current_user and not current_user.is_admin:
-            self.team_member_repo.add_member(
-                user_id=current_user.id,
-                team_id=team.id,
-                permission=PermissionLevel.OWNER
-            )
+        # 设置用户的球队
+        current_user.my_team_id = team.id
+        self.db.commit()
 
         return team
 
@@ -53,10 +50,6 @@ class TeamService:
         """更新球队"""
         # 检查球队是否存在
         team = self.get_team_by_id(team_id)
-
-        # 权限检查：需要 ADMIN 或以上权限
-        if not current_user.has_permission(team_id, PermissionLevel.ADMIN):
-            raise ValidationException("您没有权限修改此球队")
 
         # 如果要更新球队名，检查是否重复
         if team_data.name and team_data.name != team.name:
@@ -71,10 +64,6 @@ class TeamService:
         """删除球队"""
         # 检查球队是否存在
         team = self.get_team_by_id(team_id)
-
-        # 权限检查：需要 OWNER 权限
-        if not current_user.has_permission(team_id, PermissionLevel.OWNER):
-            raise ValidationException("您没有权限删除此球队")
 
         # TODO: 后续添加球员和比赛功能时，需要检查关联数据
         self.team_repo.delete(team_id)

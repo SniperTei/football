@@ -17,8 +17,8 @@
         <el-table-column prop="founded_year" label="成立年份" width="120" />
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
-            <el-button type="primary" text @click="showDialog('edit', row)">编辑</el-button>
-            <el-button type="danger" text @click="handleDelete(row)">删除</el-button>
+            <el-button v-if="canEditTeam(row)" type="primary" text @click="showDialog('edit', row)">编辑</el-button>
+            <el-button v-if="canEditTeam(row)" type="danger" text @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -48,7 +48,9 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
 import { teamsApi } from '@/api'
+import { useAuthStore } from '@/stores/auth'
 
+const authStore = useAuthStore()
 const loading = ref(false)
 const submitLoading = ref(false)
 const dialogVisible = ref(false)
@@ -58,6 +60,15 @@ const teams = ref<any[]>([])
 const editingId = ref<number>()
 
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球队' : '编辑球队')
+
+// 判断是否可以编辑球队（只有球队的拥有者可以编辑）
+const canEditTeam = (team: any) => {
+  if (!authStore.isAuthenticated || !authStore.user) {
+    return false
+  }
+  // 只有当球队是当前用户的球队时才能编辑
+  return authStore.user.my_team_id === team.id
+}
 
 const form = reactive({
   name: '',

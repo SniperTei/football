@@ -37,8 +37,8 @@
           <div class="stat-content">
             <el-icon size="40" color="#e6a23c"><Trophy /></el-icon>
             <div class="stat-info">
-              <div class="stat-value">{{ stats.permissions }}</div>
-              <div class="stat-label">权限分配</div>
+              <div class="stat-value">{{ stats.matches }}</div>
+              <div class="stat-label">比赛数量</div>
             </div>
           </div>
         </el-card>
@@ -48,8 +48,8 @@
           <div class="stat-content">
             <el-icon size="40" color="#f56c6c"><Calendar /></el-icon>
             <div class="stat-info">
-              <div class="stat-value">开发中</div>
-              <div class="stat-label">更多功能</div>
+              <div class="stat-value">{{ stats.players }}</div>
+              <div class="stat-label">球员数量</div>
             </div>
           </div>
         </el-card>
@@ -87,25 +87,45 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { teamsApi } from '@/api'
+import { getAllRecentMatches } from '@/api/matches'
+import { playersApi } from '@/api/players'
 
 const stats = ref({
   teams: 0,
-  users: 0,
-  permissions: 0
+  users: 4,
+  matches: 0,
+  players: 0
 })
 
 const recentTeams = ref<any[]>([])
 
 const loadData = async () => {
   try {
+    // 加载球队数据
     const teamsRes = await teamsApi.getAll()
     const teams = teamsRes.data.list || []
-
     stats.value.teams = teamsRes.data.total || teams.length
-    stats.value.users = 4 // 从初始化数据可知有4个用户
-    stats.value.permissions = 6 // 从初始化数据可知有6个权限分配
-
     recentTeams.value = teams.slice(0, 5)
+
+    // 加载比赛数据（查询所有最近90天的比赛）
+    try {
+      const matchesRes = await getAllRecentMatches(90)
+      const matches = matchesRes.data.list || []
+      stats.value.matches = matches.length
+    } catch (error) {
+      console.error('加载比赛数据失败:', error)
+    }
+
+    // 加载球员数据（从第一个球队获取球员数量）
+    if (teams.length > 0) {
+      try {
+        const playersRes = await playersApi.getByTeam(teams[0].id)
+        const players = playersRes.data.list || []
+        stats.value.players = players.length
+      } catch (error) {
+        console.error('加载球员数据失败:', error)
+      }
+    }
   } catch (error) {
     console.error('加载数据失败:', error)
   }

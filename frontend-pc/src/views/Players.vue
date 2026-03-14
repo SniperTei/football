@@ -11,7 +11,48 @@
         </div>
       </template>
 
-      <el-table :data="players" v-loading="loading" style="width: 100%">
+      <!-- 搜索栏 -->
+      <div class="search-bar">
+        <el-input
+          v-model="searchKeyword"
+          placeholder="搜索球员姓名"
+          clearable
+          style="width: 200px; margin-right: 12px"
+          @keyup.enter="handleSearch"
+        >
+          <template #prefix>
+            <el-icon><Search /></el-icon>
+          </template>
+        </el-input>
+
+        <el-select
+          v-model="selectedTeamId"
+          placeholder="筛选球队"
+          clearable
+          filterable
+          style="width: 200px; margin-right: 12px"
+          @change="handleTeamChange"
+        >
+          <el-option
+            v-for="team in teams"
+            :key="team.id"
+            :label="team.name"
+            :value="team.id"
+          />
+        </el-select>
+
+        <el-button type="primary" @click="handleSearch" :loading="loading">
+          <el-icon><Search /></el-icon>
+          搜索
+        </el-button>
+
+        <el-button @click="handleReset">
+          <el-icon><Refresh /></el-icon>
+          重置
+        </el-button>
+      </div>
+
+      <el-table :data="players" v-loading="loading" style="width: 100%; margin-top: 20px">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="姓名" min-width="120" />
         <el-table-column prop="position" label="位置" width="100" />
@@ -23,10 +64,10 @@
         </el-table-column>
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
-            <el-button v-if="authStore.isAuthenticated" type="primary" text @click="showDialog('edit', row)">
+            <el-button v-if="canEditPlayer(row)" type="primary" text @click="showDialog('edit', row)">
               编辑
             </el-button>
-            <el-button v-if="authStore.isAuthenticated" type="danger" text @click="handleDelete(row)">
+            <el-button v-if="canEditPlayer(row)" type="danger" text @click="handleDelete(row)">
               删除
             </el-button>
           </template>
@@ -75,6 +116,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { playersApi, teamsApi } from '@/api'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
+import { Search, Refresh } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
 const loading = ref(false)
@@ -86,7 +128,20 @@ const players = ref<any[]>([])
 const teams = ref<any[]>([])
 const editingId = ref<number>()
 
+// 搜索相关
+const searchKeyword = ref('')
+const selectedTeamId = ref<number | null>(null)
+
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球员' : '编辑球员')
+
+// 判断是否可以编辑球员（只有自己球队的球员才能编辑）
+const canEditPlayer = (player: any) => {
+  if (!authStore.isAuthenticated || !authStore.user) {
+    return false
+  }
+  // 只有当球员属于当前用户的球队时才能编辑
+  return authStore.user.my_team_id === player.team_id
+}
 
 const form = reactive({
   name: '',
@@ -110,10 +165,60 @@ const loadPlayers = async () => {
   loading.value = true
   try {
     const res = await playersApi.getAll()
-    players.value = res.data.list
+    const data = res.data || res
+    players.value = data.list || []
   } finally {
     loading.value = false
   }
+}
+
+// 搜索球员
+const handleSearch = async () => {
+  loading.value = true
+  try {
+    // 如果选择了球队，按球队筛选
+    if (selectedTeamId.value) {
+      const res = await playersApi.getByTeam(selectedTeamId.value)
+      const data = res.data || res
+      let filteredPlayers = data.list || []
+
+      // 如果还输入了搜索关键词，再按姓名过滤
+      if (searchKeyword.value) {
+        filteredPlayers = filteredPlayers.filter((p: any) =>
+          p.name.includes(searchKeyword.value)
+        )
+      }
+
+      players.value = filteredPlayers
+    }
+    // 如果只输入了搜索关键词，按姓名搜索
+    else if (searchKeyword.value) {
+      const res = await playersApi.search(searchKeyword.value)
+      const data = res.data || res
+      players.value = data.list || []
+    }
+    // 否则加载所有球员
+    else {
+      await loadPlayers()
+    }
+  } catch (error) {
+    console.error('搜索球员失败:', error)
+    ElMessage.error('搜索失败')
+  } finally {
+    loading.value = false
+  }
+}
+
+// 球队筛选改变时自动搜索
+const handleTeamChange = () => {
+  handleSearch()
+}
+
+// 重置搜索
+const handleReset = () => {
+  searchKeyword.value = ''
+  selectedTeamId.value = null
+  loadPlayers()
 }
 
 const loadTeams = async () => {
@@ -204,5 +309,11 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
 }
 </style>

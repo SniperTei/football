@@ -21,10 +21,10 @@
             <el-button type="primary" text @click="$router.push(`/teams/${row.id}`)">
               查看详情
             </el-button>
-            <el-button v-if="authStore.isAuthenticated" type="primary" text @click="showDialog('edit', row)">
+            <el-button v-if="canEditTeam(row)" type="primary" text @click="showDialog('edit', row)">
               编辑
             </el-button>
-            <el-button v-if="authStore.isAuthenticated" type="danger" text @click="handleDelete(row)">
+            <el-button v-if="canEditTeam(row)" type="danger" text @click="handleDelete(row)">
               删除
             </el-button>
           </template>
@@ -69,6 +69,15 @@ const teams = ref<any[]>([])
 const editingId = ref<number>()
 
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球队' : '编辑球队')
+
+// 判断是否可以编辑球队（只有球队的拥有者可以编辑）
+const canEditTeam = (team: any) => {
+  if (!authStore.isAuthenticated || !authStore.user) {
+    return false
+  }
+  // 只有当球队是当前用户的球队时才能编辑
+  return authStore.user.my_team_id === team.id
+}
 
 const form = reactive({
   name: '',

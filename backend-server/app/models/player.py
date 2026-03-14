@@ -18,6 +18,7 @@ class Player(Base, TimestampMixin):
 
     # 关系
     team = relationship("Team", back_populates="players")
+    match_stats = relationship("MatchPlayer", back_populates="player", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<Player {self.name} ({self.position})>"

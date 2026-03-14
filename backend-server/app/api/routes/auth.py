@@ -46,6 +46,7 @@ async def login(login_data: UserLogin, db: Session = Depends(get_db)):
                     "id": result["user"].id,
                     "username": result["user"].username,
                     "email": result["user"].email,
+                    "my_team_id": result["user"].my_team_id,
                     "is_admin": result["user"].is_admin
                 }
             },

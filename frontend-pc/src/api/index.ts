@@ -102,3 +102,5 @@ export default api
 export * from './teams'
 export * from './auth'
 export * from './players'
+export * from './matches'
+export * from './stats'

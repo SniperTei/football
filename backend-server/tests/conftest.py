@@ -121,6 +121,12 @@ def test_teams(db):
 @pytest.fixture
 def test_team_members(db, test_users, test_teams):
     """创建测试球队成员"""
+    # 为 user1 设置球队（曼联）
+    test_users[1].my_team_id = test_teams[0].id
+
+    # user2 的球队是曼城
+    test_users[2].my_team_id = test_teams[1].id
+
     team_members = [
         TeamMember(
             user_id=test_users[1].id,
@@ -128,20 +134,31 @@ def test_team_members(db, test_users, test_teams):
             permission=PermissionLevel.OWNER
         ),
         TeamMember(
-            user_id=test_users[1].id,
-            team_id=test_teams[1].id,
-            permission=PermissionLevel.ADMIN
-        ),
-        TeamMember(
             user_id=test_users[2].id,
             team_id=test_teams[1].id,
-            permission=PermissionLevel.MEMBER
+            permission=PermissionLevel.OWNER
         ),
     ]
     for member in team_members:
         db.add(member)
     db.commit()
     return team_members
+
+
+@pytest.fixture
+def test_players(db, test_teams):
+    """创建测试球员"""
+    players = [
+        Player(name="C罗", position="前锋", jersey_number=7, team_id=test_teams[0].id),
+        Player(name="B费", position="中场", jersey_number=8, team_id=test_teams[0].id),
+        Player(name="德布劳内", position="中场", jersey_number=17, team_id=test_teams[1].id),
+    ]
+    for player in players:
+        db.add(player)
+    db.commit()
+    for player in players:
+        db.refresh(player)
+    return players
 
 
 @pytest.fixture

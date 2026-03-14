@@ -29,7 +29,19 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="authStore.logout">
+                  <el-dropdown-item @click="$router.push('/admin/teams')">
+                    <el-icon><Management /></el-icon>
+                    管理球队
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="$router.push('/admin/players')">
+                    <el-icon><Management /></el-icon>
+                    管理球员
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="$router.push('/admin/matches')">
+                    <el-icon><Management /></el-icon>
+                    管理比赛
+                  </el-dropdown-item>
+                  <el-dropdown-item divided @click="authStore.logout">
                     <el-icon><SwitchButton /></el-icon>
                     退出登录
                   </el-dropdown-item>
@@ -38,7 +50,7 @@
             </el-dropdown>
           </template>
           <template v-else>
-            <el-button type="primary" @click="loginDialogVisible = true">登录</el-button>
+            <el-button type="primary" @click="authStore.showLoginDialog()">登录</el-button>
             <el-button @click="$router.push('/register')">注册</el-button>
           </template>
         </div>
@@ -67,7 +79,7 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="loginDialogVisible = false">取消</el-button>
+        <el-button @click="authStore.hideLoginDialog()">取消</el-button>
         <el-button type="primary" @click="handleLogin" :loading="loginLoading">登录</el-button>
       </template>
     </el-dialog>
@@ -75,22 +87,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, ref, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, type FormInstance } from 'element-plus'
+import { User, Management, SwitchButton } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 
 const route = useRoute()
+const router = useRouter()
 const authStore = useAuthStore()
 
 // 使用 storeToRefs 确保响应式
-const { isAuthenticated, user } = storeToRefs(authStore)
+const { isAuthenticated, user, loginDialogRequired } = storeToRefs(authStore)
 
 const activeMenu = computed(() => route.path)
 
-// 登录弹窗
-const loginDialogVisible = ref(false)
+// 登录弹窗 - 使用 store 中的状态
+const loginDialogVisible = computed({
+  get: () => loginDialogRequired.value,
+  set: (val) => {
+    if (!val) authStore.hideLoginDialog()
+  }
+})
 const loginLoading = ref(false)
 const loginFormRef = ref<FormInstance>()
 
@@ -114,12 +133,18 @@ const handleLogin = async () => {
         await authStore.login(loginForm.username, loginForm.password)
         ElMessage.success('登录成功')
         // 关闭弹窗
-        loginDialogVisible.value = false
+        authStore.hideLoginDialog()
         // 重置表单
         loginForm.username = ''
         loginForm.password = ''
         // 重置表单验证状态
         loginFormRef.value.clearValidate()
+        // 跳转到之前尝试访问的页面
+        const redirectPath = sessionStorage.getItem('redirectPath')
+        if (redirectPath) {
+          sessionStorage.removeItem('redirectPath')
+          router.push(redirectPath)
+        }
       } catch (error: any) {
         console.error('Login failed:', error)
         // 登录失败，保持弹窗打开
@@ -131,9 +156,10 @@ const handleLogin = async () => {
 }
 
 const showRegister = () => {
-  loginDialogVisible.value = false
+  authStore.hideLoginDialog()
   loginForm.username = ''
   loginForm.password = ''
+  router.push('/register')
 }
 </script>
 

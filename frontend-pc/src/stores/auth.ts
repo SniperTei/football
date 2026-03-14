@@ -5,6 +5,7 @@ import { authApi, type User } from '@/api'
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('token'))
   const user = ref<User | null>(null)
+  const loginDialogRequired = ref(false) // 控制是否显示登录弹窗
 
   const isAuthenticated = computed(() => !!token.value)
 
@@ -45,6 +46,14 @@ export const useAuthStore = defineStore('auth', () => {
     clearAuth()
   }
 
+  const showLoginDialog = () => {
+    loginDialogRequired.value = true
+  }
+
+  const hideLoginDialog = () => {
+    loginDialogRequired.value = false
+  }
+
   // 初始化时从 localStorage 恢复用户信息
   if (token.value) {
     const savedUser = localStorage.getItem('user')
@@ -68,9 +77,12 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     user,
     isAuthenticated,
+    loginDialogRequired,
     login,
     register,
     logout,
-    clearAuth
+    clearAuth,
+    showLoginDialog,
+    hideLoginDialog
   }
 })

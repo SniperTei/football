@@ -4,7 +4,6 @@ Player Service - 球员业务逻辑层
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from app.models.player import Player
-from app.models.team_member import PermissionLevel
 from app.models.user import User
 from app.schemas.player import PlayerCreate, PlayerUpdate
 from app.repository.player import PlayerRepository
@@ -47,10 +46,6 @@ class PlayerService:
         if not team:
             raise NotFoundException("球队", player_data.team_id)
 
-        # 权限检查：需要 ADMIN 或以上权限
-        if not current_user.has_permission(player_data.team_id, PermissionLevel.ADMIN):
-            raise ValidationException("您没有权限为该球队添加球员")
-
         # 检查球衣号码是否已被使用
         if player_data.jersey_number:
             if self.player_repo.jersey_number_exists(
@@ -66,10 +61,6 @@ class PlayerService:
         """更新球员信息"""
         # 检查球员是否存在
         player = self.get_player_by_id(player_id)
-
-        # 权限检查：需要 ADMIN 或以上权限
-        if not current_user.has_permission(player.team_id, PermissionLevel.ADMIN):
-            raise ValidationException("您没有权限修改该球员信息")
 
         # 如果要更新球衣号码，检查是否重复
         if player_data.jersey_number and player_data.jersey_number != player.jersey_number:
@@ -88,11 +79,6 @@ class PlayerService:
         """删除球员"""
         # 检查球员是否存在
         player = self.get_player_by_id(player_id)
-
-        # 权限检查：需要 ADMIN 或以上权限
-        if not current_user.has_permission(player.team_id, PermissionLevel.ADMIN):
-            raise ValidationException("您没有权限删除该球员")
-
         self.player_repo.delete(player_id)
 
     def search_players(self, keyword: str) -> List[Player]:

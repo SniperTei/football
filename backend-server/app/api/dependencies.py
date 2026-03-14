@@ -1,12 +1,13 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 from typing import Optional
 from app.core.database import get_db
 from app.core.security import decode_access_token
 from app.models.user import User
 
 security = HTTPBearer()
+optional_security = HTTPBearer(auto_error=False)
 
 
 def get_current_user(
@@ -39,7 +40,7 @@ def get_current_user(
             detail="无效的认证凭据"
         )
 
-    user = db.query(User).options(joinedload(User.teams)).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -51,6 +52,37 @@ def get_current_user(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="用户已被禁用"
         )
+
+    return user
+
+
+def get_optional_user(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(optional_security),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    """获取当前登录用户（可选，如果没有token则返回None）"""
+    if credentials is None:
+        return None
+
+    token = credentials.credentials
+    payload = decode_access_token(token)
+
+    if payload is None:
+        return None
+
+    user_id = payload.get("sub")
+    if user_id is None:
+        return None
+
+    # Convert user_id from string to int (JWT stores sub as string)
+    try:
+        user_id = int(user_id)
+    except (ValueError, TypeError):
+        return None
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if user is None or not user.is_active:
+        return None
 
     return user
 

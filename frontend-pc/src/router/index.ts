@@ -7,12 +7,6 @@ const routes: RouteRecordRaw[] = [
     redirect: '/dashboard'
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login.vue'),
-    meta: { requiresAuth: false }
-  },
-  {
     path: '/register',
     name: 'Register',
     component: () => import('@/views/Register.vue'),
@@ -96,7 +90,12 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/login')
+    // 显示登录弹窗
+    authStore.showLoginDialog()
+    // 保存目标路由，登录后可以跳转回去
+    sessionStorage.setItem('redirectPath', to.fullPath)
+    // 取消当前导航，停留在当前页面
+    next(false)
   } else {
     next()
   }
