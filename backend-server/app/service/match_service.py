@@ -1,9 +1,9 @@
 """
 Match Service - 比赛业务逻辑层
 """
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from app.models.match import Match, MatchStatus
 from app.models.team import Team
 from app.models.user import User
@@ -177,3 +177,175 @@ class MatchService:
             raise ValidationException("天数必须在1-365之间")
 
         return self.match_repo.get_all_recent_matches(days)
+
+    def get_team_statistics(self, team_id: int, days: Optional[int] = None) -> dict:
+        """
+        获取球队统计信息
+
+        Args:
+            team_id: 球队ID
+            days: 天数筛选（None=全部, 30=最近1个月, 90=最近3个月, 365=最近1年）
+
+        Returns:
+            统计信息字典
+        """
+        # 检查球队是否存在
+        team = self.team_repo.get_by_id(team_id)
+        if not team:
+            raise NotFoundException("球队", team_id)
+
+        # 获取已完成的比赛
+        completed_matches = self.match_repo.get_completed_matches(team_id)
+
+        # 按时间筛选
+        if days:
+            cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
+            completed_matches = [m for m in completed_matches if m.match_date >= cutoff_date]
+
+        if not completed_matches:
+            return self._empty_stats()
+
+        # 统计逻辑
+        wins = draws = losses = 0
+        goals_for = goals_against = 0
+        home_wins = home_draws = home_losses = 0
+        away_wins = away_draws = away_losses = 0
+        clean_sheets = 0
+        recent_form = []
+
+        for match in completed_matches:
+            is_home = match.home_team_id == team_id
+            team_score = match.home_score if is_home else match.away_score
+            opponent_score = match.away_score if is_home else match.home_score
+
+            # 进球失球
+            goals_for += team_score
+            goals_against += opponent_score
+
+            # 比赛结果
+            if team_score > opponent_score:
+                wins += 1
+                if is_home:
+                    home_wins += 1
+                else:
+                    away_wins += 1
+            elif team_score == opponent_score:
+                draws += 1
+                if is_home:
+                    home_draws += 1
+                else:
+                    away_draws += 1
+            else:
+                losses += 1
+                if is_home:
+                    home_losses += 1
+                else:
+                    away_losses += 1
+
+            # 零封
+            if opponent_score == 0:
+                clean_sheets += 1
+
+            # 最近5场
+            if len(recent_form) < 5:
+                recent_form.append({
+                    "match_id": match.id,
+                    "date": match.match_date.isoformat(),
+                    "opponent": match.away_team.name if is_home else match.home_team.name,
+                    "result": "W" if team_score > opponent_score else ("D" if team_score == opponent_score else "L"),
+                    "score": f"{team_score}-{opponent_score}",
+                    "venue": "主场" if is_home else "客场"
+                })
+
+        total = len(completed_matches)
+        win_rate = (wins / total * 100) if total > 0 else 0
+
+        return {
+            "total_matches": total,
+            "wins": wins,
+            "draws": draws,
+            "losses": losses,
+            "win_rate": round(win_rate, 2),
+            "goals_for": goals_for,
+            "goals_against": goals_against,
+            "goal_difference": goals_for - goals_against,
+            "clean_sheets": clean_sheets,
+            "home_wins": home_wins,
+            "home_draws": home_draws,
+            "home_losses": home_losses,
+            "away_wins": away_wins,
+            "away_draws": away_draws,
+            "away_losses": away_losses,
+            "recent_form": recent_form
+        }
+
+    def get_head_to_head_stats(self, team_id: int, opponent_id: int) -> dict:
+        """获取两个球队之间的对战历史"""
+        matches = self.db.query(Match).filter(
+            ((Match.home_team_id == team_id) & (Match.away_team_id == opponent_id)) |
+            ((Match.home_team_id == opponent_id) & (Match.away_team_id == team_id))
+        ).filter(Match.status == MatchStatus.COMPLETED).order_by(Match.match_date.desc()).all()
+
+        if not matches:
+            return self._empty_h2h_stats()
+
+        team_wins = team_draws = team_losses = 0
+        team_goals_for = team_goals_against = 0
+        recent_matches = []
+
+        for match in matches[:10]:
+            is_home = match.home_team_id == team_id
+            team_score = match.home_score if is_home else match.away_score
+            opponent_score = match.away_score if is_home else match.home_score
+
+            team_goals_for += team_score
+            team_goals_against += opponent_score
+
+            if team_score > opponent_score:
+                team_wins += 1
+            elif team_score == opponent_score:
+                team_draws += 1
+            else:
+                team_losses += 1
+
+            recent_matches.append({
+                "match_id": match.id,
+                "date": match.match_date.isoformat(),
+                "opponent": match.away_team.name if is_home else match.home_team.name,
+                "result": "W" if team_score > opponent_score else ("D" if team_score == opponent_score else "L"),
+                "score": f"{team_score}-{opponent_score}",
+                "venue": "主场" if is_home else "客场",
+                "competition": match.match_type
+            })
+
+        return {
+            "total_matches": len(matches),
+            "team_wins": team_wins,
+            "team_draws": team_draws,
+            "team_losses": team_losses,
+            "team_goals_for": team_goals_for,
+            "team_goals_against": team_goals_against,
+            "recent_matches": recent_matches
+        }
+
+    def _empty_stats(self) -> dict:
+        """返回空统计数据"""
+        return {
+            "total_matches": 0,
+            "wins": 0, "draws": 0, "losses": 0,
+            "win_rate": 0,
+            "goals_for": 0, "goals_against": 0, "goal_difference": 0,
+            "clean_sheets": 0,
+            "home_wins": 0, "home_draws": 0, "home_losses": 0,
+            "away_wins": 0, "away_draws": 0, "away_losses": 0,
+            "recent_form": []
+        }
+
+    def _empty_h2h_stats(self) -> dict:
+        """返回空对战数据"""
+        return {
+            "total_matches": 0,
+            "team_wins": 0, "team_draws": 0, "team_losses": 0,
+            "team_goals_for": 0, "team_goals_against": 0,
+            "recent_matches": []
+        }

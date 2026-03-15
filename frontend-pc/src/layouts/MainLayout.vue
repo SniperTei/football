@@ -11,14 +11,13 @@
           mode="horizontal"
           :ellipsis="false"
           class="menu"
-          router
         >
-          <el-menu-item index="/dashboard">首页</el-menu-item>
-          <el-menu-item index="/teams">球队</el-menu-item>
-          <el-menu-item index="/players">球员</el-menu-item>
-          <el-menu-item index="/matches">比赛</el-menu-item>
-          <el-menu-item index="/stats">数据统计</el-menu-item>
-          <el-menu-item index="/head-to-head">历史战绩</el-menu-item>
+          <el-menu-item index="/dashboard" @click="$router.push('/dashboard')">首页</el-menu-item>
+          <el-menu-item :index="teamsMenuIndex" @click="handleTeamsClick">球队</el-menu-item>
+          <el-menu-item index="/players" @click="$router.push('/players')">球员</el-menu-item>
+          <el-menu-item index="/matches" @click="$router.push('/matches')">比赛</el-menu-item>
+          <el-menu-item index="/stats" @click="$router.push('/stats')">数据统计</el-menu-item>
+          <el-menu-item index="/head-to-head" @click="$router.push('/head-to-head')">历史战绩</el-menu-item>
         </el-menu>
         <div class="user-section">
           <template v-if="isAuthenticated">
@@ -29,22 +28,30 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item @click="$router.push('/admin/teams')">
-                    <el-icon><Management /></el-icon>
-                    管理球队
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="$router.push('/admin/players')">
-                    <el-icon><Management /></el-icon>
-                    管理球员
-                  </el-dropdown-item>
-                  <el-dropdown-item @click="$router.push('/admin/matches')">
-                    <el-icon><Management /></el-icon>
-                    管理比赛
-                  </el-dropdown-item>
-                  <el-dropdown-item divided @click="authStore.logout">
-                    <el-icon><SwitchButton /></el-icon>
-                    退出登录
-                  </el-dropdown-item>
+                  <template v-if="isAdmin">
+                    <el-dropdown-item @click="$router.push('/admin/teams')">
+                      <el-icon><Management /></el-icon>
+                      管理球队
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="$router.push('/admin/players')">
+                      <el-icon><Management /></el-icon>
+                      管理球员
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="$router.push('/admin/matches')">
+                      <el-icon><Management /></el-icon>
+                      管理比赛
+                    </el-dropdown-item>
+                    <el-dropdown-item divided @click="authStore.logout">
+                      <el-icon><SwitchButton /></el-icon>
+                      退出登录
+                    </el-dropdown-item>
+                  </template>
+                  <template v-else>
+                    <el-dropdown-item @click="authStore.logout">
+                      <el-icon><SwitchButton /></el-icon>
+                      退出登录
+                    </el-dropdown-item>
+                  </template>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -99,9 +106,26 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 // 使用 storeToRefs 确保响应式
-const { isAuthenticated, user, loginDialogRequired } = storeToRefs(authStore)
+const { isAuthenticated, isAdmin, user, loginDialogRequired } = storeToRefs(authStore)
 
 const activeMenu = computed(() => route.path)
+
+const teamsMenuIndex = computed(() => {
+  // 管理员在 /admin/teams 或 /teams 时都高亮"球队"菜单
+  if (isAdmin.value && (route.path === '/admin/teams' || route.path === '/teams')) {
+    return route.path
+  }
+  return '/teams'
+})
+
+const handleTeamsClick = () => {
+  // 管理员点击"球队"跳转到 /admin/teams，普通用户跳转到 /teams
+  if (isAdmin.value) {
+    router.push('/admin/teams')
+  } else {
+    router.push('/teams')
+  }
+}
 
 // 登录弹窗 - 使用 store 中的状态
 const loginDialogVisible = computed({

@@ -134,12 +134,16 @@ const selectedTeamId = ref<number | null>(null)
 
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球员' : '编辑球员')
 
-// 判断是否可以编辑球员（只有自己球队的球员才能编辑）
+// 判断是否可以编辑球员（管理员可以编辑所有球员，普通用户只能编辑自己球队的球员）
 const canEditPlayer = (player: any) => {
   if (!authStore.isAuthenticated || !authStore.user) {
     return false
   }
-  // 只有当球员属于当前用户的球队时才能编辑
+  // 管理员可以编辑所有球员
+  if (authStore.isAdmin) {
+    return true
+  }
+  // 普通用户只能编辑自己球队的球员
   return authStore.user.my_team_id === player.team_id
 }
 

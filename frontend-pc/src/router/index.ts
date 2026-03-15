@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { ElMessage } from 'element-plus'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -31,6 +32,12 @@ const routes: RouteRecordRaw[] = [
         path: 'teams/:id',
         name: 'TeamDetail',
         component: () => import('@/views/TeamDetail.vue')
+      },
+      {
+        path: 'teams/:id/history',
+        name: 'TeamHistory',
+        component: () => import('@/views/TeamHistory.vue'),
+        meta: { title: '球队历史战绩' }
       },
       {
         path: 'players',
@@ -89,6 +96,25 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
+  // 检查是否是管理员路径
+  const isAdminPath = to.path.startsWith('/admin/')
+
+  // 如果访问管理员路径但不是管理员，阻止访问
+  if (isAdminPath && !authStore.isAdmin) {
+    if (!authStore.isAuthenticated) {
+      // 未登录：显示登录弹窗
+      authStore.showLoginDialog()
+      sessionStorage.setItem('redirectPath', to.fullPath)
+      next(false)
+    } else {
+      // 已登录但不是管理员：显示错误提示并跳转到首页
+      ElMessage.error('您没有管理员权限')
+      next('/dashboard')
+    }
+    return
+  }
+
+  // 检查是否需要登录
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     // 显示登录弹窗
     authStore.showLoginDialog()

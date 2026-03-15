@@ -215,3 +215,37 @@ async def get_top_attendance(
         )
     except Exception as e:
         return ResponseHelper.error(msg=f"获取出勤榜失败: {str(e)}", code=500)
+
+
+@router.get("/team/{team_id}/stats")
+async def get_team_statistics(
+    team_id: int,
+    days: Optional[int] = Query(None, ge=1, le=3650, description="时间范围（天）"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_optional_user)
+):
+    """获取球队统计信息（不需要登录）"""
+    try:
+        from app.service.match_service import MatchService
+        service = MatchService(db)
+        stats = service.get_team_statistics(team_id, days)
+        return ResponseHelper.success(data=stats, msg="获取球队统计成功")
+    except Exception as e:
+        return ResponseHelper.error(msg=f"获取球队统计失败: {str(e)}", code=500)
+
+
+@router.get("/team/{team_id}/head-to-head/{opponent_id}")
+async def get_head_to_head_stats(
+    team_id: int,
+    opponent_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_optional_user)
+):
+    """获取两个球队之间的对战历史（不需要登录）"""
+    try:
+        from app.service.match_service import MatchService
+        service = MatchService(db)
+        stats = service.get_head_to_head_stats(team_id, opponent_id)
+        return ResponseHelper.success(data=stats, msg="获取对战历史成功")
+    except Exception as e:
+        return ResponseHelper.error(msg=f"获取对战历史失败: {str(e)}", code=500)

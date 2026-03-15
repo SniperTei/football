@@ -9,6 +9,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!token.value)
 
+  const isAdmin = computed(() => user.value?.is_admin === true)
+
   const setToken = (newToken: string) => {
     token.value = newToken
     localStorage.setItem('token', newToken)
@@ -77,6 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     user,
     isAuthenticated,
+    isAdmin,
     loginDialogRequired,
     login,
     register,

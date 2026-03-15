@@ -1,6 +1,15 @@
 <template>
   <div class="team-detail-page">
     <el-page-header @back="$router.back()" :content="team?.name || '球队详情'" />
+
+    <!-- 添加操作按钮 -->
+    <div class="action-buttons" v-if="team">
+      <el-button type="primary" @click="viewHistory">
+        <el-icon><TrendCharts /></el-icon>
+        查看历史战绩
+      </el-button>
+    </div>
+
     <el-card v-loading="loading" style="margin-top: 20px">
       <el-descriptions v-if="team" :column="2" border>
         <el-descriptions-item label="球队名称">{{ team.name }}</el-descriptions-item>
@@ -33,17 +42,24 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { TrendCharts } from '@element-plus/icons-vue'
 import { teamsApi, playersApi } from '@/api'
 import dayjs from 'dayjs'
 
 const route = useRoute()
+const router = useRouter()
 const loading = ref(false)
 const team = ref<any>(null)
 const players = ref<any[]>([])
 
 const formatDate = (date: string) => {
   return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+}
+
+const viewHistory = () => {
+  const teamId = route.params.id
+  router.push(`/teams/${teamId}/history`)
 }
 
 const loadData = async () => {
@@ -74,5 +90,11 @@ onMounted(() => {
 .team-detail-page {
   max-width: 1000px;
   margin: 0 auto;
+}
+
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
 </style>

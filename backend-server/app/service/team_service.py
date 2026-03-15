@@ -30,9 +30,11 @@ class TeamService:
 
     def create_team(self, team_data: TeamCreate, current_user: User) -> Team:
         """创建球队"""
-        # 如果用户已有球队，需要先解除
-        if current_user.my_team_id:
-            raise ValidationException("您已经有一个球队了，每个用户只能创建一个球队")
+        # 只有普通用户才检查和设置 my_team_id
+        if not current_user.is_admin:
+            # 如果普通用户已有球队，需要先解除
+            if current_user.my_team_id:
+                raise ValidationException("您已经有一个球队了，每个用户只能创建一个球队")
 
         # 检查球队名是否已存在
         if self.team_repo.name_exists(team_data.name):
@@ -40,8 +42,10 @@ class TeamService:
 
         team = self.team_repo.create(**team_data.model_dump())
 
-        # 设置用户的球队
-        current_user.my_team_id = team.id
+        # 只有普通用户才设置 my_team_id，管理员不设置
+        if not current_user.is_admin:
+            current_user.my_team_id = team.id
+
         self.db.commit()
 
         return team

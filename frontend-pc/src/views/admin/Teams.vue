@@ -61,12 +61,16 @@ const editingId = ref<number>()
 
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球队' : '编辑球队')
 
-// 判断是否可以编辑球队（只有球队的拥有者可以编辑）
+// 判断是否可以编辑球队（管理员可以编辑所有球队，普通用户只能编辑自己的球队）
 const canEditTeam = (team: any) => {
   if (!authStore.isAuthenticated || !authStore.user) {
     return false
   }
-  // 只有当球队是当前用户的球队时才能编辑
+  // 管理员可以编辑所有球队
+  if (authStore.isAdmin) {
+    return true
+  }
+  // 普通用户只能编辑自己的球队
   return authStore.user.my_team_id === team.id
 }
 
