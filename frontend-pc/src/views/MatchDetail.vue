@@ -1,6 +1,16 @@
 <template>
   <div class="match-detail-page">
-    <el-page-header @back="$router.back()" content="比赛详情" />
+    <div class="page-header">
+      <el-page-header @back="$router.back()" content="比赛详情" />
+      <el-button
+        v-if="canEditMatch"
+        type="primary"
+        @click="showEditDialog"
+        :icon="Edit"
+      >
+        编辑比赛
+      </el-button>
+    </div>
 
     <el-card v-loading="loading" style="margin-top: 20px">
       <!-- 比赛基本信息 -->
@@ -163,29 +173,231 @@
         </el-tabs>
       </div>
     </el-card>
+
+    <!-- 编辑比赛对话框 -->
+    <el-dialog
+      v-model="editDialogVisible"
+      title="编辑比赛"
+      width="90%"
+      :close-on-click-modal="false"
+    >
+      <el-tabs v-model="editActiveTab">
+        <!-- 比赛信息 -->
+        <el-tab-pane label="比赛信息" name="match">
+          <el-form :model="editForm" :rules="editRules" ref="editFormRef" label-width="100px">
+            <el-form-item label="主队比分" prop="home_score">
+              <el-input-number v-model="editForm.home_score" :min="0" />
+            </el-form-item>
+            <el-form-item label="客队比分" prop="away_score">
+              <el-input-number v-model="editForm.away_score" :min="0" />
+            </el-form-item>
+            <el-form-item label="比赛时间" prop="match_date">
+              <el-date-picker
+                v-model="editForm.match_date"
+                type="datetime"
+                format="YYYY-MM-DD HH:mm"
+                value-format="YYYY-MM-DDTHH:mm:ss[Z]"
+                :disabled-date="disabledDate"
+              />
+            </el-form-item>
+            <el-form-item label="比赛场地" prop="venue">
+              <el-input v-model="editForm.venue" placeholder="请输入比赛场地" />
+            </el-form-item>
+            <el-form-item label="比赛类型" prop="match_type">
+              <el-select v-model="editForm.match_type">
+                <el-option label="友谊赛" value="friendly" />
+                <el-option label="联赛" value="league" />
+                <el-option label="杯赛" value="cup" />
+                <el-option label="训练" value="training" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="比赛状态" prop="status">
+              <el-select v-model="editForm.status">
+                <el-option label="未开始" value="scheduled" />
+                <el-option label="进行中" value="in_progress" />
+                <el-option label="已完成" value="completed" />
+                <el-option label="已取消" value="cancelled" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="备注" prop="notes">
+              <el-input v-model="editForm.notes" type="textarea" :rows="3" />
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+
+        <!-- 球员统计 -->
+        <el-tab-pane label="球员统计" name="players">
+          <!-- 出场球员选择 -->
+          <div style="margin-bottom: 20px">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500">出场球员</label>
+            <el-select
+              v-model="selectedPlayerIds"
+              multiple
+              filterable
+              placeholder="选择将在本场比赛中出场的球员（可多选）"
+              style="width: 100%"
+              @change="onSelectedPlayersChange"
+            >
+              <el-option
+                v-for="player in allTeamPlayers"
+                :key="player.id"
+                :label="`${player.name} #${player.jersey_number || '无号码'}`"
+                :value="player.id"
+              >
+                <span style="float: left">{{ player.name }}</span>
+                <span style="float: right; color: #8492a6; font-size: 13px">
+                  #{{ player.jersey_number || '无号码' }}
+                </span>
+              </el-option>
+            </el-select>
+            <div style="color: #909399; font-size: 12px; margin-top: 4px">
+              选择将在本场比赛中出场的球员（可多选，可输入姓名或号码搜索）
+            </div>
+          </div>
+
+          <!-- 球员统计表格 -->
+          <div v-if="selectedPlayersStats.length > 0">
+            <div style="margin-bottom: 12px; font-weight: 500">球员统计</div>
+            <div style="color: #909399; font-size: 12px; margin-bottom: 12px">
+              为出场球员录入进球和助攻数据
+            </div>
+            <el-table :data="selectedPlayersStats" border max-height="350">
+              <el-table-column label="球员" width="150">
+                <template #default="{ row }">
+                  {{ row.player_name }}
+                  <span style="color: #909399; font-size: 12px">
+                    #{{ row.jersey_number || '无号码' }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="进球" width="120" align="center">
+                <template #default="{ row }">
+                  <el-input-number
+                    v-model="row.goals"
+                    :min="0"
+                    controls-position="right"
+                    size="small"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column label="助攻" width="120" align="center">
+                <template #default="{ row }">
+                  <el-input-number
+                    v-model="row.assists"
+                    :min="0"
+                    controls-position="right"
+                    size="small"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column label="位置" width="100">
+                <template #default="{ row }">
+                  {{ row.position || '-' }}
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+
+          <el-empty v-else description="请先选择出场球员" />
+        </el-tab-pane>
+      </el-tabs>
+
+      <template #footer>
+        <el-button @click="editDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleSave" :loading="saving">保存</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, type FormInstance } from 'element-plus'
+import { Edit } from '@element-plus/icons-vue'
+import { useAuthStore } from '@/stores/auth'
 import {
   getMatchDetail,
   getMatchPlayerStats,
   getTeamAttendanceRates,
+  updateMatch,
+  updateMatchPlayerStats,
   type Match,
   type MatchPlayer,
   type AttendanceRate
 } from '@/api/matches'
+import { playersApi, type Player } from '@/api/players'
 
 const route = useRoute()
+const authStore = useAuthStore()
 const loading = ref(false)
 const loadingStats = ref(false)
 const match = ref<Match | null>(null)
 const playerStats = ref<MatchPlayer[]>([])
 const attendanceRates = ref<Map<number, AttendanceRate>>(new Map())
 const activeTab = ref('home')
+
+// 编辑相关
+const editDialogVisible = ref(false)
+const editActiveTab = ref('match')
+const saving = ref(false)
+const editFormRef = ref<FormInstance>()
+
+// 编辑表单
+const editForm = reactive({
+  home_score: undefined as number | undefined,
+  away_score: undefined as number | undefined,
+  match_date: '',
+  venue: '',
+  match_type: '',
+  status: '',
+  notes: ''
+})
+
+const editRules = {
+  home_score: [{ required: true, message: '请输入主队比分', trigger: 'blur' }],
+  away_score: [{ required: true, message: '请输入客队比分', trigger: 'blur' }]
+}
+
+// 球队所有球员
+const allTeamPlayers = ref<Player[]>([])
+
+// 选中的球员ID列表
+const selectedPlayerIds = ref<number[]>([])
+
+// 球员统计数据接口
+interface PlayerStatData {
+  player_id: number
+  player_name: string
+  jersey_number?: number
+  position?: string
+  played: boolean
+  goals: number
+  assists: number
+}
+
+// 所有球员的统计数据
+const allPlayerStats = ref<PlayerStatData[]>([])
+
+// 选中的球员统计（用于表格显示）
+const selectedPlayersStats = computed(() => {
+  if (selectedPlayerIds.value.length === 0) {
+    return []
+  }
+  // 返回选中的球员数据
+  return allPlayerStats.value.filter(p =>
+    selectedPlayerIds.value.includes(p.player_id)
+  )
+})
+
+// 判断是否可以编辑比赛（管理员或主队拥有者）
+const canEditMatch = computed(() => {
+  if (!authStore.isAuthenticated || !match.value) return false
+  // 管理员可以编辑
+  if (authStore.isAdmin) return true
+  // 主队拥有者可以编辑
+  return authStore.user?.my_team_id === match.value.home_team_id
+})
 
 // 获取比赛详情
 const loadMatchDetail = async () => {
@@ -353,6 +565,111 @@ const getStatusType = (status: string) => {
   return map[status] || 'info'
 }
 
+// 禁用未来日期
+const disabledDate = (time: Date) => {
+  return time.getTime() > Date.now()
+}
+
+// 显示编辑对话框
+const showEditDialog = async () => {
+  if (!match.value) return
+
+  // 填充比赛信息
+  editForm.home_score = match.value.home_score ?? undefined
+  editForm.away_score = match.value.away_score ?? undefined
+  editForm.match_date = match.value.match_date
+  editForm.venue = match.value.venue || ''
+  editForm.match_type = match.value.match_type
+  editForm.status = match.value.status
+  editForm.notes = match.value.notes || ''
+
+  // 加载球队所有球员
+  try {
+    const response = await playersApi.getByTeam(match.value.home_team_id)
+    const data = response.data || response
+    allTeamPlayers.value = data.list || []
+
+    // 初始化所有球员的统计数据
+    allPlayerStats.value = allTeamPlayers.value.map(player => {
+      // 查找现有的球员统计
+      const existingStat = playerStats.value.find(p => p.player_id === player.id)
+      return {
+        player_id: player.id,
+        player_name: player.name,
+        jersey_number: player.jersey_number,
+        position: player.position,
+        played: existingStat?.played || false,
+        goals: existingStat?.goals || 0,
+        assists: existingStat?.assists || 0
+      }
+    })
+
+    // 设置已选中的球员ID（已出场的球员）
+    selectedPlayerIds.value = allPlayerStats.value
+      .filter(p => p.played)
+      .map(p => p.player_id)
+
+  } catch (error) {
+    console.error('加载球队球员失败:', error)
+    ElMessage.error('加载球队球员失败')
+  }
+
+  editDialogVisible.value = true
+}
+
+// 当选择的球员改变时
+const onSelectedPlayersChange = () => {
+  // 更新球员的 played 状态
+  allPlayerStats.value.forEach(p => {
+    p.played = selectedPlayerIds.value.includes(p.player_id)
+  })
+}
+
+// 保存修改
+const handleSave = async () => {
+  if (!match.value) return
+
+  saving.value = true
+  try {
+    // 1. 更新比赛信息
+    const matchData = {
+      home_score: editForm.home_score,
+      away_score: editForm.away_score,
+      match_date: editForm.match_date,
+      venue: editForm.venue,
+      match_type: editForm.match_type,
+      status: editForm.status,
+      notes: editForm.notes
+    }
+
+    await updateMatch(match.value.id, matchData)
+    ElMessage.success('比赛信息更新成功')
+
+    // 2. 更新球员统计
+    const updatePromises = allPlayerStats.value.map(player =>
+      updateMatchPlayerStats(match.value!.id, player.player_id, {
+        played: player.played,
+        goals: player.goals,
+        assists: player.assists
+      })
+    )
+
+    await Promise.all(updatePromises)
+    ElMessage.success('球员统计更新成功')
+
+    // 重新加载数据
+    await loadMatchDetail()
+    await loadPlayerStats(match.value.id)
+
+    editDialogVisible.value = false
+  } catch (error: any) {
+    console.error('保存失败:', error)
+    ElMessage.error(error.response?.data?.msg || error.message || '保存失败')
+  } finally {
+    saving.value = false
+  }
+}
+
 onMounted(() => {
   loadMatchDetail()
 })
@@ -363,6 +680,13 @@ onMounted(() => {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .score-board {

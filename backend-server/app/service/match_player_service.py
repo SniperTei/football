@@ -36,6 +36,10 @@ class MatchPlayerService:
         if not match:
             raise NotFoundException("比赛", match_id)
 
+        # 权限检查：管理员或球队拥有者才能修改球员统计
+        if not current_user.is_admin and current_user.my_team_id != match.home_team_id:
+            raise ValidationException("您没有权限修改这场比赛的球员统计")
+
         # 获取或创建球员统计记录
         match_player = self.match_player_repo.get_player_match_stats(match_id, player_id)
 

@@ -49,27 +49,37 @@
           </div>
         </template>
 
-        <el-table :data="goalRankings" stripe>
+        <!-- 榜首数据展示 -->
+        <div v-if="goalRankings.length > 0" class="top-player-highlight">
+          <div class="highlight-content">
+            <div class="player-info">
+              <span class="player-name">{{ goalRankings[0].player_name }}</span>
+              <span class="team-name">{{ goalRankings[0].team_name }}</span>
+            </div>
+            <div class="stat-highlight">
+              <span class="stat-value">{{ goalRankings[0].total_goals }}</span>
+              <span class="stat-label">球</span>
+            </div>
+          </div>
+          <div class="highlight-subtitle">当前榜首进球数</div>
+        </div>
+
+        <el-table :data="goalRankings.slice(1)" stripe>
           <el-table-column label="排名" width="80" align="center">
             <template #default="{ row }">
               <span class="rank-badge" :class="'rank-' + getRankClass(row.rank)">{{ row.rank }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="player_name" label="球员" min-width="120" />
-          <el-table-column prop="jersey_number" label="号码" width="80" align="center" />
-          <el-table-column prop="team_name" label="球队" min-width="120" />
-          <el-table-column prop="total_goals" label="进球" width="80" align="center">
+          <el-table-column label="号码" width="80" align="center">
             <template #default="{ row }">
-              <span class="highlight-value">{{ row.total_goals }}</span>
+              {{ row.jersey_number || '-' }}
             </template>
           </el-table-column>
-          <el-table-column prop="total_assists" label="助攻" width="80" align="center" />
-          <el-table-column prop="played_matches" label="出场" width="80" align="center" />
-          <el-table-column prop="attendance_rate" label="出勤率" width="100" align="center">
+          <el-table-column prop="team_name" label="球队" min-width="120" />
+          <el-table-column label="进球" width="100" align="center">
             <template #default="{ row }">
-              <span :class="{ 'high-rate': row.attendance_rate >= 80 }">
-                {{ row.attendance_rate }}%
-              </span>
+              <span class="highlight-value">{{ row.total_goals }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -86,27 +96,37 @@
           </div>
         </template>
 
-        <el-table :data="assistRankings" stripe>
+        <!-- 榜首数据展示 -->
+        <div v-if="assistRankings.length > 0" class="top-player-highlight">
+          <div class="highlight-content">
+            <div class="player-info">
+              <span class="player-name">{{ assistRankings[0].player_name }}</span>
+              <span class="team-name">{{ assistRankings[0].team_name }}</span>
+            </div>
+            <div class="stat-highlight">
+              <span class="stat-value">{{ assistRankings[0].total_assists }}</span>
+              <span class="stat-label">次助攻</span>
+            </div>
+          </div>
+          <div class="highlight-subtitle">当前榜首助攻数</div>
+        </div>
+
+        <el-table :data="assistRankings.slice(1)" stripe>
           <el-table-column label="排名" width="80" align="center">
             <template #default="{ row }">
               <span class="rank-badge" :class="'rank-' + getRankClass(row.rank)">{{ row.rank }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="player_name" label="球员" min-width="120" />
-          <el-table-column prop="jersey_number" label="号码" width="80" align="center" />
-          <el-table-column prop="team_name" label="球队" min-width="120" />
-          <el-table-column prop="total_goals" label="进球" width="80" align="center" />
-          <el-table-column prop="total_assists" label="助攻" width="80" align="center">
+          <el-table-column label="号码" width="80" align="center">
             <template #default="{ row }">
-              <span class="highlight-value">{{ row.total_assists }}</span>
+              {{ row.jersey_number || '-' }}
             </template>
           </el-table-column>
-          <el-table-column prop="played_matches" label="出场" width="80" align="center" />
-          <el-table-column prop="attendance_rate" label="出勤率" width="100" align="center">
+          <el-table-column prop="team_name" label="球队" min-width="120" />
+          <el-table-column label="助攻" width="100" align="center">
             <template #default="{ row }">
-              <span :class="{ 'high-rate': row.attendance_rate >= 80 }">
-                {{ row.attendance_rate }}%
-              </span>
+              <span class="highlight-value">{{ row.total_assists }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -123,27 +143,39 @@
           </div>
         </template>
 
-        <el-table :data="attendanceRankings" stripe>
+        <!-- 榜首数据展示 -->
+        <div v-if="attendanceRankings.length > 0" class="top-player-highlight">
+          <div class="highlight-content">
+            <div class="player-info">
+              <span class="player-name">{{ attendanceRankings[0].player_name }}</span>
+              <span class="team-name">{{ attendanceRankings[0].team_name }}</span>
+            </div>
+            <div class="stat-highlight">
+              <span class="stat-value">{{ attendanceRankings[0].played_matches }}</span>
+              <span class="stat-label">次出勤</span>
+            </div>
+          </div>
+          <div class="highlight-subtitle">
+            出勤率 {{ attendanceRankings[0].attendance_rate }}%
+          </div>
+        </div>
+
+        <el-table :data="attendanceRankings.slice(1)" stripe>
           <el-table-column label="排名" width="80" align="center">
             <template #default="{ row }">
               <span class="rank-badge" :class="'rank-' + getRankClass(row.rank)">{{ row.rank }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="player_name" label="球员" min-width="120" />
-          <el-table-column prop="jersey_number" label="号码" width="80" align="center" />
-          <el-table-column prop="team_name" label="球队" min-width="120" />
-          <el-table-column prop="total_goals" label="进球" width="80" align="center" />
-          <el-table-column prop="total_assists" label="助攻" width="80" align="center" />
-          <el-table-column prop="played_matches" label="出场次数" width="100" align="center">
+          <el-table-column label="号码" width="80" align="center">
             <template #default="{ row }">
-              <span class="highlight-value">{{ row.played_matches }}</span>
+              {{ row.jersey_number || '-' }}
             </template>
           </el-table-column>
-          <el-table-column prop="attendance_rate" label="出勤率" width="100" align="center">
+          <el-table-column prop="team_name" label="球队" min-width="120" />
+          <el-table-column label="出勤次数" width="120" align="center">
             <template #default="{ row }">
-              <span :class="{ 'high-rate': row.attendance_rate >= 80 }">
-                {{ row.attendance_rate }}%
-              </span>
+              <span class="highlight-value">{{ row.played_matches }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -203,8 +235,8 @@ const loadGoalRankings = async () => {
     }
 
     const res = await getTopScorers(params)
-    const data = res.data || res
-    goalRankings.value = data.list || []
+    const data = res.data
+    goalRankings.value = data?.list || []
   } catch (error: any) {
     console.error('加载进球榜失败:', error)
     ElMessage.error('加载进球榜失败')
@@ -223,8 +255,8 @@ const loadAssistRankings = async () => {
     }
 
     const res = await getTopAssists(params)
-    const data = res.data || res
-    assistRankings.value = data.list || []
+    const data = res.data
+    assistRankings.value = data?.list || []
   } catch (error: any) {
     console.error('加载助攻榜失败:', error)
     ElMessage.error('加载助攻榜失败')
@@ -243,8 +275,8 @@ const loadAttendanceRankings = async () => {
     }
 
     const res = await getTopAttendance(params)
-    const data = res.data || res
-    attendanceRankings.value = data.list || []
+    const data = res.data
+    attendanceRankings.value = data?.list || []
   } catch (error: any) {
     console.error('加载出勤榜失败:', error)
     ElMessage.error('加载出勤榜失败')
@@ -294,7 +326,7 @@ onMounted(async () => {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
@@ -359,10 +391,81 @@ onMounted(async () => {
   font-weight: bold;
 }
 
+/* 榜首数据高亮 */
+.top-player-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.highlight-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.player-info .player-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.player-info .team-name {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.stat-highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.stat-highlight .stat-value {
+  font-size: 36px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.stat-highlight .stat-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.highlight-subtitle {
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.8;
+  font-style: italic;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .top-player-highlight {
+    padding: 15px;
+  }
+
+  .highlight-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .stat-highlight .stat-value {
+    font-size: 28px;
   }
 }
 </style>

@@ -134,6 +134,10 @@ class MatchService:
         """更新比赛信息"""
         match = self.get_match_by_id(match_id)
 
+        # 权限检查：管理员或球队拥有者才能修改
+        if not current_user.is_admin and current_user.my_team_id != match.home_team_id:
+            raise ValidationException("您没有权限修改这场比赛")
+
         # 验证更新内容
         update_dict = match_data.model_dump(exclude_unset=True)
 
@@ -151,6 +155,11 @@ class MatchService:
     def delete_match(self, match_id: int, current_user: User) -> None:
         """删除比赛"""
         match = self.get_match_by_id(match_id)
+
+        # 权限检查：管理员或球队拥有者才能删除
+        if not current_user.is_admin and current_user.my_team_id != match.home_team_id:
+            raise ValidationException("您没有权限删除这场比赛")
+
         self.match_repo.delete(match_id)
 
     def get_upcoming_matches(self, team_id: int, current_user: User = None) -> List[Match]:

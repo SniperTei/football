@@ -15,9 +15,9 @@
           <el-menu-item index="/dashboard" @click="$router.push('/dashboard')">首页</el-menu-item>
           <el-menu-item :index="teamsMenuIndex" @click="handleTeamsClick">球队</el-menu-item>
           <el-menu-item index="/players" @click="$router.push('/players')">球员</el-menu-item>
-          <el-menu-item index="/matches" @click="$router.push('/matches')">比赛</el-menu-item>
+          <el-menu-item :index="matchesMenuIndex" @click="handleMatchesClick">比赛</el-menu-item>
           <el-menu-item index="/stats" @click="$router.push('/stats')">数据统计</el-menu-item>
-          <el-menu-item index="/head-to-head" @click="$router.push('/head-to-head')">历史战绩</el-menu-item>
+          <!-- 历史战绩已隐藏，保留在球队详情页面 -->
         </el-menu>
         <div class="user-section">
           <template v-if="isAuthenticated">
@@ -124,6 +124,24 @@ const handleTeamsClick = () => {
     router.push('/admin/teams')
   } else {
     router.push('/teams')
+  }
+}
+
+const matchesMenuIndex = computed(() => {
+  // 球队拥有者在 /admin/matches 或 /matches 时都高亮"比赛"菜单
+  const hasTeam = user.value?.my_team_id != null
+  if ((isAdmin.value || hasTeam) && (route.path === '/admin/matches' || route.path === '/matches')) {
+    return route.path
+  }
+  return '/matches'
+})
+
+const handleMatchesClick = () => {
+  // 管理员点击"比赛"跳转到 /admin/matches，普通用户跳转到 /matches
+  if (isAdmin.value) {
+    router.push('/admin/matches')
+  } else {
+    router.push('/matches')
   }
 }
 

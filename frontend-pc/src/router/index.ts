@@ -107,9 +107,18 @@ router.beforeEach((to, from, next) => {
       sessionStorage.setItem('redirectPath', to.fullPath)
       next(false)
     } else {
-      // 已登录但不是管理员：显示错误提示并跳转到首页
-      ElMessage.error('您没有管理员权限')
-      next('/dashboard')
+      // 已登录但不是管理员：检查是否是球队拥有者访问 /admin/matches
+      const hasTeam = authStore.user?.my_team_id != null
+      const isMatchesAdminPage = to.path === '/admin/matches'
+
+      if (hasTeam && isMatchesAdminPage) {
+        // 球队拥有者可以访问 /admin/matches
+        next()
+      } else {
+        // 其他情况：没有权限
+        ElMessage.error('您没有管理员权限')
+        next('/dashboard')
+      }
     }
     return
   }
