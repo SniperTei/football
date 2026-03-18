@@ -93,3 +93,9 @@ class MatchRepository(BaseRepository[Match]):
         return self.db.query(Match).filter(
             Match.match_date >= start_date
         ).order_by(Match.match_date.desc()).all()
+
+    def get_all(self, skip: int = 0, limit: int = 1000) -> List[Match]:
+        """获取所有比赛记录（不分时间）"""
+        return self.db.query(Match).order_by(
+            Match.match_date.desc()
+        ).offset(skip).limit(limit).all()

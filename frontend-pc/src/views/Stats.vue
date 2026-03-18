@@ -22,6 +22,55 @@
         />
       </el-select>
 
+      <el-date-picker
+        v-model="dateRange"
+        type="daterange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        format="YYYY-MM-DD"
+        value-format="YYYY-MM-DD"
+        clearable
+        style="width: 240px"
+        @change="onDateRangeChange"
+      />
+
+      <el-select
+        v-model="selectedYear"
+        placeholder="年份（可选）"
+        clearable
+        style="width: 120px"
+        @change="onYearChange"
+      >
+        <el-option label="全部年份" :value="null" />
+        <el-option label="2024年" :value="2024" />
+        <el-option label="2025年" :value="2025" />
+        <el-option label="2026年" :value="2026" />
+      </el-select>
+
+      <el-select
+        v-model="selectedMonth"
+        placeholder="月份（可选）"
+        clearable
+        style="width: 120px"
+        :disabled="!selectedYear || dateRange"
+        @change="loadAllStats"
+      >
+        <el-option label="全部月份" :value="null" />
+        <el-option label="1月" :value="1" />
+        <el-option label="2月" :value="2" />
+        <el-option label="3月" :value="3" />
+        <el-option label="4月" :value="4" />
+        <el-option label="5月" :value="5" />
+        <el-option label="6月" :value="6" />
+        <el-option label="7月" :value="7" />
+        <el-option label="8月" :value="8" />
+        <el-option label="9月" :value="9" />
+        <el-option label="10月" :value="10" />
+        <el-option label="11月" :value="11" />
+        <el-option label="12月" :value="12" />
+      </el-select>
+
       <el-input-number
         v-model="limit"
         :min="5"
@@ -178,6 +227,13 @@
               <span class="highlight-value">{{ row.played_matches }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="出勤率" width="100" align="center">
+            <template #default="{ row }">
+              <span :class="getAttendanceRateClass(row.attendance_rate)">
+                {{ row.attendance_rate }}%
+              </span>
+            </template>
+          </el-table-column>
         </el-table>
 
         <el-empty v-if="!loadingAttendance && attendanceRankings.length === 0" description="暂无数据" />
@@ -195,6 +251,9 @@ import { Refresh, Trophy, Medal, Calendar } from '@element-plus/icons-vue'
 
 const teams = ref<Team[]>([])
 const selectedTeamId = ref<number | null>(null)
+const dateRange = ref<[string, string] | null>(null)
+const selectedYear = ref<number | null>(null)
+const selectedMonth = ref<number | null>(null)
 const limit = ref(10)
 
 const goalRankings = ref<PlayerRanking[]>([])
@@ -212,6 +271,13 @@ const getRankClass = (rank: number) => {
   if (rank === 2) return 'rank-2'
   if (rank === 3) return 'rank-3'
   return 'rank-other'
+}
+
+// 获取出勤率的样式类
+const getAttendanceRateClass = (rate: number) => {
+  if (rate >= 80) return 'rate-high'
+  if (rate >= 60) return 'rate-medium'
+  return 'rate-low'
 }
 
 // 加载球队列表
@@ -233,6 +299,16 @@ const loadGoalRankings = async () => {
     if (selectedTeamId.value) {
       params.team_id = selectedTeamId.value
     }
+    // 优先使用日期范围筛选
+    if (dateRange.value && dateRange.value.length === 2) {
+      params.start_date = dateRange.value[0]
+      params.end_date = dateRange.value[1]
+    } else if (selectedYear.value) {
+      params.year = selectedYear.value
+      if (selectedMonth.value) {
+        params.month = selectedMonth.value
+      }
+    }
 
     const res = await getTopScorers(params)
     const data = res.data
@@ -252,6 +328,16 @@ const loadAssistRankings = async () => {
     const params: any = { limit: limit.value }
     if (selectedTeamId.value) {
       params.team_id = selectedTeamId.value
+    }
+    // 优先使用日期范围筛选
+    if (dateRange.value && dateRange.value.length === 2) {
+      params.start_date = dateRange.value[0]
+      params.end_date = dateRange.value[1]
+    } else if (selectedYear.value) {
+      params.year = selectedYear.value
+      if (selectedMonth.value) {
+        params.month = selectedMonth.value
+      }
     }
 
     const res = await getTopAssists(params)
@@ -273,6 +359,16 @@ const loadAttendanceRankings = async () => {
     if (selectedTeamId.value) {
       params.team_id = selectedTeamId.value
     }
+    // 优先使用日期范围筛选
+    if (dateRange.value && dateRange.value.length === 2) {
+      params.start_date = dateRange.value[0]
+      params.end_date = dateRange.value[1]
+    } else if (selectedYear.value) {
+      params.year = selectedYear.value
+      if (selectedMonth.value) {
+        params.month = selectedMonth.value
+      }
+    }
 
     const res = await getTopAttendance(params)
     const data = res.data
@@ -283,6 +379,21 @@ const loadAttendanceRankings = async () => {
   } finally {
     loadingAttendance.value = false
   }
+}
+
+// 年份改变时，清空月份选择
+const onYearChange = () => {
+  selectedMonth.value = null
+  loadAllStats()
+}
+
+// 日期范围改变时，清空年份和月份选择
+const onDateRangeChange = () => {
+  if (dateRange.value) {
+    selectedYear.value = null
+    selectedMonth.value = null
+  }
+  loadAllStats()
 }
 
 // 加载所有统计数据
@@ -386,9 +497,20 @@ onMounted(async () => {
   color: #67c23a;
 }
 
-.high-rate {
+/* 出勤率样式 */
+.rate-high {
   color: #67c23a;
   font-weight: bold;
+}
+
+.rate-medium {
+  color: #e6a23c;
+  font-weight: 600;
+}
+
+.rate-low {
+  color: #f56c6c;
+  font-weight: 600;
 }
 
 /* 榜首数据高亮 */

@@ -187,6 +187,10 @@ class MatchService:
 
         return self.match_repo.get_all_recent_matches(days)
 
+    def get_all_matches(self, skip: int = 0, limit: int = 1000) -> List[Match]:
+        """获取所有比赛记录（不分时间）"""
+        return self.match_repo.get_all(skip, limit)
+
     def get_team_statistics(self, team_id: int, days: Optional[int] = None) -> dict:
         """
         获取球队统计信息

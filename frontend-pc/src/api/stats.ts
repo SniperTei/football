@@ -18,20 +18,20 @@ export interface PlayerRanking {
 /**
  * 获取进球榜
  */
-export function getTopScorers(params?: { limit?: number; team_id?: number }) {
+export function getTopScorers(params?: { limit?: number; team_id?: number; year?: number; month?: number }) {
   return api.get<ListData<PlayerRanking>>('/stats/goals', { params })
 }
 
 /**
  * 获取助攻榜
  */
-export function getTopAssists(params?: { limit?: number; team_id?: number }) {
+export function getTopAssists(params?: { limit?: number; team_id?: number; year?: number; month?: number }) {
   return api.get<ListData<PlayerRanking>>('/stats/assists', { params })
 }
 
 /**
  * 获取出勤榜
  */
-export function getTopAttendance(params?: { limit?: number; team_id?: number }) {
+export function getTopAttendance(params?: { limit?: number; team_id?: number; year?: number; month?: number }) {
   return api.get<ListData<PlayerRanking>>('/stats/attendance', { params })
 }

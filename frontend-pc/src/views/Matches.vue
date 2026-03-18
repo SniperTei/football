@@ -250,7 +250,7 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Location, Search, Refresh, Plus } from '@element-plus/icons-vue'
-import { getTeamMatches, getRecentMatches, getAllRecentMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
+import { getTeamMatches, getRecentMatches, getAllRecentMatches, getAllMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
 import { teamsApi, type Team } from '@/api/teams'
 import { playersApi, type Player } from '@/api/players'
 import { useAuthStore } from '@/stores/auth'
@@ -311,7 +311,7 @@ const createRules: FormRules = {
 // 筛选条件
 const selectedTeamId = ref<number | null>(null)
 const selectedPlayerId = ref<number | null>(null)
-const daysFilter = ref<number>(7) // 默认最近7天
+const daysFilter = ref<number>(0) // 默认全部（0=不限制时间）
 const filterType = ref('')
 
 // 从 localStorage 获取用户的球队 ID
@@ -380,7 +380,7 @@ const onTeamChange = (teamId: number | null) => {
 const resetFilters = () => {
   selectedTeamId.value = null
   selectedPlayerId.value = null
-  daysFilter.value = 7
+  daysFilter.value = 0 // 重置为全部
   filterType.value = ''
   teamPlayers.value = []
 
@@ -496,8 +496,8 @@ const loadMatches = async () => {
       if (daysFilter.value > 0) {
         response = await getAllRecentMatches(daysFilter.value)
       } else {
-        // 如果不选择球队也不选择时间范围，默认查询最近7天
-        response = await getAllRecentMatches(7)
+        // daysFilter = 0，查询所有比赛（不限制时间）
+        response = await getAllMatches({ limit: 10000 })
       }
     }
 

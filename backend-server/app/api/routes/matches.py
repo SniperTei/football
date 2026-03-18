@@ -136,6 +136,27 @@ async def get_all_recent_matches(
         return ResponseHelper.error(msg=str(e), code=400)
 
 
+@router.get("/all")
+async def get_all_matches(
+    skip: int = Query(0, ge=0, description="跳过记录数"),
+    limit: int = Query(1000, ge=1, le=10000, description="返回记录数"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_optional_user)
+):
+    """获取所有比赛记录（不需要登录，不分时间）"""
+    try:
+        service = MatchService(db)
+        matches = service.get_all_matches(skip, limit)
+        match_list = [_match_to_list_dict(m) for m in matches]
+        return ResponseHelper.success_list(
+            list_data=match_list,
+            total=len(match_list),
+            msg="获取所有比赛成功"
+        )
+    except BusinessException as e:
+        return ResponseHelper.error(msg=str(e), code=400)
+
+
 @router.get("/{match_id}")
 async def get_match(
     match_id: int,

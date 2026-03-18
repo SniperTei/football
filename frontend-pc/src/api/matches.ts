@@ -151,6 +151,16 @@ export function getAllRecentMatches(days: number = 7) {
 }
 
 /**
+ * 获取所有比赛（不分时间）
+ */
+export function getAllMatches(params?: {
+  skip?: number
+  limit?: number
+}) {
+  return api.get<ListData<MatchListItem>>('/matches/all', { params })
+}
+
+/**
  * 获取比赛详情
  */
 export function getMatchDetail(matchId: number) {
