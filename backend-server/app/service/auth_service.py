@@ -17,22 +17,50 @@ class AuthService:
         self.db = db
         self.user_repo = UserRepository(db)
 
-    def register(self, user_data: UserCreate) -> User:
-        """用户注册"""
+    def register(self, username: str, email: str, password: str,
+                 team_id: Optional[int] = None,
+                 create_team_data: Optional[dict] = None) -> User:
+        """
+        用户注册
+
+        Args:
+            username: 用户名
+            email: 邮箱
+            password: 密码
+            team_id: 选择现有球队的ID
+            create_team_data: 创建新球队的数据
+        """
         # 检查用户名是否已存在
-        if self.user_repo.username_exists(user_data.username):
-            raise DuplicateException("用户", "用户名", user_data.username)
+        if self.user_repo.username_exists(username):
+            raise DuplicateException("用户", "用户名", username)
 
         # 检查邮箱是否已存在
-        if self.user_repo.email_exists(user_data.email):
-            raise DuplicateException("用户", "邮箱", user_data.email)
+        if self.user_repo.email_exists(email):
+            raise DuplicateException("用户", "邮箱", email)
+
+        # 处理球队逻辑
+        my_team_id = None
+        if team_id:
+            # 选择现有球队
+            my_team_id = team_id
+        elif create_team_data:
+            # 创建新球队
+            from app.service.team_service import TeamService
+            team_service = TeamService(self.db)
+            team = team_service.create(
+                name=create_team_data["name"],
+                description=create_team_data.get("description"),
+                founded_year=create_team_data.get("founded_year")
+            )
+            my_team_id = team.id
 
         # 创建用户
-        hashed_password = get_password_hash(user_data.password)
+        hashed_password = get_password_hash(password)
         return self.user_repo.create_user(
-            username=user_data.username,
-            email=user_data.email,
-            hashed_password=hashed_password
+            username=username,
+            email=email,
+            hashed_password=hashed_password,
+            my_team_id=my_team_id
         )
 
     def login(self, username: str, password: str):

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import { authApi, type User } from '@/api'
+import { authApi, type User, type EnhancedRegisterSelectExisting, type EnhancedRegisterCreateNew } from '@/api'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(localStorage.getItem('token'))
@@ -44,6 +44,11 @@ export const useAuthStore = defineStore('auth', () => {
     await authApi.register(username, email, password)
   }
 
+  const registerEnhanced = async (data: EnhancedRegisterSelectExisting | EnhancedRegisterCreateNew) => {
+    const response = await authApi.registerEnhanced(data)
+    return response.data
+  }
+
   const logout = () => {
     clearAuth()
   }
@@ -83,6 +88,7 @@ export const useAuthStore = defineStore('auth', () => {
     loginDialogRequired,
     login,
     register,
+    registerEnhanced,
     logout,
     clearAuth,
     showLoginDialog,
