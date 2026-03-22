@@ -1,0 +1,2826 @@
+{
+  "year": 2025,
+  "matches": [
+    {
+      "date": "2025-01-06",
+      "opponent": "蓝翼",
+      "score": {
+        "home": 7,
+        "away": 7
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 0,
+          "assists": 2
+        },
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 2
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 2,
+          "assists": 1
+        },
+        "罗指导": {
+          "goals": 2,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "哈维",
+        "罗指导",
+        "小源",
+        "李强",
+        "徐韬",
+        "洗衣服",
+        "啊原"
+      ]
+    },
+    {
+      "date": "2025-01-12",
+      "opponent": "嘉浩",
+      "score": {
+        "home": 3,
+        "away": 4
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 0,
+          "assists": 2
+        },
+        "哈维": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "智星",
+        "哈维",
+        "徐韬",
+        "洗衣服",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-01-16",
+      "opponent": "安陆",
+      "score": {
+        "home": 1,
+        "away": 3
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "老薛",
+        "哈维",
+        "啊原"
+      ]
+    },
+    {
+      "date": "2025-02-09",
+      "opponent": "草上飞",
+      "score": {
+        "home": 4,
+        "away": 3
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "未来": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 1
+        },
+        "老薛": {
+          "goals": 2,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "智星",
+        "龙哥",
+        "洗衣服",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-02-13",
+      "opponent": "消防",
+      "score": {
+        "home": 8,
+        "away": 6
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "徐韬": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 2
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "诗画": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 0
+        },
+        "罗指导": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "老刘",
+        "智星",
+        "罗指导",
+        "龙哥",
+        "徐韬",
+        "小陈",
+        "洗衣服",
+        "未来",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-02-16",
+      "opponent": "靠活",
+      "score": {
+        "home": 5,
+        "away": 5
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "诗画": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 2,
+          "assists": 2
+        },
+        "啊斌": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "会长",
+        "老薛",
+        "小源",
+        "龙哥",
+        "徐韬",
+        "洗衣服",
+        "未来",
+        "啊原",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-02-19",
+      "opponent": "铁马",
+      "score": {
+        "home": 3,
+        "away": 4
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 2,
+          "assists": 0
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 2
+        },
+        "飞云": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "老刘",
+        "智星",
+        "飞云",
+        "哈维",
+        "小源",
+        "徐韬"
+      ]
+    },
+    {
+      "date": "2025-02-23",
+      "opponent": "玄武",
+      "score": {
+        "home": 5,
+        "away": 4
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 0
+        },
+        "飞云": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "会长",
+        "智星",
+        "飞云",
+        "李强",
+        "洗衣服",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-02-27",
+      "opponent": "家和居",
+      "score": {
+        "home": 2,
+        "away": 4
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 2
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "风影",
+        "会长",
+        "智星",
+        "小源",
+        "洗衣服",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-03-02",
+      "opponent": "山猫",
+      "score": {
+        "home": 7,
+        "away": 4
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 1,
+          "assists": 0
+        },
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 0
+        },
+        "啊原": {
+          "goals": 2,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "哈维",
+        "小源",
+        "洗衣服",
+        "未来",
+        "啊原",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-03-09",
+      "opponent": "大鸠",
+      "score": {
+        "home": 8,
+        "away": 4
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 3
+        },
+        "智星": {
+          "goals": 4,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 1
+        },
+        "啊斌": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "老刘",
+        "智星",
+        "小源",
+        "洗衣服",
+        "未来",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-03-13",
+      "opponent": "消防",
+      "score": {
+        "home": 10,
+        "away": 12
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 3,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 2
+        },
+        "智星": {
+          "goals": 3,
+          "assists": 2
+        },
+        "龙哥": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "欧队",
+        "老薛",
+        "老刘",
+        "智星",
+        "龙哥",
+        "洗衣服",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-03-16",
+      "opponent": "散客",
+      "score": {
+        "home": 6,
+        "away": 5
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 1,
+          "assists": 0
+        },
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "徐韬": {
+          "goals": 1,
+          "assists": 2
+        },
+        "洗衣服": {
+          "goals": 3,
+          "assists": 1
+        },
+        "李豪强": {
+          "goals": 1,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "欧队",
+        "李豪强",
+        "会长",
+        "哈维",
+        "徐韬",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-03-19",
+      "opponent": "罗威",
+      "score": {
+        "home": 4,
+        "away": 9
+      },
+      "player_stats": {
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 3
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "欧队",
+        "李豪强",
+        "智星",
+        "阿彪",
+        "李强",
+        "洗衣服",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-03-23",
+      "opponent": "EDS",
+      "score": {
+        "home": 13,
+        "away": 4
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 2
+        },
+        "未来": {
+          "goals": 1,
+          "assists": 2
+        },
+        "徐韬": {
+          "goals": 2,
+          "assists": 2
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 1
+        },
+        "老刘": {
+          "goals": 2,
+          "assists": 0
+        },
+        "诗画": {
+          "goals": 2,
+          "assists": 0
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 2
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "老薛",
+        "老刘",
+        "智星",
+        "小源",
+        "徐韬",
+        "未来",
+        "啊原",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-03-26",
+      "opponent": "铁马",
+      "score": {
+        "home": 4,
+        "away": 4
+      },
+      "player_stats": {
+        "诗画": {
+          "goals": 0,
+          "assists": 2
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "智星",
+        "李强",
+        "啊原",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-03-30",
+      "opponent": "莎菲尼",
+      "score": {
+        "home": 6,
+        "away": 9
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 4,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "老薛",
+        "智星",
+        "龙哥",
+        "李强",
+        "徐韬",
+        "stone",
+        "洗衣服",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-04-06",
+      "opponent": "嘉浩",
+      "score": {
+        "home": 4,
+        "away": 7
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 1,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        },
+        "啊新": {
+          "goals": 1,
+          "assists": 1
+        },
+        "杨哥": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "小源",
+        "杨哥",
+        "洗衣服",
+        "啊原"
+      ]
+    },
+    {
+      "date": "2025-04-13",
+      "opponent": "天豪",
+      "score": {
+        "home": 8,
+        "away": 4
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 0
+        },
+        "诗画": {
+          "goals": 1,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 2
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 2
+        },
+        "阿亮": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "老薛",
+        "老刘",
+        "智星",
+        "哈维",
+        "小源",
+        "徐韬",
+        "洗衣服",
+        "啊原",
+        "诗画",
+        "阿亮"
+      ]
+    },
+    {
+      "date": "2025-04-19",
+      "opponent": "麓林英雄",
+      "score": {
+        "home": 3,
+        "away": 5
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 0,
+          "assists": 2
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "老薛",
+        "老刘",
+        "哈维",
+        "小源",
+        "李强",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-04-27",
+      "opponent": "汕尾蓝翼",
+      "score": {
+        "home": 5,
+        "away": 6
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 0,
+          "assists": 2
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "智星",
+        "哈维",
+        "小源",
+        "李强",
+        "徐韬",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-05-03",
+      "opponent": "洪湖",
+      "score": {
+        "home": 2,
+        "away": 3
+      },
+      "player_stats": {
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "风影": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "风影",
+        "会长",
+        "智星"
+      ]
+    },
+    {
+      "date": "2025-05-11",
+      "opponent": "嘉浩",
+      "score": {
+        "home": 4,
+        "away": 1
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 2,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 1
+        },
+        "李豪强": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "会长",
+        "老薛",
+        "哈维",
+        "小源",
+        "徐韬",
+        "啊原",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-05-18",
+      "opponent": "佳峰",
+      "score": {
+        "home": 7,
+        "away": 5
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 0,
+          "assists": 2
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        },
+        "龙哥": {
+          "goals": 1,
+          "assists": 0
+        },
+        "阿亮": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 2
+        },
+        "啊斌": {
+          "goals": 1,
+          "assists": 0
+        },
+        "李豪强": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "老薛",
+        "老刘",
+        "智星",
+        "龙哥",
+        "李强",
+        "未来",
+        "阿亮",
+        "彭涛",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-05-24",
+      "opponent": "莎菲尼",
+      "score": {
+        "home": 0,
+        "away": 7
+      },
+      "player_stats": {},
+      "attendance": [
+        "哈维"
+      ]
+    },
+    {
+      "date": "2025-05-31",
+      "opponent": "STCY",
+      "score": {
+        "home": 7,
+        "away": 5
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "啊原": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 1
+        },
+        "啊新": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "阿彪",
+        "洗衣服",
+        "啊原",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-06-05",
+      "opponent": "大鸠",
+      "score": {
+        "home": 5,
+        "away": 5
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 1,
+          "assists": 1
+        },
+        "诗画": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 2,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 0,
+          "assists": 2
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "会长",
+        "智星",
+        "stone",
+        "洗衣服",
+        "啊原",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-06-08",
+      "opponent": "散客",
+      "score": {
+        "home": 15,
+        "away": 8
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 4,
+          "assists": 3
+        },
+        "未来": {
+          "goals": 3,
+          "assists": 0
+        },
+        "徐韬": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 3,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 5
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 2
+        },
+        "李豪强": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "会长",
+        "老薛",
+        "哈维",
+        "小源",
+        "李强",
+        "徐韬",
+        "stone",
+        "洗衣服",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-06-15",
+      "opponent": "莎菲尼",
+      "score": {
+        "home": 6,
+        "away": 13
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 4
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊斌": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "会长",
+        "老薛",
+        "智星",
+        "洗衣服",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-06-18",
+      "opponent": "鸿牛",
+      "score": {
+        "home": 1,
+        "away": 5
+      },
+      "player_stats": {
+        "智星": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "会长",
+        "老薛",
+        "智星",
+        "李强",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-06-26",
+      "opponent": "消防",
+      "score": {
+        "home": 6,
+        "away": 5
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 3,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "老薛": {
+          "goals": 0,
+          "assists": 1
+        },
+        "龙哥": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 2
+        },
+        "欧队": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "欧队",
+        "老薛",
+        "哈维",
+        "小源",
+        "龙哥",
+        "洗衣服",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-06-29",
+      "opponent": "家长队",
+      "score": {
+        "home": 5,
+        "away": 4
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 2
+        },
+        "老薛": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "老薛",
+        "智星",
+        "小源",
+        "李强",
+        "stone",
+        "洗衣服",
+        "彭涛",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-07-03",
+      "opponent": "友盟",
+      "score": {
+        "home": 5,
+        "away": 5
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 4,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 2
+        }
+      },
+      "attendance": [
+        "朋队",
+        "智星",
+        "哈维",
+        "李强",
+        "洗衣服",
+        "啊原"
+      ]
+    },
+    {
+      "date": "2025-07-06",
+      "opponent": "藤甲军",
+      "score": {
+        "home": 8,
+        "away": 7
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 3,
+          "assists": 2
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老薛": {
+          "goals": 0,
+          "assists": 1
+        },
+        "罗指导": {
+          "goals": 1,
+          "assists": 1
+        },
+        "啊斌": {
+          "goals": 1,
+          "assists": 0
+        },
+        "艾大师": {
+          "goals": 0,
+          "assists": 2
+        },
+        "小黄": {
+          "goals": 2,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "老刘",
+        "罗指导",
+        "小源",
+        "龙哥",
+        "小黄",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-07-13",
+      "opponent": "旺旺队",
+      "score": {
+        "home": 7,
+        "away": 0
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "未来": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 2,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 1
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "老薛",
+        "智星",
+        "小源",
+        "龙哥",
+        "洗衣服",
+        "未来",
+        "诗画"
+      ]
+    },
+    {
+      "date": "2025-07-17",
+      "opponent": "大鸠",
+      "score": {
+        "home": 3,
+        "away": 3
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 2,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "智星",
+        "小源",
+        "洗衣服",
+        "未来",
+        "啊原",
+        "彭涛",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-07-23",
+      "opponent": "POP",
+      "score": {
+        "home": 9,
+        "away": 3
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "李强": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 0,
+          "assists": 2
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 3
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 0
+        },
+        "诗画": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 4,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "智星",
+        "哈维",
+        "小源",
+        "李强",
+        "洗衣服",
+        "未来",
+        "啊原",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-07-27",
+      "opponent": "俊胜",
+      "score": {
+        "home": 2,
+        "away": 8
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "智星",
+        "哈维",
+        "小源",
+        "龙哥",
+        "洗衣服",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-08-03",
+      "opponent": "佳峰",
+      "score": {
+        "home": 3,
+        "away": 5
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 1,
+          "assists": 0
+        },
+        "徐韬": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 1
+        },
+        "啊斌": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "会长",
+        "老薛",
+        "哈维",
+        "阿彪",
+        "小源",
+        "李强",
+        "徐韬"
+      ]
+    },
+    {
+      "date": "2025-08-06",
+      "opponent": "大炮",
+      "score": {
+        "home": 5,
+        "away": 1
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 1,
+          "assists": 1
+        },
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 2
+        },
+        "老刘": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "会长",
+        "老刘",
+        "龙哥",
+        "李强",
+        "洗衣服",
+        "啊原",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-08-10",
+      "opponent": "山猫",
+      "score": {
+        "home": 4,
+        "away": 3
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 2
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 0
+        },
+        "李豪强": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "老刘",
+        "小源",
+        "李强",
+        "徐韬",
+        "洗衣服",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-08-20",
+      "opponent": "浪潮",
+      "score": {
+        "home": 4,
+        "away": 2
+      },
+      "player_stats": {
+        "李强": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "老刘",
+        "哈维",
+        "李强",
+        "洗衣服",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-08-23",
+      "opponent": "洪湖",
+      "score": {
+        "home": 4,
+        "away": 2
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 2
+        },
+        "哈维": {
+          "goals": 1,
+          "assists": 0
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        },
+        "艾大师": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "会长",
+        "智星",
+        "哈维",
+        "龙哥",
+        "洗衣服",
+        "啊原"
+      ]
+    },
+    {
+      "date": "2025-08-28",
+      "opponent": "家和居",
+      "score": {
+        "home": 2,
+        "away": 11
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "会长",
+        "老薛",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-08-31",
+      "opponent": "佳峰",
+      "score": {
+        "home": 3,
+        "away": 1
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "欧队",
+        "李豪强",
+        "老薛",
+        "智星",
+        "哈维",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-09-04",
+      "opponent": "大鸠",
+      "score": {
+        "home": 7,
+        "away": 3
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 1,
+          "assists": 3
+        },
+        "诗画": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 2,
+          "assists": 2
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小黄": {
+          "goals": 2,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "老薛",
+        "智星",
+        "哈维",
+        "李强",
+        "徐韬",
+        "小黄",
+        "洗衣服",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-09-07",
+      "opponent": "汕头联",
+      "score": {
+        "home": 4,
+        "away": 2
+      },
+      "player_stats": {
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 1
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        },
+        "stone": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "智星",
+        "哈维",
+        "李强",
+        "小陈",
+        "stone",
+        "洗衣服",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-09-12",
+      "opponent": "高青",
+      "score": {
+        "home": 11,
+        "away": 10
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 4,
+          "assists": 1
+        },
+        "徐韬": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 4
+        },
+        "诗画": {
+          "goals": 1,
+          "assists": 0
+        },
+        "啊原": {
+          "goals": 3,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 3
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老刘",
+        "智星",
+        "哈维",
+        "徐韬",
+        "小陈",
+        "洗衣服",
+        "未来",
+        "诗画",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-09-14",
+      "opponent": "藤甲军",
+      "score": {
+        "home": 10,
+        "away": 3
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 2,
+          "assists": 2
+        },
+        "小源": {
+          "goals": 2,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 3
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小李": {
+          "goals": 2,
+          "assists": 0
+        },
+        "罗指导": {
+          "goals": 2,
+          "assists": 2
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老刘",
+        "哈维",
+        "罗指导",
+        "小源",
+        "徐韬",
+        "小陈",
+        "洗衣服",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-09-21",
+      "opponent": "友联",
+      "score": {
+        "home": 6,
+        "away": 4
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 0,
+          "assists": 2
+        },
+        "李强": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        },
+        "罗指导": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "欧队",
+        "会长",
+        "老薛",
+        "智星",
+        "哈维",
+        "罗指导",
+        "龙哥",
+        "李强",
+        "徐韬",
+        "小陈",
+        "洗衣服",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-10-12",
+      "opponent": "家长队",
+      "score": {
+        "home": 6,
+        "away": 5
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 1,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 2
+        },
+        "老刘": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 3,
+          "assists": 1
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        },
+        "李豪强": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "李豪强",
+        "老薛",
+        "老刘",
+        "智星",
+        "小源",
+        "李强",
+        "小陈",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-10-19",
+      "opponent": "温记",
+      "score": {
+        "home": 12,
+        "away": 3
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 1,
+          "assists": 0
+        },
+        "徐韬": {
+          "goals": 4,
+          "assists": 0
+        },
+        "李强": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 7
+        },
+        "诗画": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 4,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 2
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "老薛",
+        "智星",
+        "小源",
+        "龙哥",
+        "李强",
+        "徐韬",
+        "小陈",
+        "洗衣服",
+        "诗画"
+      ]
+    },
+    {
+      "date": "2025-10-22",
+      "opponent": "靠活",
+      "score": {
+        "home": 7,
+        "away": 8
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 1,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 4,
+          "assists": 1
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 1
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 3
+        }
+      },
+      "attendance": [
+        "智星",
+        "哈维",
+        "龙哥",
+        "李强",
+        "小陈",
+        "stone",
+        "洗衣服",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-10-26",
+      "opponent": "佳峰",
+      "score": {
+        "home": 4,
+        "away": 5
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "啊原": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "会长",
+        "老薛",
+        "哈维",
+        "小源",
+        "徐韬",
+        "小陈",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-10-30",
+      "opponent": "大鸠",
+      "score": {
+        "home": 4,
+        "away": 3
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 2
+        },
+        "罗指导": {
+          "goals": 0,
+          "assists": 2
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "老刘",
+        "智星",
+        "哈维",
+        "罗指导",
+        "李强",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-11-02",
+      "opponent": "藤甲军",
+      "score": {
+        "home": 3,
+        "away": 4
+      },
+      "player_stats": {
+        "徐韬": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "老薛",
+        "智星",
+        "龙哥",
+        "李强",
+        "徐韬",
+        "小陈",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-11-06",
+      "opponent": "半岛",
+      "score": {
+        "home": 5,
+        "away": 3
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 2,
+          "assists": 2
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 1,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "老薛",
+        "老刘",
+        "智星",
+        "飞云",
+        "哈维",
+        "李强",
+        "洗衣服",
+        "未来",
+        "阿亮",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-11-09",
+      "opponent": "家长队",
+      "score": {
+        "home": 12,
+        "away": 6
+      },
+      "player_stats": {
+        "朋队": {
+          "goals": 0,
+          "assists": 1
+        },
+        "会长": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 1
+        },
+        "老刘": {
+          "goals": 2,
+          "assists": 0
+        },
+        "老薛": {
+          "goals": 1,
+          "assists": 0
+        },
+        "啊原": {
+          "goals": 4,
+          "assists": 1
+        },
+        "罗指导": {
+          "goals": 3,
+          "assists": 0
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "会长",
+        "老薛",
+        "老刘",
+        "罗指导",
+        "小源",
+        "小陈",
+        "洗衣服",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-11-16",
+      "opponent": "好乐普",
+      "score": {
+        "home": 3,
+        "away": 9
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 1,
+          "assists": 0
+        },
+        "徐韬": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "会长",
+        "老薛",
+        "老刘",
+        "哈维",
+        "李强",
+        "徐韬",
+        "小陈",
+        "洗衣服"
+      ]
+    },
+    {
+      "date": "2025-11-20",
+      "opponent": "安陆",
+      "score": {
+        "home": 3,
+        "away": 8
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "会长",
+        "哈维",
+        "小源",
+        "龙哥",
+        "未来",
+        "彭涛"
+      ]
+    },
+    {
+      "date": "2025-11-23",
+      "opponent": "佳峰",
+      "score": {
+        "home": 4,
+        "away": 3
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 2
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 3,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "哈维",
+        "小源",
+        "徐韬"
+      ]
+    },
+    {
+      "date": "2025-11-26",
+      "opponent": "活塞",
+      "score": {
+        "home": 6,
+        "away": 5
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 0,
+          "assists": 2
+        },
+        "洗衣服": {
+          "goals": 4,
+          "assists": 1
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 2
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老刘",
+        "哈维",
+        "小源",
+        "龙哥",
+        "stone",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-11-30",
+      "opponent": "新神",
+      "score": {
+        "home": 4,
+        "away": 5
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 1,
+          "assists": 2
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老薛": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小陈": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "会长",
+        "老薛",
+        "老刘",
+        "哈维",
+        "小源",
+        "小陈",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-12-04",
+      "opponent": "大鸠",
+      "score": {
+        "home": 6,
+        "away": 4
+      },
+      "player_stats": {
+        "小源": {
+          "goals": 1,
+          "assists": 0
+        },
+        "洗衣服": {
+          "goals": 3,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "龙哥": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小李": {
+          "goals": 0,
+          "assists": 2
+        },
+        "罗指导": {
+          "goals": 1,
+          "assists": 1
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老薛",
+        "哈维",
+        "罗指导",
+        "小源",
+        "杨哥",
+        "龙哥",
+        "小陈",
+        "stone",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-02-06",
+      "opponent": "中山球队",
+      "score": {
+        "home": 3,
+        "away": 5
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 1,
+          "assists": 0
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 1
+        },
+        "小陈": {
+          "goals": 0,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "哈维",
+        "阿彪",
+        "小陈",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-12-13",
+      "opponent": "温记",
+      "score": {
+        "home": 14,
+        "away": 7
+      },
+      "player_stats": {
+        "会长": {
+          "goals": 1,
+          "assists": 0
+        },
+        "未来": {
+          "goals": 3,
+          "assists": 0
+        },
+        "徐韬": {
+          "goals": 5,
+          "assists": 2
+        },
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 6
+        },
+        "老刘": {
+          "goals": 1,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 3,
+          "assists": 0
+        },
+        "罗指导": {
+          "goals": 0,
+          "assists": 3
+        }
+      },
+      "attendance": [
+        "李豪强",
+        "会长",
+        "老刘",
+        "罗指导",
+        "小源",
+        "李强",
+        "徐韬",
+        "未来"
+      ]
+    },
+    {
+      "date": "2025-12-17",
+      "opponent": "无名（水哥）",
+      "score": {
+        "home": 1,
+        "away": 8
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "龙哥": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "龙哥",
+        "stone"
+      ]
+    },
+    {
+      "date": "2025-12-21",
+      "opponent": "藤甲军",
+      "score": {
+        "home": 6,
+        "away": 5
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 1,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 0,
+          "assists": 1
+        },
+        "洗衣服": {
+          "goals": 1,
+          "assists": 0
+        },
+        "老刘": {
+          "goals": 2,
+          "assists": 0
+        },
+        "哈维": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 1,
+          "assists": 0
+        },
+        "阿彪": {
+          "goals": 1,
+          "assists": 1
+        }
+      },
+      "attendance": [
+        "老刘",
+        "哈维",
+        "阿彪",
+        "小源",
+        "徐韬",
+        "小黄",
+        "未来",
+        "小李"
+      ]
+    },
+    {
+      "date": "2025-12-24",
+      "opponent": "活塞",
+      "score": {
+        "home": 3,
+        "away": 5
+      },
+      "player_stats": {
+        "洗衣服": {
+          "goals": 0,
+          "assists": 1
+        },
+        "智星": {
+          "goals": 2,
+          "assists": 1
+        },
+        "啊斌": {
+          "goals": 1,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "哈维",
+        "李强"
+      ]
+    },
+    {
+      "date": "2025-12-28",
+      "opponent": "新神",
+      "score": {
+        "home": 10,
+        "away": 4
+      },
+      "player_stats": {
+        "未来": {
+          "goals": 0,
+          "assists": 1
+        },
+        "小源": {
+          "goals": 0,
+          "assists": 5
+        },
+        "洗衣服": {
+          "goals": 4,
+          "assists": 2
+        },
+        "老刘": {
+          "goals": 2,
+          "assists": 0
+        },
+        "罗指导": {
+          "goals": 4,
+          "assists": 0
+        }
+      },
+      "attendance": [
+        "朋队",
+        "老刘",
+        "小源",
+        "徐韬",
+        "未来"
+      ]
+    }
+  ]
+}

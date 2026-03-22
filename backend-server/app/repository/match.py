@@ -1,7 +1,7 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from app.models.match import Match, MatchStatus
 from app.repository.base import BaseRepository
 
@@ -76,7 +76,7 @@ class MatchRepository(BaseRepository[Match]):
 
     def get_recent_matches(self, team_id: int, days: int = 7) -> List[Match]:
         """获取最近几天的比赛记录"""
-        start_date = datetime.now(timezone.utc) - timedelta(days=days)
+        start_date = datetime.now() - timedelta(days=days)
         return self.db.query(Match).filter(
             and_(
                 or_(
@@ -89,7 +89,7 @@ class MatchRepository(BaseRepository[Match]):
 
     def get_all_recent_matches(self, days: int = 7) -> List[Match]:
         """获取所有球队最近几天的比赛记录"""
-        start_date = datetime.now(timezone.utc) - timedelta(days=days)
+        start_date = datetime.now() - timedelta(days=days)
         return self.db.query(Match).filter(
             Match.match_date >= start_date
         ).order_by(Match.match_date.desc()).all()

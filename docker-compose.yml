@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:16-alpine
+    container_name: football_platform_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-football_platform_test}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - football_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI 后端
+  backend:
+    build:
+      context: ./backend-server
+      dockerfile: Dockerfile
+    container_name: football_platform_backend
+    environment:
+      ENV: ${ENV:-test}
+      DATABASE_URL: postgresql+psycopg://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-football_platform_test}
+      SECRET_KEY: ${SECRET_KEY:-test-secret-key-change-in-production}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
+    ports:
+      - "8021:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - football_network
+    volumes:
+      - ./backend-server:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Vue 前端
+  frontend:
+    build:
+      context: ./frontend-pc
+      dockerfile: Dockerfile
+    container_name: football_platform_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - football_network
+
+volumes:
+  postgres_data:
+
+networks:
+  football_network:
+    driver: bridge

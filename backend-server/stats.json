@@ -1,0 +1,341 @@
+{
+  "attendance": [
+    {
+      "player_name": "洗衣服",
+      "attendance_count": 67
+    },
+    {
+      "player_name": "朋队",
+      "attendance_count": 57
+    },
+    {
+      "player_name": "哈维",
+      "attendance_count": 55
+    },
+    {
+      "player_name": "智星",
+      "attendance_count": 53
+    },
+    {
+      "player_name": "小源",
+      "attendance_count": 51
+    },
+    {
+      "player_name": "老薛",
+      "attendance_count": 50
+    },
+    {
+      "player_name": "小李",
+      "attendance_count": 50
+    },
+    {
+      "player_name": "未来",
+      "attendance_count": 45
+    },
+    {
+      "player_name": "李强",
+      "attendance_count": 42
+    },
+    {
+      "player_name": "会长",
+      "attendance_count": 38
+    },
+    {
+      "player_name": "斌哥",
+      "attendance_count": 38
+    },
+    {
+      "player_name": "徐韬",
+      "attendance_count": 37
+    },
+    {
+      "player_name": "老刘",
+      "attendance_count": 34
+    },
+    {
+      "player_name": "龙哥",
+      "attendance_count": 29
+    },
+    {
+      "player_name": "李豪强",
+      "attendance_count": 28
+    },
+    {
+      "player_name": "啊原",
+      "attendance_count": 23
+    },
+    {
+      "player_name": "小陈",
+      "attendance_count": 21
+    },
+    {
+      "player_name": "诗画",
+      "attendance_count": 20
+    },
+    {
+      "player_name": "罗指导",
+      "attendance_count": 13
+    },
+    {
+      "player_name": "stone",
+      "attendance_count": 12
+    },
+    {
+      "player_name": "吴老师",
+      "attendance_count": 10
+    },
+    {
+      "player_name": "欧队",
+      "attendance_count": 8
+    },
+    {
+      "player_name": "阿彪",
+      "attendance_count": 7
+    },
+    {
+      "player_name": "彭涛",
+      "attendance_count": 5
+    },
+    {
+      "player_name": "老马",
+      "attendance_count": 5
+    },
+    {
+      "player_name": "阿亮",
+      "attendance_count": 4
+    },
+    {
+      "player_name": "飞云",
+      "attendance_count": 3
+    },
+    {
+      "player_name": "小黄",
+      "attendance_count": 3
+    },
+    {
+      "player_name": "阿新",
+      "attendance_count": 2
+    },
+    {
+      "player_name": "杨哥",
+      "attendance_count": 2
+    },
+    {
+      "player_name": "风影",
+      "attendance_count": 2
+    }
+  ],
+  "goals": [
+    {
+      "player_name": "智星",
+      "goal_count": 64
+    },
+    {
+      "player_name": "洗衣服",
+      "goal_count": 63
+    },
+    {
+      "player_name": "啊原",
+      "goal_count": 38
+    },
+    {
+      "player_name": "小源",
+      "goal_count": 30
+    },
+    {
+      "player_name": "小李",
+      "goal_count": 30
+    },
+    {
+      "player_name": "未来",
+      "goal_count": 24
+    },
+    {
+      "player_name": "徐韬",
+      "goal_count": 23
+    },
+    {
+      "player_name": "老刘",
+      "goal_count": 19
+    },
+    {
+      "player_name": "罗指导",
+      "goal_count": 16
+    },
+    {
+      "player_name": "会长",
+      "goal_count": 10
+    },
+    {
+      "player_name": "老薛",
+      "goal_count": 9
+    },
+    {
+      "player_name": "李强",
+      "goal_count": 7
+    },
+    {
+      "player_name": "小陈",
+      "goal_count": 7
+    },
+    {
+      "player_name": "诗画",
+      "goal_count": 5
+    },
+    {
+      "player_name": "斌哥",
+      "goal_count": 5
+    },
+    {
+      "player_name": "龙哥",
+      "goal_count": 4
+    },
+    {
+      "player_name": "朋队",
+      "goal_count": 4
+    },
+    {
+      "player_name": "小黄",
+      "goal_count": 4
+    },
+    {
+      "player_name": "哈维",
+      "goal_count": 3
+    },
+    {
+      "player_name": "李豪强",
+      "goal_count": 3
+    },
+    {
+      "player_name": "啊新",
+      "goal_count": 2
+    },
+    {
+      "player_name": "风影",
+      "goal_count": 1
+    },
+    {
+      "player_name": "阿彪",
+      "goal_count": 1
+    },
+    {
+      "player_name": "杨哥",
+      "goal_count": 1
+    },
+    {
+      "player_name": "艾大师",
+      "goal_count": 1
+    }
+  ],
+  "assists": [
+    {
+      "player_name": "洗衣服",
+      "assist_count": 90
+    },
+    {
+      "player_name": "智星",
+      "assist_count": 35
+    },
+    {
+      "player_name": "小源",
+      "assist_count": 31
+    },
+    {
+      "player_name": "小李",
+      "assist_count": 22
+    },
+    {
+      "player_name": "啊原",
+      "assist_count": 16
+    },
+    {
+      "player_name": "徐韬",
+      "assist_count": 14
+    },
+    {
+      "player_name": "朋队",
+      "assist_count": 12
+    },
+    {
+      "player_name": "未来",
+      "assist_count": 12
+    },
+    {
+      "player_name": "会长",
+      "assist_count": 11
+    },
+    {
+      "player_name": "诗画",
+      "assist_count": 11
+    },
+    {
+      "player_name": "哈维",
+      "assist_count": 10
+    },
+    {
+      "player_name": "罗指导",
+      "assist_count": 9
+    },
+    {
+      "player_name": "小陈",
+      "assist_count": 9
+    },
+    {
+      "player_name": "老薛",
+      "assist_count": 6
+    },
+    {
+      "player_name": "老刘",
+      "assist_count": 4
+    },
+    {
+      "player_name": "李强",
+      "assist_count": 4
+    },
+    {
+      "player_name": "李豪强",
+      "assist_count": 4
+    },
+    {
+      "player_name": "阿亮",
+      "assist_count": 2
+    },
+    {
+      "player_name": "艾大师",
+      "assist_count": 2
+    },
+    {
+      "player_name": "小黄",
+      "assist_count": 2
+    },
+    {
+      "player_name": "飞云",
+      "assist_count": 2
+    },
+    {
+      "player_name": "斌哥",
+      "assist_count": 2
+    },
+    {
+      "player_name": "啊新",
+      "assist_count": 1
+    },
+    {
+      "player_name": "龙哥",
+      "assist_count": 1
+    },
+    {
+      "player_name": "欧队",
+      "assist_count": 1
+    },
+    {
+      "player_name": "stone",
+      "assist_count": 1
+    },
+    {
+      "player_name": "阿彪",
+      "assist_count": 1
+    }
+  ],
+  "match_stats": {}
+}

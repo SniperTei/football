@@ -3,7 +3,7 @@ Match Service - 比赛业务逻辑层
 """
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from app.models.match import Match, MatchStatus
 from app.models.team import Team
 from app.models.user import User
@@ -38,7 +38,7 @@ class MatchService:
             raise ValidationException("您的球队不存在")
 
         # 验证比赛日期不能是未来
-        if match_data.match_date > datetime.now(timezone.utc):
+        if match_data.match_date > datetime.now():
             raise ValidationException("比赛日期不能是未来时间")
 
         # 处理客队（对手球队）
@@ -143,7 +143,7 @@ class MatchService:
 
         # 如果更新了比赛日期，验证不能是未来
         if 'match_date' in update_dict:
-            if update_dict['match_date'] > datetime.now(timezone.utc):
+            if update_dict['match_date'] > datetime.now():
                 raise ValidationException("比赛日期不能是未来时间")
 
         # 如果更新比分，自动将状态改为已完成
@@ -212,7 +212,7 @@ class MatchService:
 
         # 按时间筛选
         if days:
-            cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
+            cutoff_date = datetime.now() - timedelta(days=days)
             completed_matches = [m for m in completed_matches if m.match_date >= cutoff_date]
 
         if not completed_matches:

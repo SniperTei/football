@@ -1,0 +1,35 @@
+# 依赖
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 构建
+dist/
+dist-ssr/
+
+# 环境
+.local
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Git
+.git/
+.gitignore
+
+# 测试
+coverage/
+
+# 文档
+README.md
+docs/
