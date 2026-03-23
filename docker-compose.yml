@@ -50,7 +50,7 @@ services:
       dockerfile: Dockerfile
     container_name: football_platform_frontend
     ports:
-      - "80:80"
+      - "8022:80"
     depends_on:
       - backend
     networks:
