@@ -41,6 +41,7 @@ export interface MatchListItem {
   away_team_id: number
   home_team_name: string
   away_team_name: string
+  match_type: string
   match_date: string
   home_score?: number
   away_score?: number
