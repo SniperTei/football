@@ -9,6 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-football_platform_test}
+      TZ: Asia/Shanghai
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -32,6 +33,7 @@ services:
       DATABASE_URL: postgresql+psycopg://postgres:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-football_platform_test}
       SECRET_KEY: ${SECRET_KEY:-test-secret-key-change-in-production}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
+      TZ: Asia/Shanghai
     ports:
       - "8021:8000"
     depends_on:

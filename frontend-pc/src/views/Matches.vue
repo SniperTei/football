@@ -140,7 +140,7 @@
             type="datetime"
             placeholder="选择日期时间"
             format="YYYY-MM-DD HH:mm"
-            value-format="YYYY-MM-DDTHH:mm:ss[Z]"
+            value-format="YYYY-MM-DDTHH:mm:ss"
             :disabled-date="disabledDate"
             style="width: 100%"
           />

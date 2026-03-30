@@ -62,7 +62,7 @@ app.include_router(api_router, prefix="/api")
 
 @app.get("/")
 async def root():
-    return {"message": "Football Platform API", "version": "1.0.0"}
+    return {"message": "Football Platform API(test)", "version": "1.0.0"}
 
 
 @app.get("/health")

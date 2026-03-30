@@ -196,7 +196,7 @@
                 v-model="editForm.match_date"
                 type="datetime"
                 format="YYYY-MM-DD HH:mm"
-                value-format="YYYY-MM-DDTHH:mm:ss[Z]"
+                value-format="YYYY-MM-DDTHH:mm:ss"
                 :disabled-date="disabledDate"
               />
             </el-form-item>
