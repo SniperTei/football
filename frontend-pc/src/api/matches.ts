@@ -161,6 +161,7 @@ export function getAllRecentMatches(days: number = 7) {
 export function getAllMatches(params?: {
   page_index?: number
   page_count?: number
+  days?: number
 }) {
   return api.get<ListData<MatchListItem>>('/matches/all', { params })
 }

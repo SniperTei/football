@@ -144,15 +144,14 @@ async def get_all_recent_matches(
 async def get_all_matches(
     page_index: int = Query(0, ge=0, description="页码（从0开始）"),
     page_count: int = Query(10, ge=1, le=100, description="每页数量"),
+    days: int = Query(0, ge=0, le=365, description="最近几天（0=全部）"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_optional_user)
 ):
-    """获取所有比赛记录（不需要登录，不分时间）"""
+    """获取所有比赛记录（不需要登录）"""
     try:
         service = MatchService(db)
-        total = service.match_repo.count()
-        matches = service.match_repo.get_all(skip=page_index * page_count, limit=page_count)
-        match_list = [_match_to_list_dict(m) for m in matches]
+        total, match_list = service.get_paginated_matches(page_index, page_count, days)
         return ResponseHelper.success_list(
             list_data=match_list,
             total=total,

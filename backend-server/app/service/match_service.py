@@ -191,6 +191,34 @@ class MatchService:
         """获取所有比赛记录（不分时间）"""
         return self.match_repo.get_all(skip, limit)
 
+    def get_paginated_matches(self, page_index: int, page_count: int, days: int = 0) -> tuple:
+        """获取分页比赛记录，支持时间筛选"""
+        query = self.db.query(Match)
+        if days > 0:
+            start_date = datetime.now() - timedelta(days=days)
+            query = query.filter(Match.match_date >= start_date)
+        total = query.count()
+        matches = query.order_by(Match.match_date.desc()).offset(page_index * page_count).limit(page_count).all()
+        match_list = []
+        for m in matches:
+            d = {
+                "id": m.id,
+                "home_team_id": m.home_team_id,
+                "away_team_id": m.away_team_id,
+                "home_team_name": m.home_team.name,
+                "away_team_name": m.away_team.name,
+                "home_team_logo_url": m.home_team.logo_url,
+                "away_team_logo_url": m.away_team.logo_url,
+                "match_type": m.match_type,
+                "match_date": m.match_date,
+                "home_score": m.home_score,
+                "away_score": m.away_score,
+                "status": m.status,
+                "venue": m.venue
+            }
+            match_list.append(d)
+        return total, match_list
+
     def get_team_statistics(self, team_id: int, days: Optional[int] = None) -> dict:
         """
         获取球队统计信息

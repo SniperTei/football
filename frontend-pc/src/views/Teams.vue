@@ -16,6 +16,7 @@
           v-if="authStore.isAuthenticated && authStore.user?.my_team_id"
           v-model="onlyMyTeam"
           label="只看我的球队"
+          @change="loadTeams"
         />
       </div>
 
@@ -96,10 +97,7 @@ const pageIndex = ref(1)
 const pageSize = ref(10)
 const editingId = ref<number>()
 
-const filteredTeams = computed(() => {
-  if (!onlyMyTeam.value || !authStore.user?.my_team_id) return teams.value
-  return teams.value.filter(t => t.id === authStore.user!.my_team_id)
-})
+const filteredTeams = computed(() => teams.value)
 
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球队' : '编辑球队')
 
@@ -125,9 +123,15 @@ const rules = {
 const loadTeams = async () => {
   loading.value = true
   try {
-    const res = await teamsApi.getAll({ page_index: pageIndex.value - 1, page_count: pageSize.value })
-    teams.value = res.data.list
-    total.value = res.data.total
+    if (onlyMyTeam.value && authStore.user?.my_team_id) {
+      const res = await teamsApi.getById(authStore.user.my_team_id)
+      teams.value = [res.data]
+      total.value = 1
+    } else {
+      const res = await teamsApi.getAll({ page_index: pageIndex.value - 1, page_count: pageSize.value })
+      teams.value = res.data.list
+      total.value = res.data.total
+    }
   } finally {
     loading.value = false
   }

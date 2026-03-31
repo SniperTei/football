@@ -224,7 +224,7 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Location, Search, Refresh, Plus } from '@element-plus/icons-vue'
-import { getAllMatches, getAllRecentMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
+import { getAllMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
 import TeamLogo from '@/components/TeamLogo.vue'
 import { playersApi, type Player } from '@/api/players'
 import { useAuthStore } from '@/stores/auth'
@@ -414,9 +414,12 @@ const loadMatches = async (resetPage = false) => {
   if (resetPage) pageIndex.value = 1
   loading.value = true
   try {
-    const data = daysFilter.value > 0
-      ? await getAllRecentMatches(daysFilter.value).then(r => r.data || r)
-      : await getAllMatches({ page_index: pageIndex.value - 1, page_count: pageSize.value }).then(r => r.data || r)
+    const response = await getAllMatches({
+      page_index: pageIndex.value - 1,
+      page_count: pageSize.value,
+      days: daysFilter.value || undefined
+    })
+    const data = response.data || response
     matches.value = data.list || []
     total.value = data.total || 0
   } catch (error: any) {
