@@ -87,6 +87,7 @@
 
         <div class="match-content">
           <div class="team">
+            <TeamLogo :logo-url="match.home_team_logo_url" size="40px" :team-name="match.home_team_name" />
             <div class="team-name">{{ match.home_team_name }}</div>
             <div class="team-score" v-if="match.home_score !== null && match.home_score !== undefined">
               {{ match.home_score }}
@@ -96,6 +97,7 @@
           <div class="vs">VS</div>
 
           <div class="team">
+            <TeamLogo :logo-url="match.away_team_logo_url" size="40px" :team-name="match.away_team_name" />
             <div class="team-name">{{ match.away_team_name }}</div>
             <div class="team-score" v-if="match.away_score !== null && match.away_score !== undefined">
               {{ match.away_score }}
@@ -253,6 +255,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Location, Search, Refresh, Plus } from '@element-plus/icons-vue'
 import { getTeamMatches, getRecentMatches, getAllRecentMatches, getAllMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
+import TeamLogo from '@/components/TeamLogo.vue'
 import { teamsApi, type Team } from '@/api/teams'
 import { playersApi, type Player } from '@/api/players'
 import { useAuthStore } from '@/stores/auth'
@@ -648,12 +651,15 @@ onMounted(async () => {
 .team {
   flex: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .team-name {
   font-size: 16px;
   font-weight: 500;
-  margin-bottom: 8px;
   color: #303133;
 }
 

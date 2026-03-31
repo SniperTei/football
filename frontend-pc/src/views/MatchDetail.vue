@@ -18,6 +18,7 @@
         <!-- 计分板 -->
         <div class="score-board">
           <div class="team home">
+            <TeamLogo :logo-url="match.home_team_logo_url" size="60px" :team-name="match.home_team_name" />
             <div class="team-name">{{ match.home_team_name }}</div>
             <div class="team-score" v-if="match.home_score !== null && match.home_score !== undefined">
               {{ match.home_score }}
@@ -28,6 +29,7 @@
           <div class="versus">VS</div>
 
           <div class="team away">
+            <TeamLogo :logo-url="match.away_team_logo_url" size="60px" :team-name="match.away_team_name" />
             <div class="team-name">{{ match.away_team_name }}</div>
             <div class="team-score" v-if="match.away_score !== null && match.away_score !== undefined">
               {{ match.away_score }}
@@ -316,6 +318,7 @@ import { useRoute } from 'vue-router'
 import { ElMessage, type FormInstance } from 'element-plus'
 import { Edit } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
+import TeamLogo from '@/components/TeamLogo.vue'
 import {
   getMatchDetail,
   getMatchPlayerStats,

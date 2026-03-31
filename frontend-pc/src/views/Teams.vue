@@ -11,8 +11,21 @@
         </div>
       </template>
 
-      <el-table :data="teams" v-loading="loading" style="width: 100%">
+      <div class="filter-bar">
+        <el-checkbox
+          v-if="authStore.isAuthenticated && authStore.user?.my_team_id"
+          v-model="onlyMyTeam"
+          label="只看我的球队"
+        />
+      </div>
+
+      <el-table :data="filteredTeams" v-loading="loading" style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
+        <el-table-column label="Logo" width="60" align="center">
+          <template #default="{ row }">
+            <TeamLogo :logo-url="row.logo_url" size="32px" :team-name="row.name" />
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="球队名称" min-width="150" />
         <el-table-column prop="description" label="描述" show-overflow-tooltip />
         <el-table-column prop="founded_year" label="成立年份" width="120" />
@@ -58,6 +71,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { teamsApi } from '@/api'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
+import TeamLogo from '@/components/TeamLogo.vue'
 
 const authStore = useAuthStore()
 const loading = ref(false)
@@ -66,7 +80,13 @@ const dialogVisible = ref(false)
 const dialogMode = ref<'create' | 'edit'>('create')
 const formRef = ref<FormInstance>()
 const teams = ref<any[]>([])
+const onlyMyTeam = ref(false)
 const editingId = ref<number>()
+
+const filteredTeams = computed(() => {
+  if (!onlyMyTeam.value || !authStore.user?.my_team_id) return teams.value
+  return teams.value.filter(t => t.id === authStore.user!.my_team_id)
+})
 
 const dialogTitle = computed(() => dialogMode.value === 'create' ? '添加球队' : '编辑球队')
 
@@ -175,5 +195,9 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.filter-bar {
+  margin-bottom: 16px;
 }
 </style>

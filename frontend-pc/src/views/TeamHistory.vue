@@ -2,7 +2,14 @@
   <div class="team-history-page">
     <!-- 页面头部 -->
     <div class="header">
-      <el-page-header @back="$router.back()" :content="team?.name || '球队历史战绩'" />
+      <el-page-header @back="$router.back()">
+        <template #content>
+          <div class="header-content">
+            <TeamLogo :logo-url="team?.logo_url" size="32px" :team-name="team?.name" />
+            <span>{{ team?.name || '球队历史战绩' }}</span>
+          </div>
+        </template>
+      </el-page-header>
     </div>
 
     <!-- 时间筛选器 -->
@@ -254,6 +261,7 @@ import { teamsApi, type Team } from '@/api/teams'
 import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts'
 import dayjs from 'dayjs'
+import TeamLogo from '@/components/TeamLogo.vue'
 
 const route = useRoute()
 const loading = ref(false)
@@ -482,6 +490,12 @@ onMounted(async () => {
 
 .header {
   margin-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .filter-bar {

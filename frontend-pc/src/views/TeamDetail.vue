@@ -1,6 +1,13 @@
 <template>
   <div class="team-detail-page">
-    <el-page-header @back="$router.back()" :content="team?.name || '球队详情'" />
+    <el-page-header @back="$router.back()" :content="team?.name || '球队详情'">
+      <template #content>
+        <div class="header-content">
+          <TeamLogo :logo-url="team?.logo_url" size="36px" :team-name="team?.name" />
+          <span>{{ team?.name || '球队详情' }}</span>
+        </div>
+      </template>
+    </el-page-header>
 
     <!-- 添加操作按钮 -->
     <div class="action-buttons" v-if="team">
@@ -46,6 +53,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { TrendCharts } from '@element-plus/icons-vue'
 import { teamsApi, playersApi } from '@/api'
 import dayjs from 'dayjs'
+import TeamLogo from '@/components/TeamLogo.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -95,6 +103,12 @@ onMounted(() => {
 .action-buttons {
   margin-top: 20px;
   display: flex;
+  gap: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 </style>
