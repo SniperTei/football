@@ -108,6 +108,59 @@
         </el-row>
       </el-card>
 
+      <!-- 对手选择 -->
+      <el-card v-if="otherTeams.length > 0" style="margin-top: 20px">
+        <template #header>
+          <span class="card-title">⚔️ 选择对手查看对战历史</span>
+        </template>
+        <el-select
+          v-model="selectedOpponentId"
+          placeholder="选择对手球队"
+          clearable
+          filterable
+          @change="loadHeadToHeadStats"
+        >
+          <el-option
+            v-for="t in otherTeams"
+            :key="t.id"
+            :label="t.name"
+            :value="t.id"
+          />
+        </el-select>
+      </el-card>
+
+      <!-- 对战历史 -->
+      <el-card v-if="headToHeadStats.total_matches > 0" style="margin-top: 20px">
+        <template #header>
+          <span class="card-title">🆚 对战历史</span>
+        </template>
+        <el-descriptions :column="4" border>
+          <el-descriptions-item label="总场次">{{ headToHeadStats.total_matches }}</el-descriptions-item>
+          <el-descriptions-item label="胜">{{ headToHeadStats.team_wins }}</el-descriptions-item>
+          <el-descriptions-item label="平">{{ headToHeadStats.team_draws }}</el-descriptions-item>
+          <el-descriptions-item label="负">{{ headToHeadStats.team_losses }}</el-descriptions-item>
+        </el-descriptions>
+
+        <el-table :data="headToHeadStats.recent_matches" stripe style="margin-top: 15px" size="small">
+          <el-table-column prop="date" label="日期" width="120">
+            <template #default="{ row }">
+              {{ formatDate(row.date) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="opponent" label="对手" min-width="120" />
+          <el-table-column prop="score" label="比分" width="100" align="center" />
+          <el-table-column prop="venue" label="场地" width="80" align="center" />
+          <el-table-column prop="result" label="结果" width="80" align="center">
+            <template #default="{ row }">
+              <el-tag :type="getResultTagType(row.result)" size="small">
+                {{ getResultText(row.result) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="competition" label="类型" width="100" align="center" />
+        </el-table>
+      </el-card>
+
       <!-- 主客场详细战绩 -->
       <el-card style="margin-top: 20px">
         <template #header>
@@ -178,59 +231,6 @@
               </el-tag>
             </template>
           </el-table-column>
-        </el-table>
-      </el-card>
-
-      <!-- 对手选择 -->
-      <el-card v-if="otherTeams.length > 0" style="margin-top: 20px">
-        <template #header>
-          <span class="card-title">⚔️ 选择对手查看对战历史</span>
-        </template>
-        <el-select
-          v-model="selectedOpponentId"
-          placeholder="选择对手球队"
-          clearable
-          filterable
-          @change="loadHeadToHeadStats"
-        >
-          <el-option
-            v-for="t in otherTeams"
-            :key="t.id"
-            :label="t.name"
-            :value="t.id"
-          />
-        </el-select>
-      </el-card>
-
-      <!-- 对战历史 -->
-      <el-card v-if="headToHeadStats.total_matches > 0" style="margin-top: 20px">
-        <template #header>
-          <span class="card-title">🆚 对战历史</span>
-        </template>
-        <el-descriptions :column="4" border>
-          <el-descriptions-item label="总场次">{{ headToHeadStats.total_matches }}</el-descriptions-item>
-          <el-descriptions-item label="胜">{{ headToHeadStats.team_wins }}</el-descriptions-item>
-          <el-descriptions-item label="平">{{ headToHeadStats.team_draws }}</el-descriptions-item>
-          <el-descriptions-item label="负">{{ headToHeadStats.team_losses }}</el-descriptions-item>
-        </el-descriptions>
-
-        <el-table :data="headToHeadStats.recent_matches" stripe style="margin-top: 15px" size="small">
-          <el-table-column prop="date" label="日期" width="120">
-            <template #default="{ row }">
-              {{ formatDate(row.date) }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="opponent" label="对手" min-width="120" />
-          <el-table-column prop="score" label="比分" width="100" align="center" />
-          <el-table-column prop="venue" label="场地" width="80" align="center" />
-          <el-table-column prop="result" label="结果" width="80" align="center">
-            <template #default="{ row }">
-              <el-tag :type="getResultTagType(row.result)" size="small">
-                {{ getResultText(row.result) }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="competition" label="类型" width="100" align="center" />
         </el-table>
       </el-card>
 

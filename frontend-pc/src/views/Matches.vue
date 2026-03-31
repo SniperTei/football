@@ -204,21 +204,23 @@
             </el-table-column>
             <el-table-column label="进球" width="100" align="center">
               <template #default="{ row }">
-                <el-input-number
+                <el-input
                   v-model="row.goals"
-                  :min="0"
-                  controls-position="right"
                   size="small"
+                  @focus="clearIfZero(row, 'goals')"
+                  @input="(v: string) => row.goals = formatStatInput(v)"
+                  @blur="row.goals = defaultIfEmpty(row.goals)"
                 />
               </template>
             </el-table-column>
             <el-table-column label="助攻" width="100" align="center">
               <template #default="{ row }">
-                <el-input-number
+                <el-input
                   v-model="row.assists"
-                  :min="0"
-                  controls-position="right"
                   size="small"
+                  @focus="clearIfZero(row, 'assists')"
+                  @input="(v: string) => row.assists = formatStatInput(v)"
+                  @blur="row.assists = defaultIfEmpty(row.assists)"
                 />
               </template>
             </el-table-column>
@@ -269,8 +271,8 @@ interface PlayerStatData {
   player_name: string
   jersey_number?: number
   played: boolean
-  goals: number
-  assists: number
+  goals: number | string
+  assists: number | string
 }
 
 // 创建比赛相关
@@ -435,6 +437,24 @@ const onSelectedPlayersChange = () => {
   // 这里不需要做特殊处理，selectedPlayersStats 会自动更新
 }
 
+// 球员统计输入处理：去掉前导0，只保留数字
+const formatStatInput = (v: string): string | number => {
+  const digits = v.replace(/[^\d]/g, '')
+  if (digits === '') return ''
+  return String(Number(digits))
+}
+
+// 失焦时为空则补0
+const defaultIfEmpty = (v: string | number): number => {
+  const n = Number(v)
+  return isNaN(n) || v === '' ? 0 : n
+}
+
+// 获取焦点时自动清零
+const clearIfZero = (row: PlayerStatData, field: 'goals' | 'assists') => {
+  if (Number(row[field]) === 0) row[field] = '' as any
+}
+
 // 禁用未来日期
 const disabledDate = (time: Date) => {
   return time.getTime() > Date.now()
@@ -455,8 +475,8 @@ const handleCreateMatch = async () => {
         return {
           player_id: playerId,
           played: true,
-          goals: playerStat?.goals || 0,
-          assists: playerStat?.assists || 0
+          goals: Number(playerStat?.goals) || 0,
+          assists: Number(playerStat?.assists) || 0
         }
       })
 
