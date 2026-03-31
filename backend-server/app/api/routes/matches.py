@@ -142,19 +142,20 @@ async def get_all_recent_matches(
 
 @router.get("/all")
 async def get_all_matches(
-    skip: int = Query(0, ge=0, description="跳过记录数"),
-    limit: int = Query(1000, ge=1, le=10000, description="返回记录数"),
+    page_index: int = Query(0, ge=0, description="页码（从0开始）"),
+    page_count: int = Query(10, ge=1, le=100, description="每页数量"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_optional_user)
 ):
     """获取所有比赛记录（不需要登录，不分时间）"""
     try:
         service = MatchService(db)
-        matches = service.get_all_matches(skip, limit)
+        total = service.match_repo.count()
+        matches = service.match_repo.get_all(skip=page_index * page_count, limit=page_count)
         match_list = [_match_to_list_dict(m) for m in matches]
         return ResponseHelper.success_list(
             list_data=match_list,
-            total=len(match_list),
+            total=total,
             msg="获取所有比赛成功"
         )
     except BusinessException as e:

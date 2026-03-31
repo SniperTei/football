@@ -12,7 +12,7 @@ export interface Player {
 
 export const playersApi = {
   // 获取所有球员
-  getAll: (params?: { skip?: number; limit?: number }) =>
+  getAll: (params?: { page_index?: number; page_count?: number }) =>
     api.get<ListData<Player>>('/players', { params }),
 
   // 获取球员详情

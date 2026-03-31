@@ -2,7 +2,7 @@
 Teams API - 球队接口层
 只负责 HTTP 请求/响应处理，业务逻辑在 Service 层
 """
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Query
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from typing import List
@@ -18,13 +18,18 @@ router = APIRouter()
 
 
 @router.get("")
-async def get_teams(db: Session = Depends(get_db)):
+async def get_teams(
+    page_index: int = Query(0, ge=0, description="页码（从0开始）"),
+    page_count: int = Query(10, ge=1, le=100, description="每页数量"),
+    db: Session = Depends(get_db)
+):
     """获取所有球队（公开）"""
     service = TeamService(db)
-    teams = service.get_all_teams()
+    total = service.count_teams()
+    teams = service.get_all_teams(skip=page_index * page_count, limit=page_count)
     return ResponseHelper.success_list(
         list_data=teams,
-        total=len(teams),
+        total=total,
         msg="获取球队列表成功"
     )
 

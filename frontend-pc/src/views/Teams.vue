@@ -43,6 +43,16 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="pagination-bar">
+        <el-pagination
+          v-model:current-page="pageIndex"
+          :page-size="pageSize"
+          :total="total"
+          layout="total, prev, pager, next"
+          @current-change="loadTeams"
+        />
+      </div>
     </el-card>
 
     <!-- 添加/编辑弹窗 -->
@@ -81,6 +91,9 @@ const dialogMode = ref<'create' | 'edit'>('create')
 const formRef = ref<FormInstance>()
 const teams = ref<any[]>([])
 const onlyMyTeam = ref(false)
+const total = ref(0)
+const pageIndex = ref(1)
+const pageSize = ref(10)
 const editingId = ref<number>()
 
 const filteredTeams = computed(() => {
@@ -112,8 +125,9 @@ const rules = {
 const loadTeams = async () => {
   loading.value = true
   try {
-    const res = await teamsApi.getAll()
+    const res = await teamsApi.getAll({ page_index: pageIndex.value - 1, page_count: pageSize.value })
     teams.value = res.data.list
+    total.value = res.data.total
   } finally {
     loading.value = false
   }
@@ -199,5 +213,11 @@ onMounted(() => {
 
 .filter-bar {
   margin-bottom: 16px;
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 </style>

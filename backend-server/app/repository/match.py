@@ -94,8 +94,12 @@ class MatchRepository(BaseRepository[Match]):
             Match.match_date >= start_date
         ).order_by(Match.match_date.desc()).all()
 
-    def get_all(self, skip: int = 0, limit: int = 1000) -> List[Match]:
+    def get_all(self, skip: int = 0, limit: int = 1000, **filters) -> List[Match]:
         """获取所有比赛记录（不分时间）"""
-        return self.db.query(Match).order_by(
+        query = self.db.query(Match)
+        for key, value in filters.items():
+            if value is not None and hasattr(Match, key):
+                query = query.filter(getattr(Match, key) == value)
+        return query.order_by(
             Match.match_date.desc()
         ).offset(skip).limit(limit).all()

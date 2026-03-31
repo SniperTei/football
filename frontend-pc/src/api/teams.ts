@@ -12,7 +12,8 @@ export interface Team {
 
 export const teamsApi = {
   // 获取所有球队
-  getAll: () => api.get<ListData<Team>>('/teams'),
+  getAll: (params?: { page_index?: number; page_count?: number }) =>
+    api.get<ListData<Team>>('/teams', { params }),
 
   // 获取球队详情
   getById: (id: number) => api.get<Team>(`/teams/${id}`),

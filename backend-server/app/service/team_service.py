@@ -17,9 +17,13 @@ class TeamService:
         self.db = db
         self.team_repo = TeamRepository(db)
 
-    def get_all_teams(self) -> List[Team]:
+    def get_all_teams(self, skip: int = 0, limit: int = 100) -> List[Team]:
         """获取所有球队"""
-        return self.team_repo.get_all()
+        return self.team_repo.get_all(skip=skip, limit=limit)
+
+    def count_teams(self) -> int:
+        """统计球队总数"""
+        return self.team_repo.count()
 
     def get_team_by_id(self, team_id: int) -> Team:
         """根据 ID 获取球队"""

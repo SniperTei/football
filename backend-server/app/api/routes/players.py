@@ -19,16 +19,17 @@ router = APIRouter()
 
 @router.get("")
 async def get_players(
-    skip: int = Query(0, ge=0, description="跳过记录数"),
-    limit: int = Query(100, ge=1, le=1000, description="返回记录数"),
+    page_index: int = Query(0, ge=0, description="页码（从0开始）"),
+    page_count: int = Query(10, ge=1, le=100, description="每页数量"),
     db: Session = Depends(get_db)
 ):
     """获取所有球员（公开）"""
     service = PlayerService(db)
-    players = service.get_all_players(skip=skip, limit=limit)
+    total = service.player_repo.count()
+    players = service.get_all_players(skip=page_index * page_count, limit=page_count)
     return ResponseHelper.success_list(
         list_data=players,
-        total=len(players),
+        total=total,
         msg="获取球员列表成功"
     )
 

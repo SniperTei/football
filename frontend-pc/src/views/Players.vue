@@ -73,6 +73,16 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <div class="pagination-bar">
+        <el-pagination
+          v-model:current-page="pageIndex"
+          :page-size="pageSize"
+          :total="total"
+          layout="total, prev, pager, next"
+          @current-change="loadPlayers"
+        />
+      </div>
     </el-card>
 
     <!-- 添加/编辑弹窗 -->
@@ -126,6 +136,9 @@ const dialogMode = ref<'create' | 'edit'>('create')
 const formRef = ref<FormInstance>()
 const players = ref<any[]>([])
 const teams = ref<any[]>([])
+const total = ref(0)
+const pageIndex = ref(1)
+const pageSize = ref(10)
 const editingId = ref<number>()
 
 // 搜索相关
@@ -164,9 +177,10 @@ const getTeamName = (teamId: number) => {
 const loadPlayers = async () => {
   loading.value = true
   try {
-    const res = await playersApi.getAll()
+    const res = await playersApi.getAll({ page_index: pageIndex.value - 1, page_count: pageSize.value })
     const data = res.data || res
     players.value = data.list || []
+    total.value = data.total || 0
   } finally {
     loading.value = false
   }
@@ -315,5 +329,11 @@ onMounted(() => {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 </style>

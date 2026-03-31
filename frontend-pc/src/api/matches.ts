@@ -159,8 +159,8 @@ export function getAllRecentMatches(days: number = 7) {
  * 获取所有比赛（不分时间）
  */
 export function getAllMatches(params?: {
-  skip?: number
-  limit?: number
+  page_index?: number
+  page_count?: number
 }) {
   return api.get<ListData<MatchListItem>>('/matches/all', { params })
 }

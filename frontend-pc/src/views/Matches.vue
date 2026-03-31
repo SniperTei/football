@@ -11,38 +11,6 @@
     <!-- 筛选器 -->
     <div class="filters">
       <el-select
-        v-model="selectedTeamId"
-        placeholder="选择球队"
-        clearable
-        filterable
-        @change="onTeamChange"
-        style="width: 200px"
-      >
-        <el-option
-          v-for="team in allTeams"
-          :key="team.id"
-          :label="team.name"
-          :value="team.id"
-        />
-      </el-select>
-
-      <el-select
-        v-model="selectedPlayerId"
-        placeholder="选择球员（可选）"
-        clearable
-        filterable
-        style="width: 200px"
-        :disabled="!selectedTeamId"
-      >
-        <el-option
-          v-for="player in teamPlayers"
-          :key="player.id"
-          :label="player.name"
-          :value="player.id"
-        />
-      </el-select>
-
-      <el-select
         v-model="daysFilter"
         placeholder="时间范围"
         style="width: 150px"
@@ -53,15 +21,7 @@
         <el-option label="全部" :value="0" />
       </el-select>
 
-      <el-select v-model="filterType" placeholder="筛选类型" clearable>
-        <el-option label="全部" value="" />
-        <el-option label="友谊赛" value="friendly" />
-        <el-option label="联赛" value="league" />
-        <el-option label="杯赛" value="cup" />
-        <el-option label="训练" value="training" />
-      </el-select>
-
-      <el-button type="primary" @click="loadMatches" :loading="loading">
+      <el-button type="primary" @click="loadMatches(true)" :loading="loading">
         <el-icon><Search /></el-icon>
         查询
       </el-button>
@@ -112,6 +72,16 @@
       </el-card>
 
       <el-empty v-if="!loading && filteredMatches.length === 0" description="暂无比赛记录" />
+    </div>
+
+    <div class="pagination-bar">
+      <el-pagination
+        v-model:current-page="pageIndex"
+        :page-size="pageSize"
+        :total="total"
+        layout="total, prev, pager, next"
+        @current-change="loadMatches()"
+      />
     </div>
 
     <!-- 创建比赛弹窗 -->
@@ -254,19 +224,19 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Location, Search, Refresh, Plus } from '@element-plus/icons-vue'
-import { getTeamMatches, getRecentMatches, getAllRecentMatches, getAllMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
+import { getAllMatches, getAllRecentMatches, createMatch, type MatchListItem, type CreateMatchRequest, type PlayerStatRequest } from '@/api/matches'
 import TeamLogo from '@/components/TeamLogo.vue'
-import { teamsApi, type Team } from '@/api/teams'
 import { playersApi, type Player } from '@/api/players'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const matches = ref<MatchListItem[]>([])
-const allTeams = ref<Team[]>([])
-const teamPlayers = ref<Player[]>([])
 const myTeamPlayers = ref<Player[]>([])
 const loading = ref(false)
+const total = ref(0)
+const pageIndex = ref(1)
+const pageSize = ref(9)
 
 // 球员统计数据
 interface PlayerStatData {
@@ -314,81 +284,20 @@ const createRules: FormRules = {
 }
 
 // 筛选条件
-const selectedTeamId = ref<number | null>(null)
-const selectedPlayerId = ref<number | null>(null)
 const daysFilter = ref<number>(0) // 默认全部（0=不限制时间）
-const filterType = ref('')
-
-// 从 localStorage 获取用户的球队 ID
-const getUserTeamId = () => {
-  const userStr = localStorage.getItem('user')
-  if (userStr) {
-    const user = JSON.parse(userStr)
-    return user.my_team_id
-  }
-  return null
-}
 
 // 过滤后的比赛列表
 const filteredMatches = computed(() => {
-  let result = matches.value
-
-  if (filterType.value) {
-    result = result.filter(m => m.match_type === filterType.value)
-  }
-
-  // 如果选择了球员，只包含该球员参与的比赛
-  if (selectedPlayerId.value) {
-    // 这里需要在后端支持按球员查询，暂时先显示所有比赛
-    // TODO: 等后端添加按球员查询的接口后再实现
-  }
-
   // 按日期倒序
-  return result.sort((a, b) => {
+  return matches.value.sort((a, b) => {
     return new Date(b.match_date).getTime() - new Date(a.match_date).getTime()
   })
 })
 
-// 加载所有球队
-const loadAllTeams = async () => {
-  try {
-    const response = await teamsApi.getAll()
-    allTeams.value = response.list || []
-  } catch (error) {
-    console.error('加载球队列表失败:', error)
-    ElMessage.error('加载球队列表失败')
-  }
-}
-
-// 加载球队球员
-const loadTeamPlayers = async (teamId: number) => {
-  try {
-    const response = await playersApi.getByTeam(teamId)
-    teamPlayers.value = response.list || []
-  } catch (error) {
-    console.error('加载球员列表失败:', error)
-  }
-}
-
-// 球队改变时
-const onTeamChange = (teamId: number | null) => {
-  selectedPlayerId.value = null // 清空球员选择
-  if (teamId) {
-    loadTeamPlayers(teamId)
-  } else {
-    teamPlayers.value = []
-  }
-  // 不自动加载，等待用户点击查询按钮
-}
-
 // 重置筛选条件
 const resetFilters = () => {
-  selectedTeamId.value = null
-  selectedPlayerId.value = null
-  daysFilter.value = 0 // 重置为全部
-  filterType.value = ''
-  teamPlayers.value = []
-
+  daysFilter.value = 0
+  pageIndex.value = 1
   loadMatches()
 }
 
@@ -501,32 +410,15 @@ const handleCreateMatch = async () => {
 }
 
 // 加载比赛列表
-const loadMatches = async () => {
+const loadMatches = async (resetPage = false) => {
+  if (resetPage) pageIndex.value = 1
   loading.value = true
   try {
-    let response
-
-    // 判断是否选择了球队
-    if (selectedTeamId.value) {
-      // 查询指定球队的比赛
-      if (daysFilter.value > 0) {
-        response = await getRecentMatches(selectedTeamId.value, daysFilter.value)
-      } else {
-        response = await getTeamMatches(selectedTeamId.value)
-      }
-    } else {
-      // 没有选择球队，查询所有球队的比赛
-      if (daysFilter.value > 0) {
-        response = await getAllRecentMatches(daysFilter.value)
-      } else {
-        // daysFilter = 0，查询所有比赛（不限制时间）
-        response = await getAllMatches({ limit: 10000 })
-      }
-    }
-
-    // 响应拦截器已经提取了 data 字段，所以 response.data 就是 { list: [...], total: ... }
-    const data = response.data || response
+    const data = daysFilter.value > 0
+      ? await getAllRecentMatches(daysFilter.value).then(r => r.data || r)
+      : await getAllMatches({ page_index: pageIndex.value - 1, page_count: pageSize.value }).then(r => r.data || r)
     matches.value = data.list || []
+    total.value = data.total || 0
   } catch (error: any) {
     console.error('加载比赛列表失败:', error)
     ElMessage.error(error.message || '加载比赛列表失败')
@@ -575,12 +467,7 @@ const getMatchTypeText = (type: string) => {
   return map[type] || type
 }
 
-onMounted(async () => {
-  // 加载所有球队列表
-  await loadAllTeams()
-
-  // 不自动选择球队，让用户自己选择，或直接查询所有球队
-  // 页面加载时会自动查询所有球队最近7天的比赛
+onMounted(() => {
   loadMatches()
 })
 </script>
@@ -701,5 +588,11 @@ onMounted(async () => {
 .score-separator {
   font-size: 18px;
   font-weight: bold;
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 </style>
