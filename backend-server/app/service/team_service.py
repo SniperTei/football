@@ -32,6 +32,10 @@ class TeamService:
             raise NotFoundException("球队", team_id)
         return team
 
+    def create_team_simple(self, **kwargs) -> Team:
+        """简单创建球队（注册时使用，不需要用户信息）"""
+        return self.team_repo.create(**kwargs)
+
     def create_team(self, team_data: TeamCreate, current_user: User) -> Team:
         """创建球队"""
         # 只有普通用户才检查和设置 my_team_id

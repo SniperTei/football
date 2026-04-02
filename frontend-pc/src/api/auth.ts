@@ -14,16 +14,14 @@ export interface LoginResponse {
   user: User
 }
 
-export interface EnhancedRegisterSelectExisting {
-  register_type: 'select_existing'
+export interface RegisterWithTeamRequest {
   username: string
   email: string
   password: string
   team_id: number
 }
 
-export interface EnhancedRegisterCreateNew {
-  register_type: 'create_new'
+export interface RegisterNewTeamRequest {
   username: string
   email: string
   password: string
@@ -53,7 +51,11 @@ export const authApi = {
   register: (username: string, email: string, password: string) =>
     api.post<User>('/auth/register', { username, email, password }),
 
-  // 增强用户注册（支持选择球队或创建新球队）
-  registerEnhanced: (data: EnhancedRegisterSelectExisting | EnhancedRegisterCreateNew) =>
-    api.post<EnhancedRegisterResponse>('/auth/register/enhanced', data)
+  // 注册并加入现有球队
+  registerWithTeam: (data: RegisterWithTeamRequest) =>
+    api.post<EnhancedRegisterResponse>('/auth/register/with-team', data),
+
+  // 注册并创建新球队
+  registerNewTeam: (data: RegisterNewTeamRequest) =>
+    api.post<EnhancedRegisterResponse>('/auth/register/new-team', data)
 }

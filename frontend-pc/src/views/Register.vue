@@ -161,7 +161,7 @@ const handleRegisterTypeChange = () => {
 const loadTeams = async () => {
   teamsLoading.value = true
   try {
-    const response = await teamsApi.getAll()
+    const response = await teamsApi.getAll({ page_count: 999 })
     teams.value = response.data.list || []
   } finally {
     teamsLoading.value = false
@@ -175,25 +175,21 @@ const handleRegister = async () => {
     if (valid) {
       loading.value = true
       try {
-        const result = await authStore.registerEnhanced(
-          registerType.value === 'select_existing'
-            ? {
-                register_type: 'select_existing',
-                username: form.username,
-                email: form.email,
-                password: form.password,
-                team_id: form.team_id!
-              }
-            : {
-                register_type: 'create_new',
-                username: form.username,
-                email: form.email,
-                password: form.password,
-                team_name: form.team_name,
-                team_description: form.team_description || undefined,
-                founded_year: form.founded_year
-              }
-        )
+        const result = registerType.value === 'select_existing'
+          ? await authStore.registerWithTeam({
+              username: form.username,
+              email: form.email,
+              password: form.password,
+              team_id: form.team_id!
+            })
+          : await authStore.registerNewTeam({
+              username: form.username,
+              email: form.email,
+              password: form.password,
+              team_name: form.team_name,
+              team_description: form.team_description || undefined,
+              founded_year: form.founded_year
+            })
         ElMessage.success(result.message || '注册成功')
 
         // 自动登录

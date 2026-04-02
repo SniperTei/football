@@ -41,13 +41,16 @@ class AuthService:
         # 处理球队逻辑
         my_team_id = None
         if team_id:
-            # 选择现有球队
+            # 选择现有球队 - 验证球队是否存在
+            from app.service.team_service import TeamService
+            team_service = TeamService(self.db)
+            team_service.get_team_by_id(team_id)
             my_team_id = team_id
         elif create_team_data:
             # 创建新球队
             from app.service.team_service import TeamService
             team_service = TeamService(self.db)
-            team = team_service.create(
+            team = team_service.create_team_simple(
                 name=create_team_data["name"],
                 description=create_team_data.get("description"),
                 founded_year=create_team_data.get("founded_year")

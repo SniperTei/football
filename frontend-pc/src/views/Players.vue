@@ -237,7 +237,7 @@ const handleReset = () => {
 
 const loadTeams = async () => {
   try {
-    const res = await teamsApi.getAll()
+    const res = await teamsApi.getAll({ page_count: 999 })
     teams.value = res.data.list
   } catch (error) {
     console.error('加载球队列表失败:', error)

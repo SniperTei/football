@@ -364,7 +364,7 @@ const defaultIfEmpty = (v: string | number): number => {
 
 // 获取焦点时自动清零
 const clearIfZero = (row: PlayerStatData, field: 'goals' | 'assists') => {
-  if (Number(row[field]) === 0) row[field] = '' as any
+  if (Number(row[field]) === 0) row[field] = ''
 }
 
 // 禁用未来日期

@@ -272,23 +272,25 @@
                   </span>
                 </template>
               </el-table-column>
-              <el-table-column label="进球" width="120" align="center">
+              <el-table-column label="进球" width="100" align="center">
                 <template #default="{ row }">
-                  <el-input-number
+                  <el-input
                     v-model="row.goals"
-                    :min="0"
-                    controls-position="right"
                     size="small"
+                    @focus="clearIfZero(row, 'goals')"
+                    @input="(v: string) => row.goals = formatStatInput(v)"
+                    @blur="row.goals = defaultIfEmpty(row.goals)"
                   />
                 </template>
               </el-table-column>
-              <el-table-column label="助攻" width="120" align="center">
+              <el-table-column label="助攻" width="100" align="center">
                 <template #default="{ row }">
-                  <el-input-number
+                  <el-input
                     v-model="row.assists"
-                    :min="0"
-                    controls-position="right"
                     size="small"
+                    @focus="clearIfZero(row, 'assists')"
+                    @input="(v: string) => row.assists = formatStatInput(v)"
+                    @blur="row.assists = defaultIfEmpty(row.assists)"
                   />
                 </template>
               </el-table-column>
@@ -375,8 +377,8 @@ interface PlayerStatData {
   jersey_number?: number
   position?: string
   played: boolean
-  goals: number
-  assists: number
+  goals: number | string
+  assists: number | string
 }
 
 // 所有球员的统计数据
@@ -626,6 +628,24 @@ const onSelectedPlayersChange = () => {
   allPlayerStats.value.forEach(p => {
     p.played = selectedPlayerIds.value.includes(p.player_id)
   })
+}
+
+// 球员统计输入处理：去掉前导0，只保留数字
+const formatStatInput = (v: string): string | number => {
+  const digits = v.replace(/[^\d]/g, '')
+  if (digits === '') return ''
+  return String(Number(digits))
+}
+
+// 失焦时为空则补0
+const defaultIfEmpty = (v: string | number): number => {
+  const n = Number(v)
+  return isNaN(n) || v === '' ? 0 : n
+}
+
+// 获取焦点时自动清零
+const clearIfZero = (row: PlayerStatData, field: 'goals' | 'assists') => {
+  if (Number(row[field]) === 0) row[field] = ''
 }
 
 // 保存修改

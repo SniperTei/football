@@ -17,7 +17,6 @@ router = APIRouter()
 
 class RegisterSelectExisting(BaseModel):
     """选择现有球队注册"""
-    register_type: str = Field(default="select_existing", pattern="^select_existing$")
     username: str
     email: EmailStr
     password: str
@@ -26,7 +25,6 @@ class RegisterSelectExisting(BaseModel):
 
 class RegisterCreateNew(BaseModel):
     """创建新球队注册"""
-    register_type: str = Field(default="create_new", pattern="^create_new$")
     username: str
     email: EmailStr
     password: str
@@ -55,93 +53,93 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
         return ResponseHelper.error(msg=str(e), code=400)
 
 
-@router.post("/register/enhanced", status_code=status.HTTP_201_CREATED)
-async def register_enhanced(
-    user_data: RegisterSelectExisting | RegisterCreateNew,
+@router.post("/register/with-team", status_code=status.HTTP_201_CREATED)
+async def register_with_team(
+    user_data: RegisterSelectExisting,
     db: Session = Depends(get_db)
 ):
-    """
-    增强的用户注册
-
-    支持两种注册方式：
-    1. 选择现有球队（register_type=select_existing）：需要提供 team_id
-    2. 创建新球队（register_type=create_new）：需要提供 team_name
-
-    使用方式：
-    - 选择现有球队：{"register_type": "select_existing", "username": "test", "email": "test@example.com", "password": "123456", "team_id": 1}
-    - 创建新球队：{"register_type": "create_new", "username": "test", "email": "test@example.com", "password": "123456", "team_name": "新球队", "team_description": "描述", "founded_year": 2024}
-    """
+    """注册并加入现有球队"""
     try:
         auth_service = AuthService(db)
         team_service = TeamService(db)
 
-        # 根据注册类型分发
-        if user_data.register_type == "select_existing":
-            # 选择现有球队注册
-            user = auth_service.register(
-                username=user_data.username,
-                email=user_data.email,
-                password=user_data.password,
-                team_id=user_data.team_id
-            )
+        # 验证球队存在
+        team = team_service.get_team_by_id(user_data.team_id)
 
-            team = team_service.get_by_id(user_data.team_id)
+        user = auth_service.register(
+            username=user_data.username,
+            email=user_data.email,
+            password=user_data.password,
+            team_id=user_data.team_id
+        )
 
-            return ResponseHelper.success(
-                data={
-                    "user": {
-                        "id": user.id,
-                        "username": user.username,
-                        "email": user.email,
-                        "my_team_id": user.my_team_id,
-                        "is_admin": user.is_admin
-                    },
-                    "team": {
-                        "id": team.id,
-                        "name": team.name,
-                        "description": team.description
-                    },
-                    "message": "注册成功，已加入球队：" + team.name
+        return ResponseHelper.success(
+            data={
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "my_team_id": user.my_team_id,
+                    "is_admin": user.is_admin
                 },
-                msg="注册成功"
-            )
-
-        elif user_data.register_type == "create_new":
-            # 创建新球队注册
-            user = auth_service.register(
-                username=user_data.username,
-                email=user_data.email,
-                password=user_data.password,
-                create_team_data={
-                    "name": user_data.team_name,
-                    "description": user_data.team_description or f"{user_data.team_name}足球俱乐部",
-                    "founded_year": user_data.founded_year
-                }
-            )
-
-            team = team_service.get_by_id(user.my_team_id)
-
-            return ResponseHelper.success(
-                data={
-                    "user": {
-                        "id": user.id,
-                        "username": user.username,
-                        "email": user.email,
-                        "my_team_id": user.my_team_id,
-                        "is_admin": user.is_admin
-                    },
-                    "team": {
-                        "id": team.id,
-                        "name": team.name,
-                        "description": team.description,
-                        "founded_year": team.founded_year
-                    },
-                    "is_team_owner": True,
-                    "message": "注册成功，已创建球队：" + team.name + "，您已成为球队队长"
+                "team": {
+                    "id": team.id,
+                    "name": team.name,
+                    "description": team.description
                 },
-                msg="注册成功"
-            )
+                "message": "注册成功，已加入球队：" + team.name
+            },
+            msg="注册成功"
+        )
+    except BusinessException as e:
+        return ResponseHelper.error(msg=str(e), code=400)
+    except Exception as e:
+        return ResponseHelper.error(msg=f"注册失败: {str(e)}", code=500)
 
+
+@router.post("/register/new-team", status_code=status.HTTP_201_CREATED)
+async def register_new_team(
+    user_data: RegisterCreateNew,
+    db: Session = Depends(get_db)
+):
+    """注册并创建新球队"""
+    try:
+        auth_service = AuthService(db)
+        team_service = TeamService(db)
+
+        user = auth_service.register(
+            username=user_data.username,
+            email=user_data.email,
+            password=user_data.password,
+            create_team_data={
+                "name": user_data.team_name,
+                "description": user_data.team_description or f"{user_data.team_name}足球俱乐部",
+                "founded_year": user_data.founded_year
+            }
+        )
+
+        team = team_service.get_team_by_id(user.my_team_id)
+
+        return ResponseHelper.success(
+            data={
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "my_team_id": user.my_team_id,
+                    "is_admin": user.is_admin
+                },
+                "team": {
+                    "id": team.id,
+                    "name": team.name,
+                    "description": team.description,
+                    "founded_year": team.founded_year
+                },
+                "is_team_owner": True,
+                "message": "注册成功，已创建球队：" + team.name + "，您已成为球队队长"
+            },
+            msg="注册成功"
+        )
     except BusinessException as e:
         return ResponseHelper.error(msg=str(e), code=400)
     except Exception as e:

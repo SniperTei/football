@@ -20,7 +20,7 @@ router = APIRouter()
 @router.get("")
 async def get_teams(
     page_index: int = Query(0, ge=0, description="页码（从0开始）"),
-    page_count: int = Query(10, ge=1, le=100, description="每页数量"),
+    page_count: int = Query(10, ge=1, le=999, description="每页数量"),
     db: Session = Depends(get_db)
 ):
     """获取所有球队（公开）"""
