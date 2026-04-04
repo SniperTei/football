@@ -85,6 +85,11 @@ export const useAuthStore = defineStore('auth', () => {
     clearAuth()
   })
 
+  // 监听显示登录弹窗事件
+  window.addEventListener('auth:showLogin', () => {
+    showLoginDialog()
+  })
+
   return {
     token,
     user,

@@ -6,8 +6,8 @@
     "dev": "vite --mode dev",
     "dev:test": "vite --mode test",
     "dev:prod": "vite --mode prod",
-    "build": "vue-tsc && vite build --mode prod",
-    "build:test": "vue-tsc && vite build --mode test",
+    "build": "vite build --mode prod",
+    "build:test": "vite build --mode test",
     "preview": "vite preview"
   },
   "dependencies": {

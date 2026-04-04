@@ -61,10 +61,8 @@ api.interceptors.response.use(
         localStorage.removeItem('user')
         // 触发事件通知其他组件
         window.dispatchEvent(new Event('auth:logout'))
-        // 只在不是登录页时跳转
-        if (!window.location.pathname.includes('/login')) {
-          window.location.href = '/login'
-        }
+        // 显示登录弹窗
+        window.dispatchEvent(new Event('auth:showLogin'))
       }
 
       return Promise.reject(new Error(message))
@@ -86,10 +84,8 @@ api.interceptors.response.use(
       localStorage.removeItem('user')
       // 触发事件通知其他组件
       window.dispatchEvent(new Event('auth:logout'))
-      // 只在不是登录页时跳转
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login'
-      }
+      // 显示登录弹窗
+      window.dispatchEvent(new Event('auth:showLogin'))
     }
 
     return Promise.reject(error)
