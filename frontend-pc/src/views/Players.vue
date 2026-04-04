@@ -52,9 +52,13 @@
         </el-button>
       </div>
 
-      <el-table :data="players" v-loading="loading" style="width: 100%; margin-top: 20px">
+      <el-table :data="players" v-loading="loading" style="width: 100%; margin-top: 20px" @row-click="handleRowClick">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="姓名" min-width="120" />
+        <el-table-column prop="name" label="姓名" min-width="120">
+          <template #default="{ row }">
+            <span class="player-name-link">{{ row.name }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="position" label="位置" width="100" />
         <el-table-column prop="jersey_number" label="球衣号码" width="100" />
         <el-table-column prop="team_id" label="所属球队" min-width="150">
@@ -64,10 +68,10 @@
         </el-table-column>
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
-            <el-button v-if="canEditPlayer(row)" type="primary" text @click="showDialog('edit', row)">
+            <el-button v-if="canEditPlayer(row)" type="primary" text @click.stop="showDialog('edit', row)">
               编辑
             </el-button>
-            <el-button v-if="canEditPlayer(row)" type="danger" text @click="handleDelete(row)">
+            <el-button v-if="canEditPlayer(row)" type="danger" text @click.stop="handleDelete(row)">
               删除
             </el-button>
           </template>
@@ -123,12 +127,18 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { playersApi, teamsApi } from '@/api'
 import { useAuthStore } from '@/stores/auth'
 import { ElMessage, ElMessageBox, type FormInstance } from 'element-plus'
 import { Search, Refresh } from '@element-plus/icons-vue'
 
 const authStore = useAuthStore()
+const router = useRouter()
+
+const handleRowClick = (row: any) => {
+  router.push(`/players/${row.id}`)
+}
 const loading = ref(false)
 const submitLoading = ref(false)
 const dialogVisible = ref(false)
@@ -335,5 +345,18 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   margin-top: 16px;
+}
+
+.player-name-link {
+  color: #409eff;
+  cursor: pointer;
+}
+
+.player-name-link:hover {
+  text-decoration: underline;
+}
+
+:deep(.el-table__row) {
+  cursor: pointer;
 }
 </style>

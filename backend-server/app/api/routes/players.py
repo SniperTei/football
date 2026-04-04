@@ -66,6 +66,17 @@ async def get_players_by_team(team_id: int, db: Session = Depends(get_db)):
         return ResponseHelper.error(msg=str(e), code=404)
 
 
+@router.get("/{player_id}/detail")
+async def get_player_detail(player_id: int, db: Session = Depends(get_db)):
+    """获取球员详细信息（聚合数据：基本信息 + 生涯统计 + 出勤率 + 最近比赛）"""
+    try:
+        service = PlayerService(db)
+        detail = service.get_player_detail(player_id)
+        return ResponseHelper.success(data=detail, msg="获取球员详情成功")
+    except Exception as e:
+        return ResponseHelper.not_found("球员")
+
+
 @router.get("/{player_id}")
 async def get_player(player_id: int, db: Session = Depends(get_db)):
     """获取单个球员详情（公开）"""

@@ -8,6 +8,7 @@ from app.models.user import User
 from app.schemas.player import PlayerCreate, PlayerUpdate
 from app.repository.player import PlayerRepository
 from app.repository.team import TeamRepository
+from app.repository.match_player import MatchPlayerRepository
 from app.service.exceptions import NotFoundException, DuplicateException, ValidationException
 
 
@@ -18,6 +19,7 @@ class PlayerService:
         self.db = db
         self.player_repo = PlayerRepository(db)
         self.team_repo = TeamRepository(db)
+        self.match_player_repo = MatchPlayerRepository(db)
 
     def get_all_players(self, skip: int = 0, limit: int = 100) -> List[Player]:
         """获取所有球员"""
@@ -80,6 +82,74 @@ class PlayerService:
         # 检查球员是否存在
         player = self.get_player_by_id(player_id)
         self.player_repo.delete(player_id)
+
+    def get_player_detail(self, player_id: int) -> dict:
+        """获取球员详情（聚合信息：基本信息 + 生涯统计 + 出勤率 + 最近比赛）"""
+        player = self.get_player_by_id(player_id)
+
+        # 球队名称
+        team = self.team_repo.get_by_id(player.team_id)
+        team_name = team.name if team else '-'
+        team_logo_url = team.logo_url if team else None
+
+        # 生涯统计
+        career_stats = self.match_player_repo.get_player_career_stats(player_id)
+
+        # 出勤率
+        attendance_rate = 0.0
+        if career_stats['total_matches'] > 0:
+            attendance_rate = round(
+                (career_stats['played_matches'] / career_stats['total_matches']) * 100, 2
+            )
+
+        # 最近比赛记录（join Match 获取比赛信息）
+        match_players = self.match_player_repo.get_by_player(player_id, limit=20)
+
+        recent_matches = []
+        for mp in match_players:
+            match = mp.match
+            if not match:
+                continue
+
+            # 判断对手
+            is_home = match.home_team_id == player.team_id
+            opponent_team = match.away_team if is_home else match.home_team
+            opponent_name = opponent_team.name if opponent_team else '-'
+
+            # 比分
+            home_score = match.home_score if match.home_score is not None else '-'
+            away_score = match.away_score if match.away_score is not None else '-'
+
+            recent_matches.append({
+                'match_id': match.id,
+                'match_date': match.match_date.isoformat() if match.match_date else None,
+                'match_type': match.match_type,
+                'status': match.status,
+                'is_home': is_home,
+                'opponent_name': opponent_name,
+                'home_score': home_score,
+                'away_score': away_score,
+                'played': mp.played,
+                'goals': mp.goals,
+                'assists': mp.assists,
+                'yellow_cards': mp.yellow_cards,
+                'red_cards': mp.red_cards,
+            })
+
+        return {
+            'id': player.id,
+            'name': player.name,
+            'position': player.position,
+            'jersey_number': player.jersey_number,
+            'team_id': player.team_id,
+            'team_name': team_name,
+            'team_logo_url': team_logo_url,
+            'created_at': player.created_at.isoformat() if player.created_at else None,
+            'updated_at': player.updated_at.isoformat() if player.updated_at else None,
+            'career_stats': career_stats,
+            'attendance_rate': attendance_rate,
+            'recent_matches': recent_matches,
+        }
 
     def search_players(self, keyword: str) -> List[Player]:
         """搜索球员"""
