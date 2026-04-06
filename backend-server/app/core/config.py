@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "Football Platform"
     DEBUG: bool = True
 
+    # Anthropic API 配置（世界杯预测模块）
+    ANTHROPIC_API_KEY: str = Field(default="", description="Anthropic API key for Claude")
+
     model_config = SettingsConfigDict(
         env_file=_get_env_file(),
         env_file_encoding="utf-8",

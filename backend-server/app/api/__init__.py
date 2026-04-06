@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.routes import auth, teams, players, matches, match_players, stats
+from app.api.routes import auth, teams, players, matches, match_players, stats, wc
 
 api_router = APIRouter()
 
@@ -20,3 +20,6 @@ api_router.include_router(match_players.router, prefix="/match-players", tags=["
 
 # 统计数据路由（公开）
 api_router.include_router(stats.router, prefix="/stats", tags=["统计"])
+
+# 世界杯预测路由（独立模块）
+api_router.include_router(wc.router, prefix="/wc", tags=["世界杯预测"])

@@ -69,6 +69,11 @@ const routes: RouteRecordRaw[] = [
         name: 'HeadToHead',
         component: () => import('@/views/HeadToHead.vue')
       },
+      {
+        path: 'worldcup',
+        name: 'WorldCup',
+        component: () => import('@/views/WorldCup.vue')
+      },
       // 管理页面（需要登录）
       {
         path: 'admin/teams',

@@ -17,6 +17,7 @@
           <el-menu-item index="/players" @click="$router.push('/players')">球员</el-menu-item>
           <el-menu-item :index="matchesMenuIndex" @click="handleMatchesClick">比赛</el-menu-item>
           <el-menu-item index="/stats" @click="$router.push('/stats')">数据统计</el-menu-item>
+          <el-menu-item index="/worldcup" @click="$router.push('/worldcup')">世界杯</el-menu-item>
           <!-- 历史战绩已隐藏，保留在球队详情页面 -->
         </el-menu>
         <div class="user-section">
