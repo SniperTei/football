@@ -1,4 +1,4 @@
-import anthropic
+import httpx
 import json
 import hashlib
 import logging
@@ -8,34 +8,39 @@ logger = logging.getLogger(__name__)
 
 
 class WCAIService:
-    """Claude API 调用服务"""
+    """AI 预测服务，支持 OpenAI 兼容 API（智谱等）"""
 
-    def __init__(self, api_key: str):
-        self.client = anthropic.Anthropic(api_key=api_key)
+    def __init__(self, api_key: str, base_url: str = "", model: str = "glm-4"):
+        self.api_key = api_key
+        self.base_url = base_url.rstrip("/") if base_url else "https://open.bigmodel.cn/api/paas/v4"
+        self.model = model
 
     def predict_match(self, home_team: dict, away_team: dict, stage: str = "group") -> dict:
-        """
-        调用 Claude API 预测比赛结果
-        返回: {
-            "home_win_prob": float,
-            "draw_prob": float,
-            "away_win_prob": float,
-            "predicted_home_score": float,
-            "predicted_away_score": float,
-            "reasoning": str
-        }
-        """
         prompt = self._build_prompt(home_team, away_team, stage)
 
         try:
-            response = self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=1024,
-                messages=[{"role": "user", "content": prompt}]
+            response = httpx.post(
+                f"{self.base_url}/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {self.api_key}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": self.model,
+                    "max_tokens": 1024,
+                    "messages": [{"role": "user", "content": prompt}],
+                },
+                timeout=60.0,
             )
-            return self._parse_response(response.content[0].text)
+            response.raise_for_status()
+            data = response.json()
+            text = data["choices"][0]["message"]["content"]
+            return self._parse_response(text)
+        except httpx.HTTPStatusError as e:
+            logger.error(f"AI API call failed: {e.response.status_code} {e.response.text}")
+            raise
         except Exception as e:
-            logger.error(f"Claude API call failed: {e}")
+            logger.error(f"AI API call failed: {e}")
             raise
 
     def _build_prompt(self, home: dict, away: dict, stage: str) -> str:

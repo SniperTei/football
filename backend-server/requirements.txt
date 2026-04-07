@@ -14,7 +14,7 @@ pandas>=2.0.0
 openpyxl>=3.0.0
 
 # AI 依赖（世界杯预测模块）
-anthropic>=0.40.0
+httpx>=0.27.0
 
 # 测试依赖
 pytest==8.3.4

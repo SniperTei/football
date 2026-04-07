@@ -114,10 +114,10 @@ class WCService:
     def generate_predictions(self, match_ids: List[int] = None,
                              force: bool = False) -> dict:
         """生成 AI 预测"""
-        if not settings.ANTHROPIC_API_KEY:
-            raise ValueError("未配置 ANTHROPIC_API_KEY")
+        if not settings.AI_API_KEY:
+            raise ValueError("未配置 AI_API_KEY")
 
-        ai_service = WCAIService(settings.ANTHROPIC_API_KEY)
+        ai_service = WCAIService(settings.AI_API_KEY, settings.AI_BASE_URL, settings.AI_MODEL)
 
         # 确定要预测的比赛
         if match_ids:
@@ -162,7 +162,7 @@ class WCService:
                     predicted_home_score=prediction.get("predicted_home_score"),
                     predicted_away_score=prediction.get("predicted_away_score"),
                     reasoning=prediction.get("reasoning"),
-                    model_version="claude-sonnet-4-20250514",
+                    model_version=settings.AI_MODEL,
                     prompt_hash=prompt_hash,
                 )
                 generated += 1

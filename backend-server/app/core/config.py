@@ -34,8 +34,10 @@ class Settings(BaseSettings):
     APP_NAME: str = "Football Platform"
     DEBUG: bool = True
 
-    # Anthropic API 配置（世界杯预测模块）
-    ANTHROPIC_API_KEY: str = Field(default="", description="Anthropic API key for Claude")
+    # AI API 配置（世界杯预测模块，支持智谱等 OpenAI 兼容接口）
+    AI_API_KEY: str = Field(default="", description="AI API key")
+    AI_BASE_URL: str = Field(default="https://open.bigmodel.cn/api/paas/v4", description="AI API base URL")
+    AI_MODEL: str = Field(default="glm-4", description="AI model name")
 
     model_config = SettingsConfigDict(
         env_file=_get_env_file(),

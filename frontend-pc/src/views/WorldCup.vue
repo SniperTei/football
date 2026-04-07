@@ -90,6 +90,13 @@
           <el-table-column label="预测比分" width="100" align="center">
             <template #default="{ row }">
               <span v-if="row.prediction">
+                {{ Math.round(row.prediction.predicted_home_score) }} - {{ Math.round(row.prediction.predicted_away_score) }}
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="期望进球" width="110" align="center">
+            <template #default="{ row }">
+              <span v-if="row.prediction" style="color: #909399; font-size: 12px;">
                 {{ row.prediction.predicted_home_score?.toFixed(1) }} - {{ row.prediction.predicted_away_score?.toFixed(1) }}
               </span>
             </template>
@@ -118,7 +125,7 @@
             </p>
             <el-button
               type="primary"
-              @click="handleGeneratePredictions"
+              @click="handleGeneratePredictions()"
               :loading="generating"
             >
               {{ generating ? '生成中...' : '生成预测' }}
