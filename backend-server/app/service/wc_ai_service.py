@@ -27,7 +27,7 @@ class WCAIService:
                 },
                 json={
                     "model": self.model,
-                    "max_tokens": 1024,
+                    "max_tokens": 2048,
                     "messages": [{"role": "user", "content": prompt}],
                 },
                 timeout=60.0,
@@ -69,7 +69,7 @@ Respond ONLY with valid JSON in this exact format (no markdown, no explanation o
     "away_win_prob": <float 0-100>,
     "predicted_home_score": <float>,
     "predicted_away_score": <float>,
-    "reasoning": "<2-3 sentence analysis in Chinese>"
+    "reasoning": "<detailed analysis in Chinese, 150-300 words, covering: 1)双方实力对比与排名分析 2)近期状态与攻防表现 3)世界杯经验与心理因素 4)关键球员对决与战术看点 5)最终预测依据总结>"
 }}
 
 The three probabilities must sum to 100. Consider rankings, form, WC experience, and confederation strength."""

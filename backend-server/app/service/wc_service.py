@@ -123,6 +123,8 @@ class WCService:
         if match_ids:
             matches = [self.match_repo.get_by_id(mid) for mid in match_ids]
             matches = [m for m in matches if m is not None]
+        elif force:
+            matches = self.match_repo.get_all(limit=1000)
         else:
             matches = self.match_repo.get_unpredicted_matches()
 
