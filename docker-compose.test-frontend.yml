@@ -10,7 +10,7 @@ services:
         - VITE_API_BASE_URL=http://localhost:8021
     container_name: football_platform_frontend_test
     ports:
-      - "80:80"
+      - "8022:80"
     networks:
       - football_network
     restart: unless-stopped
