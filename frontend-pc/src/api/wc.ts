@@ -83,5 +83,6 @@ export const wcApi = {
   createMatch: (data: any) => api.post('/wc/matches', data),
   updateMatch: (id: number, data: any) => api.put(`/wc/matches/${id}`, data),
   generatePredictions: (data?: { match_ids?: number[]; force_regenerate?: boolean }) =>
-    api.post('/wc/predictions/generate', data || {}, { timeout: 180000 }),
+    api.post('/wc/predictions/generate', data || {}),
+  getPredictionStatus: () => api.get('/wc/predictions/generate/status'),
 }

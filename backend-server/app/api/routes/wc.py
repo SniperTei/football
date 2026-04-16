@@ -1,7 +1,7 @@
 from typing import Optional
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
-from app.core.database import get_db
+from app.core.database import get_db, SessionLocal
 from app.api.dependencies import get_current_user, get_current_admin
 from app.models.user import User
 from app.service.wc_service import WCService
@@ -12,6 +12,13 @@ from app.schemas.wc import (
 from app.utils.response import ResponseHelper
 
 router = APIRouter()
+
+# 后台任务状态
+_task_status = {
+    "running": False,
+    "progress": "",
+    "result": None,
+}
 
 
 # ==================== 公开接口 ====================
@@ -168,21 +175,48 @@ async def update_wc_match(
     return ResponseHelper.success(data=match, msg="更新成功")
 
 
+def _run_predictions(force: bool, match_ids: list = None):
+    """后台任务：生成 AI 预测"""
+    db = SessionLocal()
+    try:
+        service = WCService(db)
+        _task_status["running"] = True
+        _task_status["result"] = None
+
+        result = service.generate_predictions(match_ids=match_ids, force=force)
+
+        _task_status["result"] = result
+        _task_status["progress"] = f"完成: {result['generated']} 场新预测, {result['skipped']} 场跳过, {result['errors']} 场失败"
+    except Exception as e:
+        _task_status["progress"] = f"失败: {str(e)}"
+        _task_status["result"] = {"error": str(e)}
+    finally:
+        _task_status["running"] = False
+        db.close()
+
+
 @router.post("/predictions/generate")
 async def generate_predictions(
     request: PredictionGenerateRequest,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin)
 ):
-    """触发 AI 预测生成"""
-    service = WCService(db)
-    try:
-        result = service.generate_predictions(
-            match_ids=request.match_ids,
-            force=request.force_regenerate
-        )
-        return ResponseHelper.success(data=result, msg=f"生成完成: {result['generated']} 场预测")
-    except ValueError as e:
-        return ResponseHelper.error(msg=str(e), code=400)
-    except Exception as e:
-        return ResponseHelper.error(msg=f"预测生成失败: {str(e)}", code=500)
+    """触发 AI 预测生成（后台异步执行）"""
+    if _task_status["running"]:
+        return ResponseHelper.error(msg="预测任务正在执行中，请稍后", code=400)
+
+    if not __import__('app.core.config', fromlist=['settings']).settings.AI_API_KEY:
+        return ResponseHelper.error(msg="未配置 AI_API_KEY", code=400)
+
+    background_tasks.add_task(_run_predictions, request.force_regenerate, request.match_ids)
+    _task_status["progress"] = "已启动，正在生成中..."
+    return ResponseHelper.success(data={"status": "started"}, msg="预测任务已启动，请稍后查询进度")
+
+
+@router.get("/predictions/generate/status")
+async def get_prediction_status(
+    db: Session = Depends(get_db)
+):
+    """查询预测生成任务状态"""
+    return ResponseHelper.success(data=_task_status)

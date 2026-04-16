@@ -121,15 +121,19 @@
               </div>
             </template>
             <p style="color: #909399; margin-bottom: 16px;">
-              点击按钮调用 Claude AI 预测所有未预测的小组赛。每次生成约需 2-5 分钟。
+              点击按钮调用 AI 预测所有未预测的小组赛。每次生成约需 2-5 分钟。
             </p>
             <el-button
               type="primary"
               @click="handleGeneratePredictions()"
               :loading="generating"
+              :disabled="generating"
             >
               {{ generating ? '生成中...' : '生成预测' }}
             </el-button>
+            <div v-if="taskProgress" style="margin-top: 12px; color: #606266;">
+              {{ taskProgress }}
+            </div>
             <el-button @click="handleGeneratePredictions(true)" :loading="generating">
               强制重新生成
             </el-button>
@@ -337,17 +341,43 @@ const loadTeams = async () => {
   }
 }
 
+const taskProgress = ref('')
+let pollTimer: ReturnType<typeof setInterval> | null = null
+
+const pollStatus = () => {
+  pollTimer = setInterval(async () => {
+    try {
+      const res = await wcApi.getPredictionStatus()
+      const status = res.data
+      taskProgress.value = status.progress || ''
+      if (!status.running) {
+        if (pollTimer) clearInterval(pollTimer)
+        pollTimer = null
+        generating.value = false
+        if (status.result && !status.result.error) {
+          ElMessage.success(taskProgress.value)
+        }
+        await Promise.all([loadGroups(), loadMatches()])
+      }
+    } catch {
+      if (pollTimer) clearInterval(pollTimer)
+      pollTimer = null
+      generating.value = false
+    }
+  }, 30000)
+}
+
 const handleGeneratePredictions = async (force = false) => {
   generating.value = true
+  taskProgress.value = '已提交，等待开始...'
   try {
     const res = await wcApi.generatePredictions({ force_regenerate: force })
-    const result = res.data
-    ElMessage.success(`生成完成: ${result.generated} 场新预测, ${result.skipped} 场跳过, ${result.errors} 场失败`)
-    await Promise.all([loadGroups(), loadMatches()])
+    if (res.data?.status === 'started') {
+      pollStatus()
+    }
   } catch (e: any) {
-    ElMessage.error(e.message || '生成失败')
-  } finally {
     generating.value = false
+    ElMessage.error(e.message || e.msg || '生成失败')
   }
 }
 

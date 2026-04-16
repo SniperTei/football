@@ -141,11 +141,16 @@
         <template #header>
           <span class="card-title">🆚 对战历史</span>
         </template>
-        <el-descriptions :column="4" border>
+        <el-descriptions :column="5" border>
           <el-descriptions-item label="总场次">{{ headToHeadStats.total_matches }}</el-descriptions-item>
           <el-descriptions-item label="胜">{{ headToHeadStats.team_wins }}</el-descriptions-item>
           <el-descriptions-item label="平">{{ headToHeadStats.team_draws }}</el-descriptions-item>
           <el-descriptions-item label="负">{{ headToHeadStats.team_losses }}</el-descriptions-item>
+          <el-descriptions-item label="胜率">
+            <span :style="{ color: headToHeadStats.total_matches ? (headToHeadStats.team_wins / headToHeadStats.total_matches * 100 >= 50 ? '#67c23a' : '#f56c6c') : '#999', fontWeight: 'bold' }">
+              {{ headToHeadStats.total_matches ? (headToHeadStats.team_wins / headToHeadStats.total_matches * 100).toFixed(1) : 0 }}%
+            </span>
+          </el-descriptions-item>
         </el-descriptions>
 
         <el-table :data="headToHeadStats.recent_matches" stripe style="margin-top: 15px" size="small">
@@ -419,7 +424,7 @@ const loadTeamData = async () => {
     team.value = teamRes.data
 
     // 加载其他球队（用于对战选择）
-    const teamsRes = await teamsApi.getAll()
+    const teamsRes = await teamsApi.getAll({ page_index: 0, page_count: 999 })
     const allTeams = teamsRes.data.list || []
     otherTeams.value = allTeams.filter(t => t.id !== teamId)
 
