@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # Vue 前端 - 测试环境
+  frontend:
+    build:
+      context: ./frontend-pc
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:8021
+    container_name: football_platform_frontend_test
+    ports:
+      - "80:80"
+    networks:
+      - football_network
+    restart: unless-stopped
+
+networks:
+  football_network:
+    driver: bridge
