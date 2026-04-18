@@ -52,6 +52,7 @@ def _register_font():
         "/usr/share/fonts/wqy-zenhei",
         "/usr/share/fonts/truetype/noto",
         "/usr/share/fonts/opentype/noto",
+        "/usr/share/fonts",
         "/System/Library/Fonts",
         "/Library/Fonts",
         os.path.expanduser("~/Library/Fonts"),
@@ -61,28 +62,34 @@ def _register_font():
     font_name = "ChineseFont"
     font_file = None
     for d in font_dirs:
-        if not os.path.isdir(d):
+        if os.path.isdir(d):
+            print(f"[DEBUG] Checking dir: {d}")
+        else:
+            print(f"[DEBUG] Not dir or missing: {d}")
             continue
-        for fname in os.listdir(d):
-            lower = fname.lower()
-            if lower.endswith((".ttf", ".ttc")):
-                if any(
-                    k in lower
-                    for k in (
-                        "pingfang",
-                        "heiti",
-                        "yahei",
-                        "songti",
-                        "noto",
-                        "source",
-                        "simhei",
-                        "simsun",
-                        "wqy",
-                        "wenquanyi",
-                    )
-                ):
-                    font_file = os.path.join(d, fname)
-                    break
+        try:
+            for fname in os.listdir(d):
+                lower = fname.lower()
+                if lower.endswith((".ttf", ".ttc")):
+                    if any(
+                        k in lower
+                        for k in (
+                            "pingfang",
+                            "heiti",
+                            "yahei",
+                            "songti",
+                            "noto",
+                            "source",
+                            "simhei",
+                            "simsun",
+                            "wqy",
+                            "wenquanyi",
+                        )
+                    ):
+                        font_file = os.path.join(d, fname)
+                        break
+        except Exception:
+            pass
         if font_file:
             break
 
@@ -94,6 +101,7 @@ def _register_font():
             "/usr/share/fonts/wqy-zenhei/wqy-microhei.ttc",
             "/System/Library/Fonts/PingFang.ttc",
             "/System/Library/Fonts/STHeiti Light.ttc",
+            "/app/fonts/wqy-zenhei.ttc",
         ]
         for c in candidates:
             if os.path.exists(c):
@@ -102,12 +110,12 @@ def _register_font():
 
     if font_file:
         try:
-            print(f"[DEBUG] Found font: {font_file}")
+            print(f"[DEBUG] Using font: {font_file}")
             if font_file.lower().endswith(".ttc"):
                 pdfmetrics.registerFont(TTFont(font_name, font_file, subfontIndex=0))
             else:
                 pdfmetrics.registerFont(TTFont(font_name, font_file))
-            print(f"[DEBUG] Font registered successfully: {font_name}")
+            print(f"[DEBUG] Font registered: {font_name}")
             return
         except Exception as e:
             print(f"[DEBUG] Font register failed: {e}")
