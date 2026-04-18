@@ -245,7 +245,7 @@ class MatchService:
         if start_date and end_date:
             try:
                 s = datetime.strptime(start_date, '%Y-%m-%d')
-                e = datetime.strptime(end_date, '%Y-%m-%d')
+                e = datetime.strptime(end_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
                 completed_matches = [m for m in completed_matches if s <= m.match_date <= e]
             except ValueError:
                 pass
