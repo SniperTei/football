@@ -9,59 +9,61 @@
     </div>
 
     <!-- 比赛列表 -->
-    <el-table :data="matches" stripe v-loading="loading">
-      <el-table-column prop="match_date" label="日期" width="180">
-        <template #default="{ row }">
-          {{ formatDate(row.match_date) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="对阵" width="200">
-        <template #default="{ row }">
-          <span class="match-teams">
-            {{ row.home_team_name }}
-            <span v-if="row.home_score !== null && row.home_score !== undefined">
-              {{ row.home_score }}
+    <div class="mobile-scroll-table">
+      <el-table :data="matches" stripe v-loading="loading">
+        <el-table-column prop="match_date" label="日期" width="180">
+          <template #default="{ row }">
+            {{ formatDate(row.match_date) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="对阵" width="200">
+          <template #default="{ row }">
+            <span class="match-teams">
+              {{ row.home_team_name }}
+              <span v-if="row.home_score !== null && row.home_score !== undefined">
+                {{ row.home_score }}
+              </span>
+              vs
+              <span v-if="row.away_score !== null && row.away_score !== undefined">
+                {{ row.away_score }}
+              </span>
+              {{ row.away_team_name }}
             </span>
-            vs
-            <span v-if="row.away_score !== null && row.away_score !== undefined">
-              {{ row.away_score }}
-            </span>
-            {{ row.away_team_name }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="match_type" label="类型" width="100">
-        <template #default="{ row }">
-          {{ getMatchTypeText(row.match_type) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="venue" label="场地" />
-      <el-table-column prop="status" label="状态" width="100">
-        <template #default="{ row }">
-          <el-tag :type="getStatusType(row.status)">
-            {{ getStatusText(row.status) }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="200" fixed="right">
-        <template #default="{ row }">
-          <el-button link type="primary" size="small" @click="showPlayerStats(row)">
-            球员统计
-          </el-button>
-          <el-button link type="primary" size="small" @click="showEditDialog(row)">
-            编辑
-          </el-button>
-          <el-popconfirm
-            title="确定删除这场比赛吗？"
-            @confirm="handleDelete(row.id)"
-          >
-            <template #reference>
-              <el-button link type="danger" size="small">删除</el-button>
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
+          </template>
+        </el-table-column>
+        <el-table-column prop="match_type" label="类型" width="100">
+          <template #default="{ row }">
+            {{ getMatchTypeText(row.match_type) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="venue" label="场地" />
+        <el-table-column prop="status" label="状态" width="100">
+          <template #default="{ row }">
+            <el-tag :type="getStatusType(row.status)">
+              {{ getStatusText(row.status) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="200" fixed="right">
+          <template #default="{ row }">
+            <el-button link type="primary" size="small" @click="showPlayerStats(row)">
+              球员统计
+            </el-button>
+            <el-button link type="primary" size="small" @click="showEditDialog(row)">
+              编辑
+            </el-button>
+            <el-popconfirm
+              title="确定删除这场比赛吗？"
+              @confirm="handleDelete(row.id)"
+            >
+              <template #reference>
+                <el-button link type="danger" size="small">删除</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
 
     <!-- 创建/编辑比赛对话框 -->
     <el-dialog
@@ -148,36 +150,38 @@
           <div class="form-tip" style="margin-bottom: 12px">
             为出场球员录入进球和助攻数据
           </div>
-          <el-table :data="selectedPlayersStats" border style="width: 100%" max-height="250">
-            <el-table-column label="球员" width="150">
-              <template #default="{ row }">
-                {{ row.player_name }}
-                <span style="color: #909399; font-size: 12px">
-                  #{{ row.jersey_number || '无号码' }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column label="进球" width="100" align="center">
-              <template #default="{ row }">
-                <el-input-number
-                  v-model="row.goals"
-                  :min="0"
-                  controls-position="right"
-                  size="small"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column label="助攻" width="100" align="center">
-              <template #default="{ row }">
-                <el-input-number
-                  v-model="row.assists"
-                  :min="0"
-                  controls-position="right"
-                  size="small"
-                />
-              </template>
-            </el-table-column>
-          </el-table>
+          <div class="mobile-scroll-table">
+            <el-table :data="selectedPlayersStats" border style="width: 100%" max-height="250">
+              <el-table-column label="球员" width="150">
+                <template #default="{ row }">
+                  {{ row.player_name }}
+                  <span style="color: #909399; font-size: 12px">
+                    #{{ row.jersey_number || '无号码' }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="进球" width="100" align="center">
+                <template #default="{ row }">
+                  <el-input-number
+                    v-model="row.goals"
+                    :min="0"
+                    controls-position="right"
+                    size="small"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column label="助攻" width="100" align="center">
+                <template #default="{ row }">
+                  <el-input-number
+                    v-model="row.assists"
+                    :min="0"
+                    controls-position="right"
+                    size="small"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
         </el-form-item>
 
         <el-form-item label="备注">
@@ -200,27 +204,29 @@
 
     <!-- 球员统计对话框 -->
     <el-dialog v-model="playerStatsVisible" title="球员统计" width="800px">
-      <el-table :data="playerStats" stripe v-loading="loadingStats">
-        <el-table-column prop="player_name" label="球员名称" />
-        <el-table-column prop="jersey_number" label="号码" width="80" />
-        <el-table-column prop="position" label="位置" width="100" />
-        <el-table-column label="出场" width="80">
-          <template #default="{ row }">
-            <el-tag :type="row.played ? 'success' : 'info'" size="small">
-              {{ row.played ? '是' : '否' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="goals" label="进球" width="80" />
-        <el-table-column prop="assists" label="助攻" width="80" />
-        <el-table-column label="操作" width="120">
-          <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="showEditPlayerStats(row)">
-              编辑
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="mobile-scroll-table">
+        <el-table :data="playerStats" stripe v-loading="loadingStats">
+          <el-table-column prop="player_name" label="球员名称" />
+          <el-table-column prop="jersey_number" label="号码" width="80" />
+          <el-table-column prop="position" label="位置" width="100" />
+          <el-table-column label="出场" width="80">
+            <template #default="{ row }">
+              <el-tag :type="row.played ? 'success' : 'info'" size="small">
+                {{ row.played ? '是' : '否' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="goals" label="进球" width="80" />
+          <el-table-column prop="assists" label="助攻" width="80" />
+          <el-table-column label="操作" width="120">
+            <template #default="{ row }">
+              <el-button link type="primary" size="small" @click="showEditPlayerStats(row)">
+                编辑
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-dialog>
 
     <!-- 编辑球员统计对话框 -->
@@ -622,5 +628,17 @@ onMounted(() => {
 .score-separator {
   font-size: 18px;
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .score-inputs {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 }
 </style>

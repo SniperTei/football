@@ -4,13 +4,20 @@
       <div class="header-content">
         <div class="logo" @click="$router.push('/')">
           <el-icon><Football /></el-icon>
-          <span>足球数据平台</span>
+          <span class="logo-text">足球数据平台</span>
         </div>
+
+        <!-- 汉堡按钮（仅移动端显示） -->
+        <div class="hamburger-btn" @click="mobileMenuOpen = true">
+          <el-icon :size="22"><Menu /></el-icon>
+        </div>
+
+        <!-- 桌面端水平菜单 -->
         <el-menu
           :default-active="activeMenu"
           mode="horizontal"
           :ellipsis="false"
-          class="menu"
+          class="desktop-menu"
         >
           <el-menu-item index="/dashboard" @click="$router.push('/dashboard')">首页</el-menu-item>
           <el-menu-item :index="teamsMenuIndex" @click="handleTeamsClick">球队</el-menu-item>
@@ -20,6 +27,21 @@
           <el-menu-item index="/worldcup" @click="$router.push('/worldcup')">世界杯</el-menu-item>
           <!-- 历史战绩已隐藏，保留在球队详情页面 -->
         </el-menu>
+
+        <!-- 移动端抽屉菜单 -->
+        <el-drawer v-model="mobileMenuOpen" direction="ltr" size="220px" :show-close="false">
+          <template #header>
+            <div class="mobile-drawer-title">导航菜单</div>
+          </template>
+          <el-menu :default-active="activeMenu" @select="handleMobileMenuSelect">
+            <el-menu-item index="/dashboard">首页</el-menu-item>
+            <el-menu-item :index="teamsMenuIndex">球队</el-menu-item>
+            <el-menu-item index="/players">球员</el-menu-item>
+            <el-menu-item :index="matchesMenuIndex">比赛</el-menu-item>
+            <el-menu-item index="/stats">数据统计</el-menu-item>
+            <el-menu-item index="/worldcup">世界杯</el-menu-item>
+          </el-menu>
+        </el-drawer>
         <div class="user-section">
           <template v-if="isAuthenticated">
             <el-dropdown>
@@ -98,7 +120,7 @@
 import { computed, ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, type FormInstance } from 'element-plus'
-import { User, Management, SwitchButton } from '@element-plus/icons-vue'
+import { User, Management, SwitchButton, Menu } from '@element-plus/icons-vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 
@@ -108,6 +130,21 @@ const authStore = useAuthStore()
 
 // 使用 storeToRefs 确保响应式
 const { isAuthenticated, isAdmin, user, loginDialogRequired } = storeToRefs(authStore)
+
+// 移动端菜单
+const mobileMenuOpen = ref(false)
+
+const handleMobileMenuSelect = (index: string) => {
+  mobileMenuOpen.value = false
+  // 处理球队和比赛的动态菜单路径
+  if (index === teamsMenuIndex.value) {
+    handleTeamsClick()
+  } else if (index === matchesMenuIndex.value) {
+    handleMatchesClick()
+  } else {
+    router.push(index)
+  }
+}
 
 const activeMenu = computed(() => route.path)
 
@@ -240,7 +277,7 @@ const showRegister = () => {
   white-space: nowrap;
 }
 
-.menu {
+.desktop-menu {
   flex: 1;
   border: none;
 }
@@ -273,5 +310,61 @@ const showRegister = () => {
   text-align: center;
   color: #909399;
   margin-top: auto;
+}
+
+/* --- Mobile Navigation --- */
+.hamburger-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.hamburger-btn:hover {
+  background: #f5f7fa;
+}
+
+.mobile-drawer-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .desktop-menu {
+    display: none !important;
+  }
+
+  .logo-text {
+    display: none;
+  }
+
+  .header-content {
+    padding: 0 12px;
+  }
+
+  .logo {
+    padding: 0 8px;
+  }
+
+  .main-content {
+    margin: 10px auto;
+    padding: 0 10px;
+  }
+
+  .user-section {
+    padding: 0 4px;
+    gap: 6px;
+  }
+
+  .user-name {
+    font-size: 13px;
+  }
 }
 </style>

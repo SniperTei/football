@@ -10,18 +10,20 @@
         添加球队
       </el-button>
 
-      <el-table :data="teams" v-loading="loading" style="width: 100%; margin-top: 20px">
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="球队名称" min-width="150" />
-        <el-table-column prop="description" label="描述" show-overflow-tooltip />
-        <el-table-column prop="founded_year" label="成立年份" width="120" />
-        <el-table-column label="操作" width="200" fixed="right">
-          <template #default="{ row }">
-            <el-button v-if="canEditTeam(row)" type="primary" text @click="showDialog('edit', row)">编辑</el-button>
-            <el-button v-if="canEditTeam(row)" type="danger" text @click="handleDelete(row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="mobile-scroll-table">
+        <el-table :data="teams" v-loading="loading" style="width: 100%; margin-top: 20px">
+          <el-table-column prop="id" label="ID" width="80" />
+          <el-table-column prop="name" label="球队名称" min-width="150" />
+          <el-table-column prop="description" label="描述" show-overflow-tooltip />
+          <el-table-column prop="founded_year" label="成立年份" width="120" />
+          <el-table-column label="操作" width="200" fixed="right">
+            <template #default="{ row }">
+              <el-button v-if="canEditTeam(row)" type="primary" text @click="showDialog('edit', row)">编辑</el-button>
+              <el-button v-if="canEditTeam(row)" type="danger" text @click="handleDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-card>
 
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="500px">

@@ -52,27 +52,29 @@
         </el-button>
       </div>
 
-      <el-table :data="players" v-loading="loading" style="width: 100%; margin-top: 20px">
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="name" label="姓名" min-width="120" />
-        <el-table-column prop="position" label="位置" width="100" />
-        <el-table-column prop="jersey_number" label="球衣号码" width="100" />
-        <el-table-column prop="team_id" label="所属球队" min-width="150">
-          <template #default="{ row }">
-            {{ getTeamName(row.team_id) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="200" fixed="right">
-          <template #default="{ row }">
-            <el-button v-if="canEditPlayer(row)" type="primary" text @click="showDialog('edit', row)">
-              编辑
-            </el-button>
-            <el-button v-if="canEditPlayer(row)" type="danger" text @click="handleDelete(row)">
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="mobile-scroll-table">
+        <el-table :data="players" v-loading="loading" style="width: 100%; margin-top: 20px">
+          <el-table-column prop="id" label="ID" width="80" />
+          <el-table-column prop="name" label="姓名" min-width="120" />
+          <el-table-column prop="position" label="位置" width="100" />
+          <el-table-column prop="jersey_number" label="球衣号码" width="100" />
+          <el-table-column prop="team_id" label="所属球队" min-width="150">
+            <template #default="{ row }">
+              {{ getTeamName(row.team_id) }}
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="200" fixed="right">
+            <template #default="{ row }">
+              <el-button v-if="canEditPlayer(row)" type="primary" text @click="showDialog('edit', row)">
+                编辑
+              </el-button>
+              <el-button v-if="canEditPlayer(row)" type="danger" text @click="handleDelete(row)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-card>
 
     <!-- 添加/编辑弹窗 -->
@@ -320,5 +322,18 @@ onMounted(() => {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .search-bar .el-input,
+  .search-bar .el-select {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
 }
 </style>

@@ -113,6 +113,7 @@
           <div class="highlight-subtitle">当前榜首进球数</div>
         </div>
 
+        <div class="mobile-scroll-table">
         <el-table :data="goalRankings.slice(1)" stripe>
           <el-table-column label="排名" width="80" align="center">
             <template #default="{ row }">
@@ -132,6 +133,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
         <el-empty v-if="!loadingGoals && goalRankings.length === 0" description="暂无数据" />
       </el-card>
@@ -160,6 +162,7 @@
           <div class="highlight-subtitle">当前榜首助攻数</div>
         </div>
 
+        <div class="mobile-scroll-table">
         <el-table :data="assistRankings.slice(1)" stripe>
           <el-table-column label="排名" width="80" align="center">
             <template #default="{ row }">
@@ -179,6 +182,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
         <el-empty v-if="!loadingAssists && assistRankings.length === 0" description="暂无数据" />
       </el-card>
@@ -209,6 +213,7 @@
           </div>
         </div>
 
+        <div class="mobile-scroll-table">
         <el-table :data="attendanceRankings.slice(1)" stripe>
           <el-table-column label="排名" width="80" align="center">
             <template #default="{ row }">
@@ -235,6 +240,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
 
         <el-empty v-if="!loadingAttendance && attendanceRankings.length === 0" description="暂无数据" />
       </el-card>
@@ -588,6 +594,16 @@ onMounted(async () => {
 
   .stat-highlight .stat-value {
     font-size: 28px;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filters > .el-select,
+  .filters > .el-date-editor {
+    width: 100% !important;
   }
 }
 </style>

@@ -41,7 +41,8 @@
         style="margin-top: 20px"
       />
 
-      <el-table v-else :data="players" style="width: 100%; margin-top: 20px">
+      <div v-else class="mobile-scroll-table">
+      <el-table :data="players" style="width: 100%; margin-top: 20px">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="姓名" min-width="120">
           <template #default="{ row }">
@@ -57,6 +58,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <!-- 添加/编辑球员弹窗 -->
@@ -248,5 +250,12 @@ onMounted(() => {
 
 .player-name-link:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 }
 </style>

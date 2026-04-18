@@ -65,6 +65,7 @@
               <el-button type="primary" @click="$router.push('/teams')">查看全部</el-button>
             </div>
           </template>
+          <div class="mobile-scroll-table">
           <el-table :data="recentTeams" style="width: 100%">
             <el-table-column prop="id" label="ID" width="80" />
             <el-table-column prop="name" label="球队名称" min-width="150" />
@@ -78,6 +79,7 @@
               </template>
             </el-table-column>
           </el-table>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -193,5 +195,19 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .welcome-banner {
+    padding: 20px 16px;
+  }
+
+  .welcome-banner h1 {
+    font-size: 20px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
 }
 </style>

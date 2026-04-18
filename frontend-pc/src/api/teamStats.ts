@@ -52,9 +52,16 @@ export interface HeadToHeadStats {
  * @param teamId 球队ID
  * @param days 天数筛选（可选）
  */
-export function getTeamStats(teamId: number, days?: number) {
+export function getTeamStats(teamId: number, days?: number, startDate?: string, endDate?: string) {
+  const params: any = {}
+  if (startDate && endDate) {
+    params.start_date = startDate
+    params.end_date = endDate
+  } else if (days) {
+    params.days = days
+  }
   return api.get<{ data: TeamStatistics }>(`/stats/team/${teamId}/stats`, {
-    params: days ? { days } : undefined
+    params: Object.keys(params).length ? params : undefined
   })
 }
 

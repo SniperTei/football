@@ -16,12 +16,18 @@
     <el-card v-if="team" style="margin-top: 20px">
       <div class="filter-bar">
         <span class="filter-label">时间范围：</span>
-        <el-radio-group v-model="timeRange" @change="loadStats">
-          <el-radio-button :label="30">最近1个月</el-radio-button>
-          <el-radio-button :label="90">最近3个月</el-radio-button>
-          <el-radio-button :label="365">最近1年</el-radio-button>
-          <el-radio-button :label="null">全部</el-radio-button>
-        </el-radio-group>
+        <el-date-picker
+          v-model="dateRange"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          format="YYYY-MM-DD"
+          value-format="YYYY-MM-DD"
+          clearable
+          style="width: 300px"
+          @change="loadStats"
+        />
       </div>
     </el-card>
 
@@ -153,6 +159,7 @@
           </el-descriptions-item>
         </el-descriptions>
 
+        <div class="mobile-scroll-table">
         <el-table :data="headToHeadStats.recent_matches" stripe style="margin-top: 15px" size="small">
           <el-table-column prop="date" label="日期" width="120">
             <template #default="{ row }">
@@ -171,6 +178,7 @@
           </el-table-column>
           <el-table-column prop="competition" label="类型" width="100" align="center" />
         </el-table>
+        </div>
       </el-card>
 
       <!-- 主客场详细战绩 -->
@@ -181,6 +189,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <h4>主场</h4>
+            <div class="mobile-scroll-table">
             <el-table :data="[homeStats]" size="small">
               <el-table-column prop="wins" label="胜" width="80" align="center">
                 <template #default="{ row }">
@@ -198,9 +207,11 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </el-col>
           <el-col :span="12">
             <h4>客场</h4>
+            <div class="mobile-scroll-table">
             <el-table :data="[awayStats]" size="small">
               <el-table-column prop="wins" label="胜" width="80" align="center">
                 <template #default="{ row }">
@@ -218,6 +229,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </el-col>
         </el-row>
       </el-card>
@@ -227,6 +239,7 @@
         <template #header>
           <span class="card-title">📈 最近比赛</span>
         </template>
+        <div class="mobile-scroll-table">
         <el-table :data="recentMatches" stripe size="small">
           <el-table-column prop="date" label="日期" width="120">
             <template #default="{ row }">
@@ -244,6 +257,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
       </el-card>
 
       <!-- 无数据提示 -->
@@ -272,7 +286,7 @@ const route = useRoute()
 const loading = ref(false)
 const team = ref<Team | null>(null)
 const stats = ref<Partial<TeamStatistics>>({})
-const timeRange = ref<number | null>(null)
+const dateRange = ref<[string, string] | null>(null)
 const otherTeams = ref<Team[]>([])
 const selectedOpponentId = ref<number | null>(null)
 const headToHeadStats = ref<any>({})
@@ -443,7 +457,13 @@ const loadStats = async () => {
   if (!team.value) return
 
   try {
-    const statsRes = await getTeamStats(team.value.id, timeRange.value || undefined)
+    let startDate: string | undefined
+    let endDate: string | undefined
+    if (dateRange.value && dateRange.value.length === 2) {
+      startDate = dateRange.value[0]
+      endDate = dateRange.value[1]
+    }
+    const statsRes = await getTeamStats(team.value.id, undefined, startDate, endDate)
     stats.value = statsRes.data
 
     // 更新图表
@@ -614,8 +634,17 @@ onMounted(async () => {
     padding: 10px;
   }
 
-  .el-col {
-    margin-bottom: 15px;
+  .filter-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  :deep(.el-col-6),
+  :deep(.el-col-8),
+  :deep(.el-col-12) {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 10px;
   }
 }
 </style>

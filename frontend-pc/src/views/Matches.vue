@@ -165,6 +165,7 @@
           <div class="form-tip" style="margin-bottom: 12px">
             为出场球员录入进球和助攻数据
           </div>
+          <div class="mobile-scroll-table">
           <el-table :data="selectedPlayersStats" border style="width: 100%" max-height="250">
             <el-table-column label="球员" width="150">
               <template #default="{ row }">
@@ -197,6 +198,7 @@
               </template>
             </el-table-column>
           </el-table>
+          </div>
         </el-form-item>
 
         <el-form-item label="备注">
@@ -597,5 +599,36 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .matches-list {
+    grid-template-columns: 1fr;
+  }
+
+  .match-content {
+    padding: 10px 0;
+  }
+
+  .team-score {
+    font-size: 24px;
+  }
+
+  .team-name {
+    font-size: 14px;
+  }
+
+  .vs {
+    margin: 0 10px;
+    font-size: 12px;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .score-inputs {
+    flex-wrap: wrap;
+  }
 }
 </style>

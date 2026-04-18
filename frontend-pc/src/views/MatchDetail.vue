@@ -128,6 +128,7 @@
         <el-tabs v-model="activeTab" class="stats-tabs">
           <!-- 主队统计 -->
           <el-tab-pane :label="match.home_team_name" name="home">
+            <div class="mobile-scroll-table">
             <el-table
               :data="homeTeamStats"
               stripe
@@ -166,6 +167,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </el-tab-pane>
 
           <!-- 客队统计 -->
@@ -263,6 +265,7 @@
             <div style="color: #909399; font-size: 12px; margin-bottom: 12px">
               为出场球员录入进球和助攻数据
             </div>
+            <div class="mobile-scroll-table">
             <el-table :data="selectedPlayersStats" border max-height="350">
               <el-table-column label="球员" width="150">
                 <template #default="{ row }">
@@ -300,6 +303,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </div>
 
           <el-empty v-else description="请先选择出场球员" />
@@ -913,6 +917,16 @@ onMounted(() => {
   .versus {
     font-size: 20px;
     padding: 0 10px;
+  }
+
+  .goals-summary {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .score-board {
+    gap: 15px;
+    padding: 20px 10px;
   }
 }
 </style>

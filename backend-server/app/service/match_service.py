@@ -219,13 +219,16 @@ class MatchService:
             match_list.append(d)
         return total, match_list
 
-    def get_team_statistics(self, team_id: int, days: Optional[int] = None) -> dict:
+    def get_team_statistics(self, team_id: int, days: Optional[int] = None,
+                            start_date: Optional[str] = None, end_date: Optional[str] = None) -> dict:
         """
         获取球队统计信息
 
         Args:
             team_id: 球队ID
             days: 天数筛选（None=全部, 30=最近1个月, 90=最近3个月, 365=最近1年）
+            start_date: 开始日期（格式：YYYY-MM-DD）
+            end_date: 结束日期（格式：YYYY-MM-DD）
 
         Returns:
             统计信息字典
@@ -238,8 +241,15 @@ class MatchService:
         # 获取已完成的比赛
         completed_matches = self.match_repo.get_completed_matches(team_id)
 
-        # 按时间筛选
-        if days:
+        # 按日期区间筛选（优先于 days）
+        if start_date and end_date:
+            try:
+                s = datetime.strptime(start_date, '%Y-%m-%d')
+                e = datetime.strptime(end_date, '%Y-%m-%d')
+                completed_matches = [m for m in completed_matches if s <= m.match_date <= e]
+            except ValueError:
+                pass
+        elif days:
             cutoff_date = datetime.now() - timedelta(days=days)
             completed_matches = [m for m in completed_matches if m.match_date >= cutoff_date]
 

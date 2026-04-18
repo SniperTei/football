@@ -15,6 +15,7 @@
                 <el-tag size="small" type="info">{{ group.teams.length }} 队</el-tag>
               </div>
             </template>
+            <div class="mobile-scroll-table">
             <el-table :data="group.teams" size="small" :show-header="true">
               <el-table-column label="#" width="40" align="center">
                 <template #default="{ row }">
@@ -43,6 +44,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </el-card>
         </div>
       </el-tab-pane>
@@ -58,6 +60,7 @@
             查询
           </el-button>
         </div>
+        <div class="mobile-scroll-table">
         <el-table :data="matches" v-loading="loading" style="width: 100%">
           <el-table-column label="场次" width="70" prop="match_number" align="center" />
           <el-table-column label="小组" width="70" prop="group_name" align="center" />
@@ -109,6 +112,7 @@
             </template>
           </el-table-column>
         </el-table>
+        </div>
       </el-tab-pane>
 
       <!-- Tab 3: 数据管理 (管理员) -->
@@ -146,6 +150,7 @@
                 <el-button type="primary" size="small" @click="showTeamDialog()">添加球队</el-button>
               </div>
             </template>
+            <div class="mobile-scroll-table">
             <el-table :data="teams" size="small" v-loading="loading">
               <el-table-column prop="id" label="ID" width="60" />
               <el-table-column label="国旗" width="60">
@@ -166,6 +171,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            </div>
           </el-card>
         </div>
       </el-tab-pane>
@@ -475,6 +481,9 @@ onMounted(() => {
 @media (max-width: 800px) {
   .groups-grid { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 500px) {
+  .groups-grid { grid-template-columns: 1fr; }
+}
 
 .group-card {
   min-width: 0;
@@ -558,5 +567,12 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  .matches-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 }
 </style>

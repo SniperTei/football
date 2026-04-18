@@ -371,6 +371,8 @@ async def get_top_attendance(
 async def get_team_statistics(
     team_id: int,
     days: Optional[int] = Query(None, ge=1, le=3650, description="时间范围（天）"),
+    start_date: Optional[str] = Query(None, description="开始日期（格式：YYYY-MM-DD）"),
+    end_date: Optional[str] = Query(None, description="结束日期（格式：YYYY-MM-DD）"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_optional_user)
 ):
@@ -378,7 +380,7 @@ async def get_team_statistics(
     try:
         from app.service.match_service import MatchService
         service = MatchService(db)
-        stats = service.get_team_statistics(team_id, days)
+        stats = service.get_team_statistics(team_id, days, start_date, end_date)
         return ResponseHelper.success(data=stats, msg="获取球队统计成功")
     except Exception as e:
         return ResponseHelper.error(msg=f"获取球队统计失败: {str(e)}", code=500)

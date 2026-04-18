@@ -52,6 +52,7 @@
         </el-button>
       </div>
 
+      <div class="mobile-scroll-table">
       <el-table :data="players" v-loading="loading" style="width: 100%; margin-top: 20px" @row-click="handleRowClick">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="姓名" min-width="120">
@@ -77,6 +78,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <div class="pagination-bar">
         <el-pagination
@@ -358,5 +360,18 @@ onMounted(() => {
 
 :deep(.el-table__row) {
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .search-bar .el-input,
+  .search-bar .el-select {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
 }
 </style>

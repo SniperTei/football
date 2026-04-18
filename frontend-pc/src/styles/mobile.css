@@ -1,0 +1,76 @@
+/* ============================================
+   Global Mobile Responsiveness Overrides
+   Only affects screens <= 768px
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* --- Dialog: force 92% width on mobile --- */
+  .el-dialog {
+    width: 92% !important;
+    margin: 0 auto !important;
+  }
+
+  .el-dialog__body {
+    padding: 16px !important;
+  }
+
+  /* --- Table: horizontal scroll container --- */
+  .mobile-scroll-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-scroll-table .el-table {
+    min-width: 600px;
+  }
+
+  /* --- Pagination: wrap and center on mobile --- */
+  .el-pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .el-pagination .el-pagination__sizes,
+  .el-pagination .el-pagination__jump {
+    display: none;
+  }
+
+  /* --- Picker Panel: constrain on mobile --- */
+  .el-picker-panel {
+    max-width: 92vw !important;
+  }
+
+  .el-date-editor {
+    width: 100% !important;
+  }
+
+  /* --- Form: adapt label width --- */
+  .el-form--label-top .el-form-item__label {
+    padding-bottom: 4px;
+  }
+
+  /* --- Select: full width on mobile --- */
+  .el-select {
+    width: 100% !important;
+  }
+
+  /* --- Descriptions: single column on mobile --- */
+  .el-descriptions__body .el-descriptions__table {
+    table-layout: fixed;
+  }
+
+  .el-descriptions .el-descriptions-item__container {
+    display: block;
+  }
+
+  /* --- Tabs: smaller padding --- */
+  .el-tabs__header {
+    padding: 0 4px;
+  }
+
+  .el-tabs__item {
+    padding: 0 8px;
+    font-size: 13px;
+  }
+}

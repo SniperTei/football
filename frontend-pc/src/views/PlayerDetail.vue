@@ -75,8 +75,8 @@
         style="margin-top: 10px"
       />
 
+      <div v-else class="mobile-scroll-table">
       <el-table
-        v-else
         :data="player.recent_matches"
         style="width: 100%; margin-top: 10px"
         @row-click="(row: PlayerRecentMatch) => $router.push(`/matches/${row.match_id}`)"
@@ -121,6 +121,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
   </div>
 </template>
@@ -233,5 +234,19 @@ watch(() => route.params.id, () => {
 
 .match-table :deep(.el-table__row:hover) {
   background-color: #ecf5ff;
+}
+
+@media (max-width: 768px) {
+  .stats-cards {
+    gap: 8px;
+  }
+
+  .stat-card {
+    min-width: 80px;
+  }
+
+  .stat-card .stat-value {
+    font-size: 22px;
+  }
 }
 </style>

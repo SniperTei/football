@@ -20,6 +20,7 @@
         />
       </div>
 
+      <div class="mobile-scroll-table">
       <el-table :data="filteredTeams" v-loading="loading" style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column label="Logo" width="60" align="center">
@@ -44,6 +45,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
 
       <div class="pagination-bar">
         <el-pagination
