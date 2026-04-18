@@ -73,3 +73,16 @@ export function getTeamStats(teamId: number, days?: number, startDate?: string, 
 export function getHeadToHeadStats(teamId: number, opponentId: number) {
   return api.get<{ data: HeadToHeadStats }>(`/stats/team/${teamId}/head-to-head/${opponentId}`)
 }
+
+/**
+ * 下载球队月度报告 PDF
+ * @param teamId 球队ID
+ * @param year 年份
+ * @param month 月份
+ */
+export function downloadMonthlyReport(teamId: number, year: number, month: number) {
+  return api.get(`/stats/team/${teamId}/monthly-report`, {
+    params: { year, month },
+    responseType: 'blob'
+  })
+}

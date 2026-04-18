@@ -28,6 +28,20 @@
           style="width: 300px"
           @change="loadStats"
         />
+        <el-divider direction="vertical" />
+        <span class="filter-label">导出月报：</span>
+        <el-date-picker
+          v-model="reportMonth"
+          type="month"
+          placeholder="选择月份"
+          format="YYYY年MM月"
+          value-format="YYYY-MM"
+          clearable
+          style="width: 160px"
+        />
+        <el-button type="primary" :loading="exportLoading" @click="handleExportReport">
+          导出月报
+        </el-button>
       </div>
     </el-card>
 
@@ -275,7 +289,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { getTeamStats, getHeadToHeadStats, type TeamStatistics } from '@/api/teamStats'
+import { getTeamStats, getHeadToHeadStats, downloadMonthlyReport, type TeamStatistics } from '@/api/teamStats'
 import { teamsApi, type Team } from '@/api/teams'
 import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts'
@@ -290,6 +304,8 @@ const dateRange = ref<[string, string] | null>(null)
 const otherTeams = ref<Team[]>([])
 const selectedOpponentId = ref<number | null>(null)
 const headToHeadStats = ref<any>({})
+const reportMonth = ref<string | null>(null)
+const exportLoading = ref(false)
 
 // ECharts 图表引用
 const pieChartRef = ref<HTMLElement>()
@@ -474,6 +490,47 @@ const loadStats = async () => {
   } catch (error) {
     console.error('加载统计失败:', error)
     ElMessage.error('加载统计失败')
+  }
+}
+
+const handleExportReport = async () => {
+  if (!team.value) return
+
+  let year: number
+  let month: number
+
+  if (reportMonth.value) {
+    const parts = reportMonth.value.split('-')
+    year = parseInt(parts[0])
+    month = parseInt(parts[1])
+  } else if (dateRange.value && dateRange.value.length === 2) {
+    // 使用日期范围的起始月份作为默认
+    const d = dayjs(dateRange.value[0])
+    year = d.year()
+    month = d.month() + 1
+  } else {
+    // 默认上月
+    const d = dayjs().subtract(1, 'month')
+    year = d.year()
+    month = d.month() + 1
+  }
+
+  exportLoading.value = true
+  try {
+    const res = await downloadMonthlyReport(team.value.id, year, month)
+    const blob = new Blob([res.data as any], { type: 'application/pdf' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${team.value.name}_${year}年${month}月月报.pdf`
+    link.click()
+    window.URL.revokeObjectURL(url)
+    ElMessage.success('月报导出成功')
+  } catch (error) {
+    console.error('导出月报失败:', error)
+    ElMessage.error('导出月报失败')
+  } finally {
+    exportLoading.value = false
   }
 }
 

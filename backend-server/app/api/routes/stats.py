@@ -1,7 +1,9 @@
 """
 Stats API - 统计数据接口
 """
+from io import BytesIO
 from fastapi import APIRouter, Depends, Query
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from typing import Optional
 from sqlalchemy import func, desc, Integer
@@ -401,3 +403,27 @@ async def get_head_to_head_stats(
         return ResponseHelper.success(data=stats, msg="获取对战历史成功")
     except Exception as e:
         return ResponseHelper.error(msg=f"获取对战历史失败: {str(e)}", code=500)
+
+
+@router.get("/team/{team_id}/monthly-report")
+async def download_monthly_report(
+    team_id: int,
+    year: int = Query(..., ge=2020, le=2030, description="年份"),
+    month: int = Query(..., ge=1, le=12, description="月份"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_optional_user)
+):
+    """导出球队月度报告 PDF（不需要登录）"""
+    try:
+        from scripts.report_generator import generate_monthly_report
+        buf = generate_monthly_report(db, team_id, year, month)
+        filename = f"monthly_report_{team_id}_{year}{month:02d}.pdf"
+        return StreamingResponse(
+            buf,
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"attachment; filename={filename}"},
+        )
+    except ValueError as e:
+        return ResponseHelper.error(msg=str(e), code=404)
+    except Exception as e:
+        return ResponseHelper.error(msg=f"生成月报失败: {str(e)}", code=500)
