@@ -43,9 +43,7 @@ def _register_font():
     if _font_registered:
         return
     _font_registered = True
-    print(f"[DEBUG] Font search paths: {font_dirs}")
 
-    # 优先查找项目 fonts 目录
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     font_dirs = [
         os.path.join(base_dir, "scripts", "fonts"),
