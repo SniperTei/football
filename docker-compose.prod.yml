@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5443:5432"
     networks:
       - football_network
     healthcheck:
@@ -34,7 +34,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-1440}
     ports:
-      - "8021:8000"
+      - "8031:8000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -58,7 +58,7 @@ services:
       dockerfile: Dockerfile
     container_name: football_platform_frontend_prod
     ports:
-      - "80:80"
+      - "8032:80"
     depends_on:
       - backend
     networks:
