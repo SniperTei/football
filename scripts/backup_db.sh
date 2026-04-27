@@ -24,12 +24,26 @@ fi
 echo "[$(date)] 数据库备份成功: $BACKUP_FILE"
 
 # 2. Excel 报表导出（在 backend 容器中执行 Python 脚本）
-docker exec $BACKEND_CONTAINER python /app/scripts/export_excel.py "/app/backups/report_${DATE}.xlsx"
+EXCEL_NAME="report_${DATE}.xlsx"
+CONTAINER_PATH="/app/backups/$EXCEL_NAME"
+
+docker exec $BACKEND_CONTAINER python /app/scripts/export_excel.py "$CONTAINER_PATH"
 
 if [ $? -ne 0 ]; then
     echo "[$(date)] Excel 报表导出失败!"
 else
-    echo "[$(date)] Excel 报表导出成功: report_${DATE}.xlsx"
+    # 如果卷挂载已生效，文件直接就在宿主机目录中
+    # 如果卷挂载未生效，用 docker cp 作为备用方案
+    if [ ! -f "$BACKUP_DIR/$EXCEL_NAME" ]; then
+        docker cp $BACKEND_CONTAINER:$CONTAINER_PATH "$BACKUP_DIR/$EXCEL_NAME"
+        if [ $? -ne 0 ]; then
+            echo "[$(date)] Excel 文件 docker cp 失败!"
+        else
+            echo "[$(date)] Excel 报表已通过 docker cp 导出: $EXCEL_NAME"
+        fi
+    else
+        echo "[$(date)] Excel 报表导出成功: $EXCEL_NAME"
+    fi
 fi
 
 # 3. 清理过期备份
