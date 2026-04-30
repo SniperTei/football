@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Football Platform API",
     description="足球球队数据管理平台 API",
-    version="2.0.0",
+    version="2.1.0",
     lifespan=lifespan
 )
 
@@ -62,7 +62,7 @@ app.include_router(api_router, prefix="/api")
 
 @app.get("/")
 async def root():
-    return {"message": "Football Platform API(test)", "version": "1.0.0"}
+    return {"message": "Football Platform API", "version": app.version}
 
 
 @app.get("/health")
